@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.4.1, 2017-11-28T15:13:33. -->
+<!-- Written by QtCreator 4.4.1, 2017-12-01T10:13:36. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -285,8 +285,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">TCDMeatApp_Qt_ui</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">TCDMeatApp_Qt_ui2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:D:/TCD Project (meatsensor)/Yinghan/Qt_windows10 - Copy/TCDMeatApp_Qt(with ui)/TCDMeatApp_Qt_ui/TCDMeatApp_Qt_ui.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:D:/TCD Project (meatsensor)/Yinghan/Qt_windows10/TCDMeatApp_Qt(with ui)/TCDMeatApp_Qt_ui/TCDMeatApp_Qt_ui.pro</value>
     <value type="bool" key="QmakeProjectManager.QmakeRunConfiguration.UseLibrarySearchPath">true</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">TCDMeatApp_Qt_ui.pro</value>

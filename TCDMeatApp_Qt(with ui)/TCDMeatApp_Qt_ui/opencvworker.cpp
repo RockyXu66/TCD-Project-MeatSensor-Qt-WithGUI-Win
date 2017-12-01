@@ -4,8 +4,11 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
 {    
     stop = true;
 //    filename = "/Volumes/YINGHANUSB/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
-    filename = "D://TCD Project (meatsensor)//Yinghan//Video//convey_dataset3(MT2_L-3)_withScratch.mov";
+//    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
+    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch_vibrate.mov";
+//    filename = "D:/TCD Project (meatsensor)/TCD_MacMini/RECentral/1st/2017082111155957.mp4";
 
+    webcam.open(0);
     cap.open(filename);
     if (cap.isOpened())
     {
@@ -127,8 +130,19 @@ void OpenCvWorker::processFrame(){
     // By using background subtraction and threshold & finding largest contours
     processedFrame = frame.clone();
 
-    foregroundImg = BgSubtraction(processedFrame);
-    roiImg = para.GetBoundingBoxByBgSub2(foregroundImg, colorspace, DEBUG, p1, p2);
+    int frameWidth = processedFrame.cols;
+    int frameHeight = processedFrame.rows;
+    int xLeft = frameWidth/2*para.getLeftLine();
+    int xRight = frameWidth/2+((frameWidth/2)*para.getRightLine());
+    // Crop to interested part by user
+    Mat croppedFrame = processedFrame(Rect(xLeft, 0, xRight-xLeft, frameHeight));
+
+//    foregroundImg = BgSubtraction(processedFrame);
+//    foregroundImg = BgSubtraction(croppedFrame);
+//    roiImg = para.GetBoundingBoxByBgSub2(foregroundImg, colorspace, DEBUG, p1, p2);
+    roiImg = para.GetBoundingBoxByBgSub2(croppedFrame, colorspace, DEBUG, p1, p2);
+    p1.x += xLeft;
+    p2.x += xLeft;
 
     // Draw panel on the frame
 //    panelMat.copyTo(processedFrame(Rect(0, 0, panelMat.cols, panelMat.rows)));
@@ -158,11 +172,8 @@ void OpenCvWorker::processFrame(){
     }
 
     // Draw lines for the region of interest
-    int frameWidth = processedFrame.cols;
-    int frameHeight = processedFrame.rows;
-
-    line(processedFrame, Point(frameWidth/2*para.getLeftLine(),0), Point(frameWidth/2*para.getLeftLine(),frameHeight), Scalar(113, 117, 122), 2, LINE_8, 0);
-    line(processedFrame, Point(frameWidth/2+((frameWidth/2)*para.getRightLine()),0), Point(frameWidth/2+((frameWidth/2)*para.getRightLine()),frameHeight), Scalar(113, 117, 122), 2, LINE_8, 0);
+    line(processedFrame, Point(xLeft,0), Point(xLeft,frameHeight), Scalar(113, 117, 122), 2, LINE_8, 0);
+    line(processedFrame, Point(xRight,0), Point(xRight,frameHeight), Scalar(113, 117, 122), 2, LINE_8, 0);
 }
 
 void OpenCvWorker::receiveLeftArea(int num){
@@ -185,6 +196,14 @@ void OpenCvWorker::receiveCurvePara(float para_a, float para_b, float para_c, fl
     p[2] = para_c;
     p[3] = para_d;
 //    cout<<"a: "<<para<<endl;
+}
+
+void OpenCvWorker::receiveCroppedStripArea(float area){
+    para.stripArea = area;
+}
+
+void OpenCvWorker::receiveStripRatio(float r){
+    para.ratio = r;
 }
 
 

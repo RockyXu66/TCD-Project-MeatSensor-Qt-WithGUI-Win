@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_OpenCvWorker_t {
-    QByteArrayData data[13];
-    char stringdata0[161];
+    QByteArrayData data[15];
+    char stringdata0[203];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -43,14 +43,17 @@ QT_MOC_LITERAL(8, 88, 18), // "isOxygenCalculated"
 QT_MOC_LITERAL(9, 107, 15), // "receiveLeftArea"
 QT_MOC_LITERAL(10, 123, 3), // "num"
 QT_MOC_LITERAL(11, 127, 16), // "receiveRightArea"
-QT_MOC_LITERAL(12, 144, 16) // "receiveCurvePara"
+QT_MOC_LITERAL(12, 144, 16), // "receiveCurvePara"
+QT_MOC_LITERAL(13, 161, 23), // "receiveCroppedStripArea"
+QT_MOC_LITERAL(14, 185, 17) // "receiveStripRatio"
 
     },
     "OpenCvWorker\0sendFrame\0\0frameProcessed\0"
     "sendVideoFinished\0sendO2Value\0content\0"
     "sendPrompt\0isOxygenCalculated\0"
     "receiveLeftArea\0num\0receiveRightArea\0"
-    "receiveCurvePara"
+    "receiveCurvePara\0receiveCroppedStripArea\0"
+    "receiveStripRatio"
 };
 #undef QT_MOC_LITERAL
 
@@ -60,7 +63,7 @@ static const uint qt_meta_data_OpenCvWorker[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -68,15 +71,17 @@ static const uint qt_meta_data_OpenCvWorker[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   49,    2, 0x06 /* Public */,
-       4,    0,   52,    2, 0x06 /* Public */,
-       5,    1,   53,    2, 0x06 /* Public */,
-       7,    1,   56,    2, 0x06 /* Public */,
+       1,    1,   59,    2, 0x06 /* Public */,
+       4,    0,   62,    2, 0x06 /* Public */,
+       5,    1,   63,    2, 0x06 /* Public */,
+       7,    1,   66,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       9,    1,   59,    2, 0x08 /* Private */,
-      11,    1,   62,    2, 0x08 /* Private */,
-      12,    4,   65,    2, 0x08 /* Private */,
+       9,    1,   69,    2, 0x08 /* Private */,
+      11,    1,   72,    2, 0x08 /* Private */,
+      12,    4,   75,    2, 0x08 /* Private */,
+      13,    1,   84,    2, 0x08 /* Private */,
+      14,    1,   87,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QImage,    3,
@@ -88,6 +93,8 @@ static const uint qt_meta_data_OpenCvWorker[] = {
     QMetaType::Void, QMetaType::Int,   10,
     QMetaType::Void, QMetaType::Int,   10,
     QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float,    2,    2,    2,    2,
+    QMetaType::Void, QMetaType::Float,    2,
+    QMetaType::Void, QMetaType::Float,    2,
 
        0        // eod
 };
@@ -105,6 +112,8 @@ void OpenCvWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 4: _t->receiveLeftArea((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 5: _t->receiveRightArea((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 6: _t->receiveCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4]))); break;
+        case 7: _t->receiveCroppedStripArea((*reinterpret_cast< float(*)>(_a[1]))); break;
+        case 8: _t->receiveStripRatio((*reinterpret_cast< float(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -165,13 +174,13 @@ int OpenCvWorker::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 9)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

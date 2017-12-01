@@ -14,6 +14,14 @@
 #include <QTimer>
 
 #include "settingdialog.h"
+#include "dialogcroppinghint.h"
+#include "croppingdialog.h"
+
+#include "imagecropper.h"
+#include <QLabel>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 using namespace cv;
 
@@ -32,6 +40,20 @@ private:
 
     settingDialog *setting_dialog;
 
+    DialogCroppingHint *croppingHint_dialog;
+
+    CroppingDialog *cropping_dialog;
+
+    // Variables used for crop strip
+    ImageCropper* m_imageCropper;
+    QLabel* m_croppedImage;
+    QPushButton* cropBtn;
+    QPushButton* cropCancelBtn;
+    QImage currentImage;
+    QPixmap croppedStrip;
+
+
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -42,6 +64,8 @@ signals:
     void sendLeftAreaValue(int num);
     void sendRightAreaValue(int num);
     void sendUpdateCurvePara(float, float, float, float);
+    void sendCurrentImage(QImage);
+    void sendStripRatio(float);
 
 private slots:
     //Display video frame in player UI
@@ -52,6 +76,9 @@ private slots:
 
     // Display prompt if oxygen is not calculated
     void receivePrompt(bool isOxygenCalculated);
+
+    // Display "Strip Adjusted" label if cropped
+    void receiveStripAdjustedFlag();
 
     // If video is finished, reset play button
 //    void receiveVideoFinished();
@@ -68,6 +95,8 @@ private slots:
 
     void on_pushButtonSetting_clicked();
     void on_pushButtonOpenCamera_clicked();
+    void on_pushButtonCrop_clicked();
+    void on_lineEditRatio_textChanged(const QString &arg1);
 };
 
 #endif // MAINWINDOW_H

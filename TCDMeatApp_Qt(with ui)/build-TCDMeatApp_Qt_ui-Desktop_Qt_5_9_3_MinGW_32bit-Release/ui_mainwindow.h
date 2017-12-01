@@ -16,6 +16,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -49,10 +50,16 @@ public:
     QWidget *layoutWidget2;
     QVBoxLayout *verticalLayout_3;
     QPushButton *pushButtonSetting;
+    QPushButton *pushButtonCrop;
     QPushButton *pushButtonOpenCamera;
     QPushButton *pushButtonLoad;
     QPushButton *pushButtonPlay;
     QPushButton *pushButtonExit;
+    QLabel *labelStripAdjusted;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *labelRatio;
+    QLineEdit *lineEditRatio;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -168,6 +175,11 @@ public:
 
         verticalLayout_3->addWidget(pushButtonSetting);
 
+        pushButtonCrop = new QPushButton(layoutWidget2);
+        pushButtonCrop->setObjectName(QStringLiteral("pushButtonCrop"));
+
+        verticalLayout_3->addWidget(pushButtonCrop);
+
         pushButtonOpenCamera = new QPushButton(layoutWidget2);
         pushButtonOpenCamera->setObjectName(QStringLiteral("pushButtonOpenCamera"));
 
@@ -187,6 +199,35 @@ public:
         pushButtonExit->setObjectName(QStringLiteral("pushButtonExit"));
 
         verticalLayout_3->addWidget(pushButtonExit);
+
+        labelStripAdjusted = new QLabel(centralWidget);
+        labelStripAdjusted->setObjectName(QStringLiteral("labelStripAdjusted"));
+        labelStripAdjusted->setGeometry(QRect(980, 300, 151, 31));
+        QFont font2;
+        font2.setPointSize(12);
+        labelStripAdjusted->setFont(font2);
+        labelStripAdjusted->setStyleSheet(QStringLiteral("color: red"));
+        labelStripAdjusted->setAlignment(Qt::AlignCenter);
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(1000, 270, 101, 29));
+        horizontalLayout_4 = new QHBoxLayout(widget);
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
+        labelRatio = new QLabel(widget);
+        labelRatio->setObjectName(QStringLiteral("labelRatio"));
+        labelRatio->setFont(font2);
+
+        horizontalLayout_4->addWidget(labelRatio);
+
+        lineEditRatio = new QLineEdit(widget);
+        lineEditRatio->setObjectName(QStringLiteral("lineEditRatio"));
+        lineEditRatio->setFont(font2);
+        lineEditRatio->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_4->addWidget(lineEditRatio);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -214,10 +255,14 @@ public:
         labelO2->setText(QApplication::translate("MainWindow", "O2: ", Q_NULLPTR));
         labelO2Value->setText(QString());
         pushButtonSetting->setText(QApplication::translate("MainWindow", "Setting", Q_NULLPTR));
+        pushButtonCrop->setText(QApplication::translate("MainWindow", "Crop Strip", Q_NULLPTR));
         pushButtonOpenCamera->setText(QApplication::translate("MainWindow", "Open Webcam", Q_NULLPTR));
         pushButtonLoad->setText(QApplication::translate("MainWindow", "Choose Video", Q_NULLPTR));
         pushButtonPlay->setText(QApplication::translate("MainWindow", "Play", Q_NULLPTR));
         pushButtonExit->setText(QApplication::translate("MainWindow", "Exit", Q_NULLPTR));
+        labelStripAdjusted->setText(QApplication::translate("MainWindow", "Strip unadjusted", Q_NULLPTR));
+        labelRatio->setText(QApplication::translate("MainWindow", "Ratio:", Q_NULLPTR));
+        lineEditRatio->setText(QApplication::translate("MainWindow", "0.8", Q_NULLPTR));
     } // retranslateUi
 
 };

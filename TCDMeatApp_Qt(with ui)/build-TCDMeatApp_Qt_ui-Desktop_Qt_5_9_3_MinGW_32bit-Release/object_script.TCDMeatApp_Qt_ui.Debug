@@ -1,0 +1,16 @@
+INPUT(
+./debug\main.o
+./debug\mainwindow.o
+./debug\opencvworker.o
+./debug\strips.o
+./debug\settingdialog.o
+./debug\imagecropper.o
+./debug\dialogcroppinghint.o
+./debug\croppingdialog.o
+./debug\moc_mainwindow.o
+./debug\moc_opencvworker.o
+./debug\moc_settingdialog.o
+./debug\moc_imagecropper.o
+./debug\moc_dialogcroppinghint.o
+./debug\moc_croppingdialog.o
+);

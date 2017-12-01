@@ -9,7 +9,7 @@ Mat img, foregroundMask, backgroundImage, foregroundImg;
 
 bool isComputing = false;   // Flag for whether we are computing oxygen value
 
-int areaSpace = 40000; // When max contour area is larger then this area space, the oxygen contents will be calculated
+//int areaSpace = 40000; // When max contour area is larger then this area space, the oxygen contents will be calculated
 
 
 
@@ -52,6 +52,9 @@ Mat BgSubtraction(Mat img){
 ////                int key5 = waitKey(40);
 //    }
 
+    if(!foregroundImg.empty()){
+        imshow("foregroundImg", foregroundImg);
+    }
     return foregroundImg;
 }
 
@@ -61,28 +64,38 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
     int heightImg = img.size().height;
 //    int startX=widthImg/5,startY=0,width=(widthImg/5)*3,height=heightImg;
     int startX=360, startY=0, width=1000-360, height=heightImg;
+//    int startX = (int)leftLine, startY = 0, width = (int)(rightLine - leftLine), height = heightImg;
+//    cout<<startX<<" "<<width<<endl;
+//    cout<<(int)leftLine<<" "<<(int)(rightLine - leftLine)<<endl;
 
-    Mat ROI(img, Rect(startX,startY,width,height));
-    Mat croppedImage;
-    ROI.copyTo(croppedImage);
-    Mat iMat = croppedImage.clone();
+//    Mat ROI(img, Rect(startX,startY,width,height));
+//    Mat croppedImage;
+//    ROI.copyTo(croppedImage);
+//    Mat iMat = croppedImage.clone();
+    Mat iMat = img.clone();
 
     Mat gsMat, bwMat;   // Grayscale image & binary image
 //    cvtColor(iMat, gsMat, COLOR_RGB2GRAY);
 ////    imshow("gsMat", gsMat);
 //    threshold(gsMat, bwMat, 60, 255, THRESH_BINARY);        // Yinghan's threshold
 
+    // boundary threshold for dataset3 fake video
     Scalar lowBound(50,45,50); // (1,45,175)===== (0, 45, 70)
     Scalar upperBound(180,255,255); // (180,255,255)
+
+    // boundary threshold for RECentral video 2017082111155957.mp4
+//    Scalar lowBound(50, 47,90);
+//    Scalar upperBound(180, 255, 255);
+
     // Scalar lowBound(1,45,175); // (1,45,175)
     // Scalar upperBound(180,255,255); // (180,255,255)
     cvtColor(iMat, gsMat, COLOR_RGB2HSV);
     inRange(gsMat, lowBound, upperBound, bwMat);
     dilate(bwMat, bwMat, Mat());
 
-    if(DEBUG==1){
-        imshow("bwMat" ,bwMat);
-    }
+//    if(DEBUG==1){
+//        imshow("bwMat" ,bwMat);
+//    }
 
 
     vector<vector<Point> > contours;
@@ -107,10 +120,11 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
     int cX = (int) (M.m10 / M.m00);
     int cY = (int) (M.m01 / M.m00);
 
-
+//    cout<<"maxArea: "<<maxArea<<endl;
     // Only when max area is larger than setting area & center of roi is in the center
     // then we compute oxygen contents
-    if(maxArea>areaSpace && startX + cX>(img.cols/2)*getLeftLine() && startX + cX<(img.cols/2)+((img.cols/2)*getRightLine())){
+//    cout<<"ratio: "<<ratio<<endl;
+    if(maxArea>(stripArea* ratio)){// && startX + cX>(img.cols/2)*getLeftLine() && startX + cX<(img.cols/2)+((img.cols/2)*getRightLine())){
         isComputing = true;
     }else{
         isComputing = false;
@@ -154,8 +168,8 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
     if (roi_height < 0)
         roi_height = (int) scalar*2;
 
-    p1 = Point2f(startX+roi_x, roi_y);
-    p2 = Point2f(startX+roi_x+roi_width, roi_y+roi_height);
+    p1 = Point2f(roi_x, roi_y);
+    p2 = Point2f(roi_x+roi_width, roi_y+roi_height);
 
     Rect roi = Rect((roi_x), (roi_y), (roi_width), (roi_height));
 
@@ -164,6 +178,9 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
     Mat iCrop = Mat(iMat, roi);
 
     Mat result = iCrop;
+    if ((!result.empty()) && (DEBUG == 1) && isComputing) {
+        imshow("ROI", result);
+    }
     Scalar yellow(0,255,255);
 
     Mat DMat;

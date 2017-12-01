@@ -28,17 +28,26 @@ SOURCES += \
         mainwindow.cpp \
     opencvworker.cpp \
     strips.cpp \
-    settingdialog.cpp
+    settingdialog.cpp \
+    imagecropper.cpp \
+    dialogcroppinghint.cpp \
+    croppingdialog.cpp
 
 HEADERS += \
         mainwindow.h \
     opencvworker.h \
     strips.h \
-    settingdialog.h
+    settingdialog.h \
+    imagecropper.h \
+    imagecropper_e.h \
+    imagecropper_p.h \
+    dialogcroppinghint.h \
+    croppingdialog.h
 
 FORMS += \
         mainwindow.ui \
-    settingdialog.ui
+    settingdialog.ui \
+    dialogcroppinghint.ui
 
 #INCLUDEPATH += /usr/local/include
 

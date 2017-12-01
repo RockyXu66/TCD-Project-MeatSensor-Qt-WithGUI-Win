@@ -27,7 +27,7 @@ void settingDialog::on_buttonBox_accepted()
 }
 
 void settingDialog::receiveUpdateCurvePara(float para_a, float para_b, float para_c, float para_d){
-    cout<<"123"<<endl;
+    cout<<"receiveUpdateCurvePara"<<endl;
     ui->lineEdit_setting_a->setText(QString::number(para_a));
     ui->lineEdit_setting_b->setText(QString::number(para_b));
     ui->lineEdit_setting_c->setText(QString::number(para_c));

@@ -171,6 +171,13 @@ Background-color: #000;</string>
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButtonCrop">
+       <property name="text">
+        <string>Crop Strip</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButtonOpenCamera">
        <property name="text">
         <string>Open Webcam</string>
@@ -195,6 +202,69 @@ Background-color: #000;</string>
       <widget class="QPushButton" name="pushButtonExit">
        <property name="text">
         <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="labelStripAdjusted">
+    <property name="geometry">
+     <rect>
+      <x>980</x>
+      <y>300</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: red</string>
+    </property>
+    <property name="text">
+     <string>Strip unadjusted</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>270</y>
+      <width>101</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="labelRatio">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Ratio:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEditRatio">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>0.8</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>

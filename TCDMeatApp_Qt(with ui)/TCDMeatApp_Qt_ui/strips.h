@@ -11,6 +11,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 
 #include <opencv2/tracking.hpp>
 #include <opencv2/videoio.hpp>
@@ -56,6 +57,11 @@ Mat GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2f & p1, Poi
 class Parameter{
 public:
 
+    int areaSpace = 0; // When the ROI is larger than this areaSpace, we will calculate the oxygen value
+
+    float stripArea = 5000; // Cropped strip area
+    float ratio = 0.8f;     // Ratio that used to determine if we need to compute the O2.
+
     Parameter(){
         leftLine = 0.8f;
         rightLine = 0.3f;
@@ -79,6 +85,7 @@ public:
 private:
     float leftLine;
     float rightLine;
+
 };
 
 static int scalar = 30;

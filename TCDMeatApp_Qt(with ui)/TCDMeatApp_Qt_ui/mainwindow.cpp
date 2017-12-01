@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     worker = new OpenCvWorker();
     setting_dialog = new settingDialog();
+    croppingHint_dialog = new DialogCroppingHint();
+    cropping_dialog = new CroppingDialog();
 
     connect(worker, SIGNAL(sendFrame(QImage)), this, SLOT(receiveProcessedFrame(QImage)));
     connect(worker, SIGNAL(sendVideoFinished()), this, SLOT(on_pushButtonPlay_clicked()));
@@ -18,6 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(setting_dialog, SIGNAL(sendCurvePara(float,float,float,float)), worker, SLOT(receiveCurvePara(float,float,float,float)));
     connect(this, SIGNAL(sendUpdateCurvePara(float,float,float,float)), setting_dialog, SLOT(receiveUpdateCurvePara(float,float, float, float)));
 
+    connect(this, SIGNAL(sendCurrentImage(QImage)), cropping_dialog, SLOT(receiveCroppingImage(QImage)));
+    connect(cropping_dialog, SIGNAL(sendCroppedStripArea(float)), worker, SLOT(receiveCroppedStripArea(float)));
+    connect(cropping_dialog, SIGNAL(sendStripAdjustedFlag()), this, SLOT(receiveStripAdjustedFlag()));
+    connect(this, SIGNAL(sendStripRatio(float)), worker, SLOT(receiveStripRatio(float)));
 //    setup();
 
 //    Mat img = imread("/Users/yinghanxu/Desktop/IMG_8483.jpg");
@@ -37,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::receiveProcessedFrame(QImage img)
 {
+    currentImage = img;
     if (!img.isNull())
     {
         ui->labelWebcam->setAlignment(Qt::AlignCenter);
@@ -60,6 +67,10 @@ void MainWindow::receivePrompt(bool isOxygenCalculated){
     }
 }
 
+void MainWindow::receiveStripAdjustedFlag(){
+    ui->labelStripAdjusted->setStyleSheet("QLabel { color : black; }");
+    ui->labelStripAdjusted->setText("Strip Adjusted");
+}
 
 void MainWindow::on_pushButtonLoad_clicked(){
     // Stop the video if the dialog is open
@@ -112,6 +123,10 @@ MainWindow::~MainWindow()
     delete worker;
 
     delete setting_dialog;
+
+    delete croppingHint_dialog;
+
+    delete cropping_dialog;
 }
 
 void MainWindow::on_pushButtonSetting_clicked()
@@ -132,4 +147,27 @@ void MainWindow::on_pushButtonOpenCamera_clicked()
         ui->pushButtonOpenCamera->setText("Open Webcam");
     }
 
+}
+
+void MainWindow::on_pushButtonCrop_clicked()
+{
+    if(currentImage.isNull()){
+        croppingHint_dialog->setModal(true);
+        croppingHint_dialog->exec();
+        return;
+    }
+
+
+    emit(sendCurrentImage(currentImage));
+    cropping_dialog->show();
+}
+
+void MainWindow::on_lineEditRatio_textChanged(const QString &arg1)
+{
+    float ratio = arg1.toFloat();
+    if(ratio<0||ratio>1){
+        ratio = 1.0f;
+        ui->lineEditRatio->setText("1.0");
+    }
+    emit(sendStripRatio(ratio));
 }

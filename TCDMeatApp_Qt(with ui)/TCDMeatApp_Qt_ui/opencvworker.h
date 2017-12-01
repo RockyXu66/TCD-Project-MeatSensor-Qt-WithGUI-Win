@@ -6,9 +6,9 @@
 #include <QImage>
 #include <QWaitCondition>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv2/core/core.hpp>
+//#include <opencv2/highgui/highgui.hpp>
+//#include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 
 #include "strips.h"
@@ -33,6 +33,8 @@ private:
     QImage img;
     string filename;
 
+    // Variables used in Crop Strip function
+    Mat cs_cloneImg;
 
     Parameter para;
 
@@ -45,7 +47,7 @@ private:
     string O2_str;
     // 1st thresholding method simply adds threshold; 2nd thresholding method adds specific value of boundary and also adds dilate function
     int threshMethod = 1;
-    int DEBUG = 0;  // 1 = verbose mode
+    int DEBUG = 1;  // 1 = verbose mode
 
 
     Mat roiImg;         // Region of interest mat
@@ -109,7 +111,8 @@ private slots:
     void receiveLeftArea(int num);
     void receiveRightArea(int num);
     void receiveCurvePara(float,float,float,float);
-
+    void receiveCroppedStripArea(float);
+    void receiveStripRatio(float);
 };
 
 #endif // OPENCVWORKER_H

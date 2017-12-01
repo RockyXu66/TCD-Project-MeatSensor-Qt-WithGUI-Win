@@ -1,0 +1,16 @@
+INPUT(
+./release\main.o
+./release\mainwindow.o
+./release\opencvworker.o
+./release\strips.o
+./release\settingdialog.o
+./release\imagecropper.o
+./release\dialogcroppinghint.o
+./release\croppingdialog.o
+./release\moc_mainwindow.o
+./release\moc_opencvworker.o
+./release\moc_settingdialog.o
+./release\moc_imagecropper.o
+./release\moc_dialogcroppinghint.o
+./release\moc_croppingdialog.o
+);
