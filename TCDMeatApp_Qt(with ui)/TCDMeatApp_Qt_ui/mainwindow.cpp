@@ -24,14 +24,24 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(cropping_dialog, SIGNAL(sendCroppedStripArea(float)), worker, SLOT(receiveCroppedStripArea(float)));
     connect(cropping_dialog, SIGNAL(sendStripAdjustedFlag()), this, SLOT(receiveStripAdjustedFlag()));
     connect(this, SIGNAL(sendStripRatio(float)), worker, SLOT(receiveStripRatio(float)));
-//    setup();
+    connect(this, SIGNAL(sendThresholdValue(int)), worker, SLOT(receiveThresholdValue(int)));
+    connect(this, SIGNAL(sendThresholdValue_2(int)), worker, SLOT(receiveThresholdValue_2(int)));
+    connect(this, SIGNAL(sendThresholdValue_3(int)), worker, SLOT(receiveThresholdValue_3(int)));
+    connect(this, SIGNAL(sendThresholdValue_4(int)), worker, SLOT(receiveThresholdValue_4(int)));
+    connect(this, SIGNAL(sendThresholdValue_5(int)), worker, SLOT(receiveThresholdValue_5(int)));
+    connect(this, SIGNAL(sendThresholdValue_6(int)), worker, SLOT(receiveThresholdValue_6(int)));
+    connect(this, SIGNAL(sendNextFlag()), worker, SLOT(receiveNextFlag()));
 
-//    Mat img = imread("/Users/yinghanxu/Desktop/IMG_8483.jpg");
+    connect(this, SIGNAL(sendThreshRequest()), worker, SLOT(receiveThreshRequest()));
+    connect(worker, SIGNAL(sendUpdateThresh(QVector<int>)), this, SLOT(receiveUpdateThresh(QVector<int>)));
 
-    // Set up ui at last when initializing
 
+
+
+    // Set up ui at last after initialized
     ui->setupUi(this);
 
+    emit(sendThreshRequest());
 
 //    if (!worker->initialImg.isNull())
 //    {
@@ -72,6 +82,22 @@ void MainWindow::receiveStripAdjustedFlag(){
     ui->labelStripAdjusted->setText("Strip Adjusted");
 }
 
+void MainWindow::receiveUpdateThresh(QVector<int> thresh){
+    cout<<"receiveUpdateThresh: "<<endl;
+    ui->label_HL->setText(QString::number(thresh[0]));
+    ui->horizontalSliderThresh->setValue(thresh[0]);
+    ui->label_SL->setText(QString::number(thresh[1]));
+    ui->horizontalSliderThresh_2->setValue(thresh[1]);
+    ui->label_VL->setText(QString::number(thresh[2]));
+    ui->horizontalSliderThresh_3->setValue(thresh[2]);
+    ui->label_HH->setText(QString::number(thresh[3]));
+    ui->horizontalSliderThresh_4->setValue(thresh[3]);
+    ui->label_SH->setText(QString::number(thresh[4]));
+    ui->horizontalSliderThresh_5->setValue(thresh[4]);
+    ui->label_VH->setText(QString::number(thresh[5]));
+    ui->horizontalSliderThresh_6->setValue(thresh[5]);
+}
+
 void MainWindow::on_pushButtonLoad_clicked(){
     // Stop the video if the dialog is open
     worker->Stop();
@@ -80,6 +106,9 @@ void MainWindow::on_pushButtonLoad_clicked(){
     QString filename = QFileDialog::getOpenFileName(this,
                                               tr("Open Video"), ".",
                                               tr("Video Files (*.avi *.mpg *.mp4 *.mov)"));
+//    QString filename  = QFileDialog::getOpenFileName(this,
+//                                                     tr("Open image"), ",",
+//                                                     tr("Image Files (*.png *.jpg *.bmp)"));
     if (!filename.isEmpty()){
         if (!worker->loadVideo(filename.toLatin1().data()))
         {
@@ -151,6 +180,11 @@ void MainWindow::on_pushButtonOpenCamera_clicked()
 
 void MainWindow::on_pushButtonCrop_clicked()
 {
+    // Stop the video if the dialog is open
+    worker->Stop();
+    ui->pushButtonPlay->setText(tr("Play"));
+
+    // If there is no image loaded, show a warning dialog
     if(currentImage.isNull()){
         croppingHint_dialog->setModal(true);
         croppingHint_dialog->exec();
@@ -170,4 +204,44 @@ void MainWindow::on_lineEditRatio_textChanged(const QString &arg1)
         ui->lineEditRatio->setText("1.0");
     }
     emit(sendStripRatio(ratio));
+}
+
+void MainWindow::on_horizontalSliderThresh_valueChanged(int value)
+{
+    ui->label_HL->setText(QString::number(value));
+    emit(sendThresholdValue(value));
+}
+
+void MainWindow::on_horizontalSliderThresh_2_valueChanged(int value)
+{
+    ui->label_SL->setText(QString::number(value));
+    emit(sendThresholdValue_2(value));
+}
+
+void MainWindow::on_horizontalSliderThresh_3_valueChanged(int value)
+{
+    ui->label_VL->setText(QString::number(value));
+    emit(sendThresholdValue_3(value));
+}
+void MainWindow::on_horizontalSliderThresh_4_valueChanged(int value)
+{
+    ui->label_HH->setText(QString::number(value));
+    emit(sendThresholdValue_4(value));
+}
+
+void MainWindow::on_horizontalSliderThresh_5_valueChanged(int value)
+{
+    ui->label_SH->setText(QString::number(value));
+    emit(sendThresholdValue_5(value));
+}
+
+void MainWindow::on_horizontalSliderThresh_6_valueChanged(int value)
+{
+    ui->label_VH->setText(QString::number(value));
+    emit(sendThresholdValue_6(value));
+}
+
+void MainWindow::on_pushButtonNext_clicked()
+{
+    emit(sendNextFlag());
 }

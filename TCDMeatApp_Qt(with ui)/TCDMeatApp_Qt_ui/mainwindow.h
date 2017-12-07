@@ -66,6 +66,14 @@ signals:
     void sendUpdateCurvePara(float, float, float, float);
     void sendCurrentImage(QImage);
     void sendStripRatio(float);
+    void sendThresholdValue(int value);
+    void sendThresholdValue_2(int value);
+    void sendThresholdValue_3(int value);
+    void sendThresholdValue_4(int value);
+    void sendThresholdValue_5(int value);
+    void sendThresholdValue_6(int value);
+    void sendNextFlag();
+    void sendThreshRequest();
 
 private slots:
     //Display video frame in player UI
@@ -79,6 +87,9 @@ private slots:
 
     // Display "Strip Adjusted" label if cropped
     void receiveStripAdjustedFlag();
+
+    // Update threshold when initilizing
+    void receiveUpdateThresh(QVector<int>);
 
     // If video is finished, reset play button
 //    void receiveVideoFinished();
@@ -97,6 +108,13 @@ private slots:
     void on_pushButtonOpenCamera_clicked();
     void on_pushButtonCrop_clicked();
     void on_lineEditRatio_textChanged(const QString &arg1);
+    void on_horizontalSliderThresh_valueChanged(int value);
+    void on_horizontalSliderThresh_2_valueChanged(int value);
+    void on_horizontalSliderThresh_3_valueChanged(int value);
+    void on_horizontalSliderThresh_4_valueChanged(int value);
+    void on_horizontalSliderThresh_5_valueChanged(int value);
+    void on_horizontalSliderThresh_6_valueChanged(int value);
+    void on_pushButtonNext_clicked();
 };
 
 #endif // MAINWINDOW_H

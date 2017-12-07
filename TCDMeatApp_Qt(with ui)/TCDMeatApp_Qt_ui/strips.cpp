@@ -9,88 +9,34 @@ Mat img, foregroundMask, backgroundImage, foregroundImg;
 
 bool isComputing = false;   // Flag for whether we are computing oxygen value
 
-//int areaSpace = 40000; // When max contour area is larger then this area space, the oxygen contents will be calculated
+Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2){
 
-
-
-Mat BgSubtraction(Mat img){
-    // Just resize input image if you want
-//    float scale = 0.5f;
-//    resize(img,img,Size(img.size().width*scale,img.size().height*scale));
-
-    // create foreground mask of proper size
-    if( foregroundMask.empty() ){
-        foregroundMask.create(img.size(), img.type());
-    }
-
-    // compute foreground mask 8 bit image
-    // -1 is parameter that chose automatically your learning rate
-    // 0 means no background update
-    bg_model->apply(img, foregroundMask, 0);
-
-    // smooth the mask to reduce noise in image
-    GaussianBlur(foregroundMask, foregroundMask, Size(11,11), 3.5,3.5);
-
-    // threshold mask to saturate at black and white values
-    threshold(foregroundMask, foregroundMask, 10,255,THRESH_BINARY);
-
-    // create black foreground image
-    foregroundImg = Scalar::all(0);
-    // Copy source image to foreground image only in area with white mask
-    img.copyTo(foregroundImg, foregroundMask);
-
-    //Get background image
-    bg_model->getBackgroundImage(backgroundImage);
-
-    // Show the results
-//    imshow("foreground mask", foregroundMask);    // foreground mask image
-//    imshow("foreground image", foregroundImg);    // foreground image
-
-    // Show background image
-//    if(!backgroundImage .empty()){
-//        imshow("mean background image", backgroundImage );
-////                int key5 = waitKey(40);
-//    }
-
-    if(!foregroundImg.empty()){
-        imshow("foregroundImg", foregroundImg);
-    }
-    return foregroundImg;
-}
-
-Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2){
-//Only deal with center part of each frame
-//    int widthImg = img.size().width;
-    int heightImg = img.size().height;
-//    int startX=widthImg/5,startY=0,width=(widthImg/5)*3,height=heightImg;
-    int startX=360, startY=0, width=1000-360, height=heightImg;
-//    int startX = (int)leftLine, startY = 0, width = (int)(rightLine - leftLine), height = heightImg;
-//    cout<<startX<<" "<<width<<endl;
-//    cout<<(int)leftLine<<" "<<(int)(rightLine - leftLine)<<endl;
-
-//    Mat ROI(img, Rect(startX,startY,width,height));
-//    Mat croppedImage;
-//    ROI.copyTo(croppedImage);
-//    Mat iMat = croppedImage.clone();
     Mat iMat = img.clone();
 
     Mat gsMat, bwMat;   // Grayscale image & binary image
-//    cvtColor(iMat, gsMat, COLOR_RGB2GRAY);
-////    imshow("gsMat", gsMat);
-//    threshold(gsMat, bwMat, 60, 255, THRESH_BINARY);        // Yinghan's threshold
 
     // boundary threshold for dataset3 fake video
-    Scalar lowBound(50,45,50); // (1,45,175)===== (0, 45, 70)
-    Scalar upperBound(180,255,255); // (180,255,255)
+//    Scalar lowBound(50,45,50); // (1,45,175)===== (0, 45, 70)
+//    Scalar lowBound(30,30,30);   // lowbound for trial data
+//    Scalar lowBound(120,45,60);  // lowbound for recorded video
+//    Scalar upperb(180,255,255); // (180,255,255)
+
+//    Scalar lowerb(threshold, threshold_2, threshold_3);
+//    Scalar upperb(threshold_4, threshold_5, threshold_6);
+
+    // boundary for MT3_R-1
+//    Scalar lowerb(125, 120, 100);
+//    Scalar upperb(160, 255, 255);
+//    cout<<thresh[0]<<" "<<thresh[1]<<" "<<thresh[2]<<" "<<thresh[3]<<" "<<thresh[4]<<" "<<thresh[5]<<endl;
+    Scalar lowerb(thresh[0], thresh[1], thresh[2]);
+    Scalar upperb(thresh[3], thresh[4], thresh[5]);
 
     // boundary threshold for RECentral video 2017082111155957.mp4
 //    Scalar lowBound(50, 47,90);
 //    Scalar upperBound(180, 255, 255);
 
-    // Scalar lowBound(1,45,175); // (1,45,175)
-    // Scalar upperBound(180,255,255); // (180,255,255)
     cvtColor(iMat, gsMat, COLOR_RGB2HSV);
-    inRange(gsMat, lowBound, upperBound, bwMat);
+    inRange(gsMat, lowerb, upperb, bwMat);
     dilate(bwMat, bwMat, Mat());
 
 //    if(DEBUG==1){
@@ -112,36 +58,20 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
         }
     }
 
-
-    // cout << "size contours : " << largestContour.size() << endl;
-
     Moments M = moments(largestContour);
 
     int cX = (int) (M.m10 / M.m00);
     int cY = (int) (M.m01 / M.m00);
 
-//    cout<<"maxArea: "<<maxArea<<endl;
-    // Only when max area is larger than setting area & center of roi is in the center
-    // then we compute oxygen contents
-//    cout<<"ratio: "<<ratio<<endl;
-    if(maxArea>(stripArea* ratio)){// && startX + cX>(img.cols/2)*getLeftLine() && startX + cX<(img.cols/2)+((img.cols/2)*getRightLine())){
+    // Only when max area is larger than cropped area by user, we compute the oxygen
+    if(maxArea > stripArea* ratio){
         isComputing = true;
     }else{
         isComputing = false;
     }
 
-    // old Scalars
-    // int scalar = 25; // for smaller resolutions
-    // int scalar = 100; // for larger resolutions
-
-    // Lucien's scalar
-//    int scalar = largestContour.size()/5;
-//    if (scalar > 25)
-//        scalar = 25;
-//    else if (scalar < 5)
-//        scalar = 5;
-
-    // Rect roi = Rect((cX - scalar), (cY - scalar), (scalar*2), (scalar*2));
+    // Set scalar according to the cropped strip area
+    scalar = sqrt(stripArea)*0.08;
     int roi_x = (int) (cX - scalar);
     int roi_y = (int) (cY - scalar);
     int roi_width = (int) (scalar*2);
@@ -173,7 +103,6 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
 
     Rect roi = Rect((roi_x), (roi_y), (roi_width), (roi_height));
 
-//    cout << "ROI :" << roi_x << "," << roi_y << "," << roi_width << "," << roi_height << endl;
     // crop image
     Mat iCrop = Mat(iMat, roi);
 
@@ -186,9 +115,6 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
     Mat DMat;
     cvtColor(bwMat,DMat,COLOR_GRAY2RGB);
 
-    // cout << "Size LARGEST " << largestContour.size() << endl;
-    // cout << "Size CONTOURS " << contours.size() << endl;
-
     vector<vector<Point> > draw = {largestContour};
 
     // drawContours(DMat,contours,-1,yellow,5);
@@ -199,13 +125,6 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
         imshow("Drawn",DMat);
     }
 
-
-//    if ((!result.empty()) && (DEBUG == 1) && isComputing) {
-//        namedWindow("ROI",WINDOW_GUI_NORMAL);
-//        imshow("ROI",result);
-//    }
-    // cout << "SIZE RESULTS : " << result.size() << endl;
-
     if(isComputing){
         return result;
     }else{
@@ -214,147 +133,157 @@ Mat Parameter::GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2
     }
 }
 
-//Mat GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2){
+float Strip::avgHue(Mat img, int curveColorSpace)
+{
+    Mat roi = img.clone();
 
-//    // Only deal with center part of each frame
-////    int widthImg = img.size().width;
-//    int heightImg = img.size().height;
-////    int startX=widthImg/5,startY=0,width=(widthImg/5)*3,height=heightImg;
-//    int startX=360, startY=0, width=1000-360, height=heightImg;
+    // Convert BGR to RGB
+    cvtColor(roi, roi, CV_BGR2RGB);
 
-//    Mat ROI(img, Rect(startX,startY,width,height));
-//    Mat croppedImage;
-//    ROI.copyTo(croppedImage);
-//    Mat iMat = croppedImage.clone();
+    if (roi.empty())
+    {
+        float average = 0.0f;
+        return average;
+    }
 
-//    Mat gsMat, bwMat;   // Grayscale image & binary image
-////    cvtColor(iMat, gsMat, COLOR_RGB2GRAY);
-//////    imshow("gsMat", gsMat);
-////    threshold(gsMat, bwMat, 60, 255, THRESH_BINARY);        // Yinghan's threshold
+    float sumH = 0.0f;
+    float maxH = 1.0f;
+    float pixelHue;
+    float offset;
+    float h;
+    int chan1 = 0;
 
-//    Scalar lowBound(50,45,50); // (1,45,175)===== (0, 45, 70)
-//    Scalar upperBound(180,255,255); // (180,255,255)
-//    // Scalar lowBound(1,45,175); // (1,45,175)
-//    // Scalar upperBound(180,255,255); // (180,255,255)
-//    cvtColor(iMat, gsMat, COLOR_RGB2HSV);
-//    inRange(gsMat, lowBound, upperBound, bwMat);
-//    dilate(bwMat, bwMat, Mat());
+    if (curveColorSpace == 0) {
+        cvtColor(roi, roi, COLOR_RGB2HSV); // HSV conversion
+        offset = 1.0;
+    } else {
+        cvtColor(roi, roi, COLOR_RGB2Lab); // L*a*b conversion
+        offset = 100.0/255.0;
+    }
 
-//    imshow("bwMat" ,bwMat);
+    vector<Mat> hsv;
+    split(roi,hsv);
+    Mat hue;
+    hsv[chan1].convertTo(hue, CV_32FC1); // 2nd channel (inverted)
+    int size = hue.rows * hue.cols;
 
-//    vector<vector<Point> > contours;
-//    Mat hierarchy;
-//    findContours(bwMat, contours, hierarchy, RETR_LIST, CHAIN_APPROX_SIMPLE);
+    vector<float> matArray; // 1D array for faster process
+    Mat flatM;
+    hue.reshape(1,1).convertTo(flatM, CV_32FC1);
+    matArray.assign((float*)flatM.datastart, (float*)flatM.dataend); // matArray = flatM;
 
-//    vector<Point> largestContour;
-//    double maxArea = 0;
-//    for (vector<Point> contour : contours){
-//        double area = contourArea(contour);
-//        if (area > maxArea){
-//            maxArea = area;
-//            largestContour = contour;
-//        }
-//    }
+    if (curveColorSpace == 0) { // HSV
+        for (int i = 0; i < (size); i++) {
+            h = matArray[i];
+            pixelHue = (h/180.0);
+            pixelHue += (maxH/2);
 
+            if (pixelHue > maxH) {
+                pixelHue -= maxH;
+            }
+            sumH += pixelHue;
+        }
+    }
+    else { // L*a*b
+        sumH = (float) sum(hue)[chan1];
+        // sumH = (double) mean(hue)[0];
+    }
 
-//    // cout << "size contours : " << largestContour.size() << endl;
+    float average = (float) ((sumH/(size)) * offset);
+    // float average = sumH * offset;
+    return average; // mean hue
+}
 
-//    Moments M = moments(largestContour);
+float Strip::computeOxygen(float estimated, float parameters[]) {
 
-//    int cX = (int) (M.m10 / M.m00);
-//    int cY = (int) (M.m01 / M.m00);
+    float y_given = estimated;
+    float a = parameters[0];
+    float b = parameters[1];
+    float c = parameters[2];
+    float d = parameters[3];
 
-////    cout<<"center: "<<cX<<" "<<cY<<endl;
+    const int N = 100;
+    float x_estimated = 0; // computed oxygen concentration
 
-//    // Only when max area is larger than setting area & center of roi is in the center
-//    // then we compute oxygen contents
-//    if(maxArea>areaSpace && startX + cX>img.cols*para2.getLeftLine() && startX + cX<img.cols*para2.getRightLine()){
-//        isComputing = true;
-//    }else{
-//        isComputing = false;
-//    }
+    float y_experimental[N];
+    for (int j = 1; j < (N + 1); j++) {
+        y_experimental[j - 1] = (float) (a * exp(b * j) + c * exp(d * j));
+    }
 
-//    // old Scalars
-//    // int scalar = 25; // for smaller resolutions
-//    // int scalar = 100; // for larger resolutions
+    float slope_experimental[N-1];
+    for (int p = 0; p < (N-1); p++) {
+        slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
+    }
 
-//    // Lucien's scalar
-////    int scalar = largestContour.size()/5;
-////    if (scalar > 25)
-////        scalar = 25;
-////    else if (scalar < 5)
-////        scalar = 5;
+    // find edge values for curve
+    float y_max_experimental = y_experimental[0];
+    float y_min_experimental = y_experimental[0];
+    for (int i = 1; i < N; i++) {
+        if(y_experimental[i] > y_max_experimental) {
+            y_max_experimental = y_experimental[i];
+        } else if (y_experimental[i] < y_min_experimental) {
+            y_min_experimental = y_experimental[i];
+        }
+    }
 
-//    // Rect roi = Rect((cX - scalar), (cY - scalar), (scalar*2), (scalar*2));
-//    int roi_x = (int) (cX - scalar);
-//    int roi_y = (int) (cY - scalar);
-//    int roi_width = (int) (scalar*2);
-//    int roi_height = (int) (scalar*2);
+    if (y_given > y_max_experimental) {
+        x_estimated = 0;
+    } else if (y_given < y_min_experimental) {
+        x_estimated = 100;
+    } else {
+        for (int i = 1; i < N; i++) {
+            if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
+                x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
+            }
+        }
+    }
 
-//    if (cY <= scalar) {
-//        roi_y = 0;
-//        roi_height = (int) scalar + cY;
-//    }
-//    else if (cY >= (iMat.rows - scalar)) {
-//        roi_height = (int) scalar + (iMat.rows - (cY + 1));
-//    }
+    return x_estimated;
+}
 
-//    if (cX <= scalar) {
-//        roi_x = 0;
-//        roi_width = (int) scalar + cX;
-//    }
-//    else if (cX >= (iMat.cols - scalar)) {
-//        roi_width = (int) scalar + (iMat.cols - (cX + 1));
-//    }
+float* Strip::getParameters(int colorspace, int method, int sensor) {
 
-//    if (roi_width < 0)
-//        roi_width = (int) scalar*2;
-//    if (roi_height < 0)
-//        roi_height = (int) scalar*2;
+    static float parameters[4];
 
-//    p1 = Point2f(startX+roi_x, roi_y);
-//    p2 = Point2f(startX+roi_x+roi_width, roi_y+roi_height);
+    if (colorspace == 0) {
+        if (method == 0) {
+            if(sensor == 0){
+//                // Parameters for sensor MT2_L-3
+//                parameters[0] = {0.512f};
+//                parameters[1] = {-0.00709f};
+//                parameters[2] = {-0.06009f};
+//                parameters[3] = {-0.05214f};
+                // Parameters for sensor MT3_R-1
+                parameters[0] = {0.456375f};
+                parameters[1] = {-0.011537f};
+                parameters[2] = {0.000374f};
+                parameters[3] = {0.049049f};
+            }else{
+                // Old sensor parameters
+                parameters[0] = {0.05411f};
+                parameters[1] = {-0.3188f};
+                parameters[2] = {0.4821f};
+                parameters[3] = {-0.00257f};
+            }
 
-//    Rect roi = Rect((roi_x), (roi_y), (roi_width), (roi_height));
+        }
+    }
 
-////    cout << "ROI :" << roi_x << "," << roi_y << "," << roi_width << "," << roi_height << endl;
-//    // crop image
-//    Mat iCrop = Mat(iMat, roi);
+    return (float*) parameters;
+}
 
-//    Mat result = iCrop;
-//    Scalar yellow(0,255,255);
+string Strip::formate(float O2){
+    int x = O2*10;
+    string result;
+    if(x==1000){
+        return "100";
+    }else if(x<10){
+        return "0."+to_string(x);
+    }else{
+        return to_string(x/10)+"."+to_string(x%10);
+    }
+}
 
-//    Mat DMat;
-//    cvtColor(bwMat,DMat,COLOR_GRAY2RGB);
-
-//    // cout << "Size LARGEST " << largestContour.size() << endl;
-//    // cout << "Size CONTOURS " << contours.size() << endl;
-
-//    vector<vector<Point> > draw = {largestContour};
-
-//    // drawContours(DMat,contours,-1,yellow,5);
-//    drawContours(DMat,draw,-1,yellow,5);
-
-//    if ((!DMat.empty()) && (DEBUG == 1)) {
-//        namedWindow("Drawn", WINDOW_GUI_NORMAL);
-//        imshow("Drawn",DMat);
-//    }
-
-
-////    if ((!result.empty()) && (DEBUG == 1) && isComputing) {
-////        namedWindow("ROI",WINDOW_GUI_NORMAL);
-////        imshow("ROI",result);
-////    }
-//    // cout << "SIZE RESULTS : " << result.size() << endl;
-
-//    if(isComputing){
-//        return result;
-//    }else{
-//        Mat empty;
-//        return empty;
-//    }
-
-//}
 
 Mat getBoundingBox(Mat img, int ThresholdMethod, int Colorspace, int DEBUG) // String path
 {
@@ -448,6 +377,7 @@ Mat getBoundingBox(Mat img, int ThresholdMethod, int Colorspace, int DEBUG) // S
     int scalar = 75;
 
     // Rect roi = Rect((cX - scalar), (cY - scalar), (scalar*2), (scalar*2));
+    scalar = 10;
     int roi_x = (int) (cX - scalar);
     int roi_y = (int) (cY - scalar);
     int roi_width = (int) (scalar*2);
@@ -510,117 +440,6 @@ Mat getBoundingBox(Mat img, int ThresholdMethod, int Colorspace, int DEBUG) // S
 
     return result;
 }
-
-
-float avgHue(Mat img, int curveColorSpace)
-{
-    Mat roi = img.clone();
-
-    // Convert BGR to RGB
-    cvtColor(roi, roi, CV_BGR2RGB);
-
-    if (roi.empty())
-    {
-        float average = 0.0f;
-        return average;
-    }
-
-    float sumH = 0.0f;
-    float maxH = 1.0f;
-    float pixelHue;
-    float offset;
-    float h;
-    int chan1 = 0;
-
-    if (curveColorSpace == 0) {
-        cvtColor(roi, roi, COLOR_RGB2HSV); // HSV conversion
-        offset = 1.0;
-    } else {
-        cvtColor(roi, roi, COLOR_RGB2Lab); // L*a*b conversion
-        offset = 100.0/255.0;
-    }
-
-    vector<Mat> hsv;
-    split(roi,hsv);
-    Mat hue;
-    hsv[chan1].convertTo(hue, CV_32FC1); // 2nd channel (inverted)
-    int size = hue.rows * hue.cols;
-
-    vector<float> matArray; // 1D array for faster process
-    Mat flatM;
-    hue.reshape(1,1).convertTo(flatM, CV_32FC1);
-    matArray.assign((float*)flatM.datastart, (float*)flatM.dataend); // matArray = flatM;
-
-    if (curveColorSpace == 0) { // HSV
-        for (int i = 0; i < (size); i++) {
-            h = matArray[i];
-            pixelHue = (h/180.0);
-            pixelHue += (maxH/2);
-
-            if (pixelHue > maxH) {
-                pixelHue -= maxH;
-            }
-            sumH += pixelHue;
-        }
-    }
-    else { // L*a*b
-        sumH = (float) sum(hue)[chan1];
-        // sumH = (double) mean(hue)[0];
-    }
-
-    float average = (float) ((sumH/(size)) * offset);
-    // float average = sumH * offset;
-    return average; // mean hue
-}
-
-float computeOxygen(float estimated, float parameters[]) {
-
-    float y_given = estimated;
-    float a = parameters[0];
-    float b = parameters[1];
-    float c = parameters[2];
-    float d = parameters[3];
-
-    const int N = 100;
-    float x_estimated = 0; // computed oxygen concentration
-
-    float y_experimental[N];
-    for (int j = 1; j < (N + 1); j++) {
-        y_experimental[j - 1] = (float) (a * exp(b * j) + c * exp(d * j));
-    }
-
-    float slope_experimental[N-1];
-    for (int p = 0; p < (N-1); p++) {
-        slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
-    }
-
-    // find edge values for curve
-    float y_max_experimental = y_experimental[0];
-    float y_min_experimental = y_experimental[0];
-    for (int i = 1; i < N; i++) {
-        if(y_experimental[i] > y_max_experimental) {
-            y_max_experimental = y_experimental[i];
-        } else if (y_experimental[i] < y_min_experimental) {
-            y_min_experimental = y_experimental[i];
-        }
-    }
-
-    if (y_given > y_max_experimental) {
-        x_estimated = 0;
-    } else if (y_given < y_min_experimental) {
-        x_estimated = 100;
-    } else {
-        for (int i = 1; i < N; i++) {
-            if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
-                x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
-            }
-        }
-    }
-
-    return x_estimated;
-}
-
-
 
 float findMedian(Mat img, int curveColorSpace)
 {
@@ -740,50 +559,49 @@ float findMedian(Mat img, int curveColorSpace)
     return ((float) (medH * offset)); // final Median value
 }
 
-float* getParameters(int colorspace, int method, int sensor) {
+Mat BgSubtraction(Mat img){
+    // Just resize input image if you want
+//    float scale = 0.5f;
+//    resize(img,img,Size(img.size().width*scale,img.size().height*scale));
 
-    static float parameters[4];
-
-    if (colorspace == 0) {
-        if (method == 0) {
-            if(sensor == 0){
-                // Parameters for sensor MT2_L-3
-                parameters[0] = {0.512f};
-                parameters[1] = {-0.00709f};
-                parameters[2] = {-0.06009f};
-                parameters[3] = {-0.05214f};
-            }else{
-                // Old sensor parameters
-                parameters[0] = {0.05411f};
-                parameters[1] = {-0.3188f};
-                parameters[2] = {0.4821f};
-                parameters[3] = {-0.00257f};
-            }
-
-        }
-        else {
-            parameters[0] = {0.05299f};
-            parameters[1] = {-0.349f};
-            parameters[2] = {0.4278f};
-            parameters[3] = {-0.002489f};
-        }
-    }
-    else {
-        if (method == 0) {
-            parameters[0] = {55.72f};
-            parameters[1] = {-0.005797f};
-            parameters[2] = {0.004039f};
-            parameters[3] = {0.06492f};
-        }
-        else {
-            parameters[0] = {55.59f};
-            parameters[1] = {-0.006038f};
-            parameters[2] = {0.0009476f};
-            parameters[3] = {0.07844f};
-        }
+    // create foreground mask of proper size
+    if( foregroundMask.empty() ){
+        foregroundMask.create(img.size(), img.type());
     }
 
-    return (float*) parameters;
+    // compute foreground mask 8 bit image
+    // -1 is parameter that chose automatically your learning rate
+    // 0 means no background update
+    bg_model->apply(img, foregroundMask, 0);
+
+    // smooth the mask to reduce noise in image
+    GaussianBlur(foregroundMask, foregroundMask, Size(11,11), 3.5,3.5);
+
+    // threshold mask to saturate at black and white values
+    threshold(foregroundMask, foregroundMask, 10,255,THRESH_BINARY);
+
+    // create black foreground image
+    foregroundImg = Scalar::all(0);
+    // Copy source image to foreground image only in area with white mask
+    img.copyTo(foregroundImg, foregroundMask);
+
+    //Get background image
+    bg_model->getBackgroundImage(backgroundImage);
+
+    // Show the results
+//    imshow("foreground mask", foregroundMask);    // foreground mask image
+//    imshow("foreground image", foregroundImg);    // foreground image
+
+    // Show background image
+//    if(!backgroundImage .empty()){
+//        imshow("mean background image", backgroundImage );
+////                int key5 = waitKey(40);
+//    }
+
+    if(!foregroundImg.empty()){
+        imshow("foregroundImg", foregroundImg);
+    }
+    return foregroundImg;
 }
 
 Mat visuColorspace(Mat img, int Colorspace, int ThresholdMethod, int DEBUG)
@@ -1156,17 +974,7 @@ void gradientProcess(Mat img, int Colorspace, int DEBUG)
     }
 }
 
-string Formate(float O2){
-    int x = O2*10;
-    string result;
-    if(x==1000){
-        return "100";
-    }else if(x<10){
-        return "0."+to_string(x);
-    }else{
-        return to_string(x/10)+"."+to_string(x%10);
-    }
-}
+
 
 
 

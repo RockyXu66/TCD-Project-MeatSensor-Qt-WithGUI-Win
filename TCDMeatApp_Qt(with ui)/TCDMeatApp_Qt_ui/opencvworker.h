@@ -5,6 +5,9 @@
 #include <QThread>
 #include <QImage>
 #include <QWaitCondition>
+#include <QTextStream>
+#include <QFileInfo>
+#include <QDir>
 
 //#include <opencv2/core/core.hpp>
 //#include <opencv2/highgui/highgui.hpp>
@@ -14,7 +17,6 @@
 #include "strips.h"
 
 using namespace std;
-
 using namespace cv;
 
 class OpenCvWorker : public QThread
@@ -36,7 +38,7 @@ private:
     // Variables used in Crop Strip function
     Mat cs_cloneImg;
 
-    Parameter para;
+    Strip strip;
 
     // ------------------------------meat sensor parameters start-------------------------------------
     int colorspace = 0; // 0 for HSV --- 1 for L*a*b
@@ -58,6 +60,11 @@ private:
 
     Mat panelMat;    // Create panel for text
     // ------------------------------meat sensor parameters end-------------------------------------
+
+    int next = 0; // used to mark the image index
+    QFileInfoList list;
+    QString directory;
+    vector<string> paths;
 
 public:
     explicit OpenCvWorker(QObject *parent = nullptr);
@@ -107,12 +114,23 @@ signals:
     // Send isOxygenCalculated to ui to be display
     void sendPrompt(bool isOxygenCalculated);
 
+    // Send threshold value to slider bar
+    void sendUpdateThresh(QVector<int>);
+
 private slots:
     void receiveLeftArea(int num);
     void receiveRightArea(int num);
     void receiveCurvePara(float,float,float,float);
     void receiveCroppedStripArea(float);
     void receiveStripRatio(float);
+    void receiveThresholdValue(int value);
+    void receiveThresholdValue_2(int value);
+    void receiveThresholdValue_3(int value);
+    void receiveThresholdValue_4(int value);
+    void receiveThresholdValue_5(int value);
+    void receiveThresholdValue_6(int value);
+    void receiveNextFlag();
+    void receiveThreshRequest();
 };
 
 #endif // OPENCVWORKER_H

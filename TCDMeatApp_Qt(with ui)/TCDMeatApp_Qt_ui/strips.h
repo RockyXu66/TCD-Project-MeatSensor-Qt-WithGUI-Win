@@ -31,30 +31,19 @@ using namespace std;
 #include <time.h>
 
 
-
-//static int roiX = 0, roiY = 0, roiWidth = 0, roiHeight = 0;
-
-
 Mat visuColorspace(Mat img, int Colorspace, int ThresholdMethod, int DEBUG);
 void gradientProcess(Mat img, int Colorspace, int DEBUG);
 Mat getBoundingBox(Mat img, int ThresholdMethod, int Colorspace, int DEBUG);
-float avgHue(Mat img, int curveColorSpace);
+//float avgHue(Mat img, int curveColorSpace);
 float findMedian(Mat img, int curveColorSpace);
-float computeOxygen(float estimated, float parameters[]);
-float* getParameters(int colorspace, int method, int sensor);
+//float computeOxygen(float estimated, float parameters[]);
+//float* getParameters(int colorspace, int method, int sensor);
 
 Mat BgSubtraction(Mat img);
 Mat GetBoundingBoxByBgSub(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2, Mat & roiMat);
-string Formate(float O2);
 Mat GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2);
 
-// static variables
-//static float leftLine = 0.4;
-//static float rightLine = 0.67;
-// Yinghan's scalar => half size of roi
-
-
-class Parameter{
+class Strip{
 public:
 
     int areaSpace = 0; // When the ROI is larger than this areaSpace, we will calculate the oxygen value
@@ -62,7 +51,18 @@ public:
     float stripArea = 5000; // Cropped strip area
     float ratio = 0.8f;     // Ratio that used to determine if we need to compute the O2.
 
-    Parameter(){
+//    int threshold = 50;
+//    int threshold_2 = 50;
+//    int threshold_3 = 50;
+//    int threshold_4 = 50;
+//    int threshold_5 = 50;
+//    int threshold_6 = 50;
+
+    // There are six threshold value in this vector.
+    // The sequence is lowHue, lowSaturation, lowValue, highHue, highSaturation, highValue
+    int thresh[6] = {125, 120, 100, 160, 255, 255};
+
+    Strip(){
         leftLine = 0.8f;
         rightLine = 0.3f;
     }
@@ -79,44 +79,19 @@ public:
         return rightLine;
     }
 
-    Mat GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2);
+    Mat getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2);
 
-//    Mat GetBoundingBoxByBgSub2(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2);
+    float avgHue(Mat img, int curveColorSpace);
+
+    float* getParameters(int colorspace, int method, int sensor);
+
+    float computeOxygen(float estimated, float parameters[]);
+
+    string formate(float O2);
 private:
     float leftLine;
     float rightLine;
-
+    int scalar = 35;
 };
-
-static int scalar = 30;
-static Parameter para2;
-
-
-
-/*
-class Strip
-{
-
-public:
-    Mat getBoundingBox(Mat img);
-    float avgHue(Mat img, int curveColorSpace);
-    float findMedian(Mat img, int curveColorSpace);
-    float computeOxygen(float estimated, float parameters[]);
-    float* getParameters(int colorspace, int method);
-    Mat getResult() {return resultMat;}
-    Mat getContours() {return contoursMat;}
-    float getEstimation() {return estimatedValue;}
-    void setResult(int i) {initGL=i;}
-    void setInitGL(int i) {initGL=i;}
-    void setInitGL(int i) {initGL=i;}
-
-private:
-    Mat resultMat, contoursMat;
-    float estimatedValue;
-
-private slots:
-
-};
-*/
 
 #endif // STRIPS_H

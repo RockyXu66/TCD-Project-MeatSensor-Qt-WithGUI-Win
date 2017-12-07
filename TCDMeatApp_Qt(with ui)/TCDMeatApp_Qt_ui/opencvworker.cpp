@@ -6,6 +6,7 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
 //    filename = "/Volumes/YINGHANUSB/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
 //    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
     filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch_vibrate.mov";
+//    filename = "C:/Users/Soumyajyoti Maji/Videos/RECentral/Standard Environment2 Zoom6_Brightness4(20171205).mp4";
 //    filename = "D:/TCD Project (meatsensor)/TCD_MacMini/RECentral/1st/2017082111155957.mp4";
 
     webcam.open(0);
@@ -16,22 +17,29 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
         cout<<"frame rate: "<<frameRate<<endl;
     }
 
-//    // Setup the initial image when opening the app
-//    if(cap.read(frame)){
-//        if (frame.channels()== 3){
-//            cvtColor(frame, RGBframe, CV_BGR2RGB);
-//            initialImg = QImage((const unsigned char*)(RGBframe.data),
-//                              RGBframe.cols,RGBframe.rows,QImage::Format_RGB888);
-//        }
-//        else
-//        {
-//            initialImg = QImage((const unsigned char*)(frame.data),
-//                                 frame.cols,frame.rows,QImage::Format_Indexed8);
-//        }
-//    }
-
-    p = getParameters(colorspace, method, sensor); // recover curve a,b,c,d settings
+    p = strip.getParameters(colorspace, method, sensor); // recover curve a,b,c,d settings
     panelMat =  Mat(300, 250, CV_8UC3, Scalar(113, 117, 122));
+
+    // Get the MT#3 trial images' path
+    directory = "D:/TCD Project (meatsensor)/Yinghan/Dataset_3_copy/MT#3 R-1";
+    QDir dir(directory);
+    if (!dir.exists()) {
+      qWarning("The directory does not exist");
+    }
+    dir.setFilter(QDir::Files | QDir::AllDirs);
+    dir.setSorting(QDir::Size | QDir::Reversed);
+    list = dir.entryInfoList();
+    for (int i = 2; i < list.size(); ++i) {
+        QFileInfo fileInfo = list.at(i);
+        QString str = fileInfo.fileName();
+//        cout<<i<<" "<<str.toLocal8Bit().constData()<<endl;
+        string p = (directory+"/"+str).toLocal8Bit().constData();
+//        if(str.toLocal8Bit().constData()!="."&&str.toLocal8Bit().constData()!=".."){
+            paths.push_back(p);
+//        }
+        cout<<str.toLocal8Bit().constData()<<endl;
+    }
+    cout<<"files size: "<<paths.size()<<endl;
 }
 
 OpenCvWorker::~OpenCvWorker(){
@@ -55,6 +63,12 @@ bool OpenCvWorker::loadVideo(String filename) {
     }
     else
         return false;
+//    frame = imread(filename);
+//    if(!frame.empty()){
+//        return true;
+//    }else{
+//        return false;
+//    }
 }
 
 void OpenCvWorker::Play()
@@ -72,22 +86,25 @@ void OpenCvWorker::run()
     int delay = (1000/frameRate);
 
     while(!stop){
-        if(isWebcam){
-            webcam >> frame;
-            if(frame.empty()){
-                cout<<"error: capWebcam not accessed successfully\n\n";
-                return;
-            }
-        }else{
-            if (!cap.read(frame))
-            {
-    //            stop = true;
-                cap.open(filename);
-                cout<<"stop"<<endl;
-                emit sendVideoFinished();
-                return;
-            }
-        }
+//        if(isWebcam){
+//            webcam >> frame;
+//            if(frame.empty()){
+//                cout<<"error: capWebcam not accessed successfully\n\n";
+//                return;
+//            }
+//        }else{
+//            if (!cap.read(frame))
+//            {
+//                cap.open(filename);
+//                cout<<"stop"<<endl;
+//                emit sendVideoFinished();
+//                return;
+//            }
+//        }
+        // Test trial data
+//        frame = imread("D:/TCD Project (meatsensor)/Yinghan/Dataset_3_copy/MT#3 R-1/IMG-05042017-161019.bmp");
+
+        frame = imread(paths.at(next));
 
         // Find the roi and calculate oxygen contents
         processFrame();
@@ -110,8 +127,7 @@ void OpenCvWorker::run()
     }
 }
 
-void OpenCvWorker::Stop()
-{
+void OpenCvWorker::Stop(){
     stop = true;
 }
 
@@ -126,49 +142,31 @@ bool OpenCvWorker::isStopped() const{
 
 void OpenCvWorker::processFrame(){
 
-    // Yinghan's solution to get bouding box
-    // By using background subtraction and threshold & finding largest contours
     processedFrame = frame.clone();
 
     int frameWidth = processedFrame.cols;
     int frameHeight = processedFrame.rows;
-    int xLeft = frameWidth/2*para.getLeftLine();
-    int xRight = frameWidth/2+((frameWidth/2)*para.getRightLine());
+    int xLeft = frameWidth/2*strip.getLeftLine();
+    int xRight = frameWidth/2+((frameWidth/2)*strip.getRightLine());
     // Crop to interested part by user
     Mat croppedFrame = processedFrame(Rect(xLeft, 0, xRight-xLeft, frameHeight));
 
-//    foregroundImg = BgSubtraction(processedFrame);
-//    foregroundImg = BgSubtraction(croppedFrame);
-//    roiImg = para.GetBoundingBoxByBgSub2(foregroundImg, colorspace, DEBUG, p1, p2);
-    roiImg = para.GetBoundingBoxByBgSub2(croppedFrame, colorspace, DEBUG, p1, p2);
+    roiImg = strip.getROI(croppedFrame, colorspace, DEBUG, p1, p2);
     p1.x += xLeft;
-    p2.x += xLeft;
-
-    // Draw panel on the frame
-//    panelMat.copyTo(processedFrame(Rect(0, 0, panelMat.cols, panelMat.rows)));
+    p2.x += xLeft;    
 
     if(!roiImg.empty()){
-        estimated = avgHue(roiImg, colorspace);
-        O2 = computeOxygen(estimated, p);
-
-//      cout << " Hue " << estimated << endl;
-//      cout << "O2 : " << O2 << "%" << endl;
+        estimated = strip.avgHue(roiImg, colorspace);
+        O2 = strip.computeOxygen(estimated, p);
 
         // Draw ROI rectangle on the frame
         rectangle( processedFrame, p1, p2, Scalar( 0, 255, 0 ), 2 );
 
         // Draw O2 contents text on the frame
-        O2_str = Formate(O2)+"%";
-//        putText(processedFrame, "O2: "+O2_str, cvPoint(10,80), CV_FONT_HERSHEY_SIMPLEX, 1, cvScalar(255,255,255), 1, CV_AA);
-
-        // Draw region of interest on the frame
-//        putText(processedFrame, "Region of interest", cvPoint(10, 130), CV_FONT_HERSHEY_SIMPLEX, 0.8, cvScalar(255,255,255), 1, CV_AA);
-//        roiImg.copyTo(processedFrame(Rect(70, 160,roiImg.cols, roiImg.rows)));
+        O2_str = strip.formate(O2)+"%";
 
         // Draw center point of roi
         circle(processedFrame, (p1+p2)/2, 4, Scalar(255,255,255),CV_FILLED, 8,0);
-    }else{
-//        putText(processedFrame, "No strip detected", cvPoint(10,80), CV_FONT_HERSHEY_SIMPLEX, 0.8, cvScalar(255,255,255), 1, CV_AA);
     }
 
     // Draw lines for the region of interest
@@ -177,17 +175,11 @@ void OpenCvWorker::processFrame(){
 }
 
 void OpenCvWorker::receiveLeftArea(int num){
-
-//    cout<<"Here is in OpenCvWorker: "<<num<<endl;
-    para.setLeftLine(float(num/100.0f));
-
+    strip.setLeftLine(float(num/100.0f));
 }
 
 void OpenCvWorker::receiveRightArea(int num){
-
-//    cout<<"Here is in OpenCvWorker: "<<num<<endl;
-    para.setRightLine(float(num/100.0f));
-
+    strip.setRightLine(float(num/100.0f));
 }
 
 void OpenCvWorker::receiveCurvePara(float para_a, float para_b, float para_c, float para_d){
@@ -195,17 +187,53 @@ void OpenCvWorker::receiveCurvePara(float para_a, float para_b, float para_c, fl
     p[1] = para_b;
     p[2] = para_c;
     p[3] = para_d;
-//    cout<<"a: "<<para<<endl;
 }
 
 void OpenCvWorker::receiveCroppedStripArea(float area){
-    para.stripArea = area;
+    strip.stripArea = area;
 }
 
 void OpenCvWorker::receiveStripRatio(float r){
-    para.ratio = r;
+    strip.ratio = r;
 }
 
+void OpenCvWorker::receiveThresholdValue(int value){
+    strip.thresh[0] = value;
+}
+
+void OpenCvWorker::receiveThresholdValue_2(int value){
+    strip.thresh[1] = value;
+}
+
+void OpenCvWorker::receiveThresholdValue_3(int value){
+    strip.thresh[2] = value;
+}
+
+void OpenCvWorker::receiveThresholdValue_4(int value){
+    strip.thresh[3] = value;
+}
+void OpenCvWorker::receiveThresholdValue_5(int value){
+    strip.thresh[4] = value;
+}
+void OpenCvWorker::receiveThresholdValue_6(int value){
+    strip.thresh[5] = value;
+}
+
+void OpenCvWorker::receiveNextFlag(){
+    cout<<next<<endl;
+    if(next<paths.size()-1){
+        next++;
+        cout<<paths.at(next)<<endl;
+    }
+}
+
+void OpenCvWorker::receiveThreshRequest(){
+    QVector<int> thresh;
+    for(int i=0; i<sizeof(strip.thresh)/sizeof(strip.thresh[0]); i++){
+        thresh.push_back(strip.thresh[i]);
+    }
+    emit(sendUpdateThresh(thresh));
+}
 
 
 

@@ -16,6 +16,7 @@ CroppingDialog::~CroppingDialog(){
 }
 
 void CroppingDialog::receiveCroppingImage(QImage img){
+
     currentImg = img;
 
     m_imageCropper = new ImageCropper(this);
