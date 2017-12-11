@@ -57,14 +57,14 @@ static const uint qt_meta_data_settingDialog[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    4,   29,    2, 0x06 /* Public */,
+       1,    5,   29,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    0,   38,    2, 0x08 /* Private */,
-       4,    4,   39,    2, 0x08 /* Private */,
+       3,    0,   40,    2, 0x08 /* Private */,
+       4,    4,   41,    2, 0x08 /* Private */,
 
  // signals: parameters
-    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float,    2,    2,    2,    2,
+    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::QString,    2,    2,    2,    2,    2,
 
  // slots: parameters
     QMetaType::Void,
@@ -79,7 +79,7 @@ void settingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         settingDialog *_t = static_cast<settingDialog *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->sendCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4]))); break;
+        case 0: _t->sendCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< QString(*)>(_a[5]))); break;
         case 1: _t->on_buttonBox_accepted(); break;
         case 2: _t->receiveUpdateCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4]))); break;
         default: ;
@@ -87,7 +87,7 @@ void settingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            typedef void (settingDialog::*_t)(float , float , float , float );
+            typedef void (settingDialog::*_t)(float , float , float , float , QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&settingDialog::sendCurvePara)) {
                 *result = 0;
                 return;
@@ -133,9 +133,9 @@ int settingDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void settingDialog::sendCurvePara(float _t1, float _t2, float _t3, float _t4)
+void settingDialog::sendCurvePara(float _t1, float _t2, float _t3, float _t4, QString _t5)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_WARNING_POP

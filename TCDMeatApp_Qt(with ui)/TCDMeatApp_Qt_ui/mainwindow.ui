@@ -273,7 +273,7 @@ Background-color: #000;</string>
    <widget class="QPushButton" name="pushButtonNext">
     <property name="geometry">
      <rect>
-      <x>1010</x>
+      <x>980</x>
       <y>230</y>
       <width>80</width>
       <height>21</height>
@@ -283,7 +283,7 @@ Background-color: #000;</string>
      <string>Next one</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>62</x>
@@ -464,6 +464,19 @@ Background-color: #000;</string>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButtonPrintO2">
+    <property name="geometry">
+     <rect>
+      <x>1070</x>
+      <y>230</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PrintO2</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

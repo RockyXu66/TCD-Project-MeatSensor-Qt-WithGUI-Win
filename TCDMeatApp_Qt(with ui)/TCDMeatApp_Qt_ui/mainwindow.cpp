@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(worker, SIGNAL(sendPrompt(bool)), this, SLOT(receivePrompt(bool)));
     connect(this, SIGNAL(sendLeftAreaValue(int)), worker, SLOT(receiveLeftArea(int)));
     connect(this, SIGNAL(sendRightAreaValue(int)), worker, SLOT(receiveRightArea(int)));
-    connect(setting_dialog, SIGNAL(sendCurvePara(float,float,float,float)), worker, SLOT(receiveCurvePara(float,float,float,float)));
+    connect(setting_dialog, SIGNAL(sendCurvePara(float,float,float,float,QString)), worker, SLOT(receiveCurvePara(float,float,float,float,QString)));
     connect(this, SIGNAL(sendUpdateCurvePara(float,float,float,float)), setting_dialog, SLOT(receiveUpdateCurvePara(float,float, float, float)));
 
     connect(this, SIGNAL(sendCurrentImage(QImage)), cropping_dialog, SLOT(receiveCroppingImage(QImage)));
@@ -34,8 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(this, SIGNAL(sendThreshRequest()), worker, SLOT(receiveThreshRequest()));
     connect(worker, SIGNAL(sendUpdateThresh(QVector<int>)), this, SLOT(receiveUpdateThresh(QVector<int>)));
-
-
+    connect(this, SIGNAL(sendPrintO2()), worker, SLOT(receivePrintO2()));
 
 
     // Set up ui at last after initialized
@@ -244,4 +243,9 @@ void MainWindow::on_horizontalSliderThresh_6_valueChanged(int value)
 void MainWindow::on_pushButtonNext_clicked()
 {
     emit(sendNextFlag());
+}
+
+void MainWindow::on_pushButtonPrintO2_clicked()
+{
+    emit(sendPrintO2());
 }

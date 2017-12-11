@@ -74,6 +74,7 @@ signals:
     void sendThresholdValue_6(int value);
     void sendNextFlag();
     void sendThreshRequest();
+    void sendPrintO2();
 
 private slots:
     //Display video frame in player UI
@@ -115,6 +116,7 @@ private slots:
     void on_horizontalSliderThresh_5_valueChanged(int value);
     void on_horizontalSliderThresh_6_valueChanged(int value);
     void on_pushButtonNext_clicked();
+    void on_pushButtonPrintO2_clicked();
 };
 
 #endif // MAINWINDOW_H

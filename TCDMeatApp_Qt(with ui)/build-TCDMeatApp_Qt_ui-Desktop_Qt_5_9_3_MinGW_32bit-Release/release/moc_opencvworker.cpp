@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_OpenCvWorker_t {
-    QByteArrayData data[26];
-    char stringdata0[418];
+    QByteArrayData data[27];
+    char stringdata0[433];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -57,7 +57,8 @@ QT_MOC_LITERAL(21, 309, 23), // "receiveThresholdValue_4"
 QT_MOC_LITERAL(22, 333, 23), // "receiveThresholdValue_5"
 QT_MOC_LITERAL(23, 357, 23), // "receiveThresholdValue_6"
 QT_MOC_LITERAL(24, 381, 15), // "receiveNextFlag"
-QT_MOC_LITERAL(25, 397, 20) // "receiveThreshRequest"
+QT_MOC_LITERAL(25, 397, 20), // "receiveThreshRequest"
+QT_MOC_LITERAL(26, 418, 14) // "receivePrintO2"
 
     },
     "OpenCvWorker\0sendFrame\0\0frameProcessed\0"
@@ -70,7 +71,8 @@ QT_MOC_LITERAL(25, 397, 20) // "receiveThreshRequest"
     "value\0receiveThresholdValue_2\0"
     "receiveThresholdValue_3\0receiveThresholdValue_4\0"
     "receiveThresholdValue_5\0receiveThresholdValue_6\0"
-    "receiveNextFlag\0receiveThreshRequest"
+    "receiveNextFlag\0receiveThreshRequest\0"
+    "receivePrintO2"
 };
 #undef QT_MOC_LITERAL
 
@@ -80,7 +82,7 @@ static const uint qt_meta_data_OpenCvWorker[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      18,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -88,26 +90,27 @@ static const uint qt_meta_data_OpenCvWorker[] = {
        5,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  104,    2, 0x06 /* Public */,
-       4,    0,  107,    2, 0x06 /* Public */,
-       5,    1,  108,    2, 0x06 /* Public */,
-       7,    1,  111,    2, 0x06 /* Public */,
-       9,    1,  114,    2, 0x06 /* Public */,
+       1,    1,  109,    2, 0x06 /* Public */,
+       4,    0,  112,    2, 0x06 /* Public */,
+       5,    1,  113,    2, 0x06 /* Public */,
+       7,    1,  116,    2, 0x06 /* Public */,
+       9,    1,  119,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      11,    1,  117,    2, 0x08 /* Private */,
-      13,    1,  120,    2, 0x08 /* Private */,
-      14,    4,  123,    2, 0x08 /* Private */,
-      15,    1,  132,    2, 0x08 /* Private */,
-      16,    1,  135,    2, 0x08 /* Private */,
-      17,    1,  138,    2, 0x08 /* Private */,
-      19,    1,  141,    2, 0x08 /* Private */,
-      20,    1,  144,    2, 0x08 /* Private */,
-      21,    1,  147,    2, 0x08 /* Private */,
-      22,    1,  150,    2, 0x08 /* Private */,
-      23,    1,  153,    2, 0x08 /* Private */,
-      24,    0,  156,    2, 0x08 /* Private */,
-      25,    0,  157,    2, 0x08 /* Private */,
+      11,    1,  122,    2, 0x08 /* Private */,
+      13,    1,  125,    2, 0x08 /* Private */,
+      14,    5,  128,    2, 0x08 /* Private */,
+      15,    1,  139,    2, 0x08 /* Private */,
+      16,    1,  142,    2, 0x08 /* Private */,
+      17,    1,  145,    2, 0x08 /* Private */,
+      19,    1,  148,    2, 0x08 /* Private */,
+      20,    1,  151,    2, 0x08 /* Private */,
+      21,    1,  154,    2, 0x08 /* Private */,
+      22,    1,  157,    2, 0x08 /* Private */,
+      23,    1,  160,    2, 0x08 /* Private */,
+      24,    0,  163,    2, 0x08 /* Private */,
+      25,    0,  164,    2, 0x08 /* Private */,
+      26,    0,  165,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QImage,    3,
@@ -119,7 +122,7 @@ static const uint qt_meta_data_OpenCvWorker[] = {
  // slots: parameters
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float,    2,    2,    2,    2,
+    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::QString,    2,    2,    2,    2,    2,
     QMetaType::Void, QMetaType::Float,    2,
     QMetaType::Void, QMetaType::Float,    2,
     QMetaType::Void, QMetaType::Int,   18,
@@ -128,6 +131,7 @@ static const uint qt_meta_data_OpenCvWorker[] = {
     QMetaType::Void, QMetaType::Int,   18,
     QMetaType::Void, QMetaType::Int,   18,
     QMetaType::Void, QMetaType::Int,   18,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -147,7 +151,7 @@ void OpenCvWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 4: _t->sendUpdateThresh((*reinterpret_cast< QVector<int>(*)>(_a[1]))); break;
         case 5: _t->receiveLeftArea((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 6: _t->receiveRightArea((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: _t->receiveCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4]))); break;
+        case 7: _t->receiveCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< QString(*)>(_a[5]))); break;
         case 8: _t->receiveCroppedStripArea((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 9: _t->receiveStripRatio((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 10: _t->receiveThresholdValue((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -158,6 +162,7 @@ void OpenCvWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 15: _t->receiveThresholdValue_6((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 16: _t->receiveNextFlag(); break;
         case 17: _t->receiveThreshRequest(); break;
+        case 18: _t->receivePrintO2(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -236,13 +241,13 @@ int OpenCvWorker::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 19;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 19;
     }
     return _id;
 }

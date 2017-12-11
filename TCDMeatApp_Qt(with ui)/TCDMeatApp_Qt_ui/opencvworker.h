@@ -40,6 +40,8 @@ private:
 
     Strip strip;
 
+    string curveType = "Exponential";
+
     // ------------------------------meat sensor parameters start-------------------------------------
     int colorspace = 0; // 0 for HSV --- 1 for L*a*b
     int method = 0; // 0 for Average --- 1 for Median
@@ -120,7 +122,7 @@ signals:
 private slots:
     void receiveLeftArea(int num);
     void receiveRightArea(int num);
-    void receiveCurvePara(float,float,float,float);
+    void receiveCurvePara(float,float,float,float, QString);
     void receiveCroppedStripArea(float);
     void receiveStripRatio(float);
     void receiveThresholdValue(int value);
@@ -131,6 +133,7 @@ private slots:
     void receiveThresholdValue_6(int value);
     void receiveNextFlag();
     void receiveThreshRequest();
+    void receivePrintO2();
 };
 
 #endif // OPENCVWORKER_H

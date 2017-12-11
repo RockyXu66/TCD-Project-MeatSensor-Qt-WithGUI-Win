@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFormLayout>
@@ -28,7 +29,7 @@ class Ui_settingDialog
 public:
     QDialogButtonBox *buttonBox;
     QLabel *label;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QFormLayout *formLayout;
     QLabel *label_setting_a;
     QLineEdit *lineEdit_setting_a;
@@ -38,6 +39,7 @@ public:
     QLabel *label_setting_d;
     QLineEdit *lineEdit_setting_d;
     QLineEdit *lineEdit_setting_c;
+    QComboBox *comboBoxCurveType;
 
     void setupUi(QDialog *settingDialog)
     {
@@ -51,57 +53,61 @@ public:
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         label = new QLabel(settingDialog);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(20, 10, 111, 31));
-        widget = new QWidget(settingDialog);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(70, 60, 281, 131));
-        formLayout = new QFormLayout(widget);
+        label->setGeometry(QRect(30, 40, 111, 31));
+        layoutWidget = new QWidget(settingDialog);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(60, 80, 281, 131));
+        formLayout = new QFormLayout(layoutWidget);
         formLayout->setObjectName(QStringLiteral("formLayout"));
         formLayout->setContentsMargins(0, 0, 0, 0);
-        label_setting_a = new QLabel(widget);
+        label_setting_a = new QLabel(layoutWidget);
         label_setting_a->setObjectName(QStringLiteral("label_setting_a"));
         label_setting_a->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(0, QFormLayout::LabelRole, label_setting_a);
 
-        lineEdit_setting_a = new QLineEdit(widget);
+        lineEdit_setting_a = new QLineEdit(layoutWidget);
         lineEdit_setting_a->setObjectName(QStringLiteral("lineEdit_setting_a"));
 
         formLayout->setWidget(0, QFormLayout::FieldRole, lineEdit_setting_a);
 
-        label_setting_b = new QLabel(widget);
+        label_setting_b = new QLabel(layoutWidget);
         label_setting_b->setObjectName(QStringLiteral("label_setting_b"));
         label_setting_b->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(1, QFormLayout::LabelRole, label_setting_b);
 
-        lineEdit_setting_b = new QLineEdit(widget);
+        lineEdit_setting_b = new QLineEdit(layoutWidget);
         lineEdit_setting_b->setObjectName(QStringLiteral("lineEdit_setting_b"));
 
         formLayout->setWidget(1, QFormLayout::FieldRole, lineEdit_setting_b);
 
-        label_setting_c = new QLabel(widget);
+        label_setting_c = new QLabel(layoutWidget);
         label_setting_c->setObjectName(QStringLiteral("label_setting_c"));
         label_setting_c->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(2, QFormLayout::LabelRole, label_setting_c);
 
-        label_setting_d = new QLabel(widget);
+        label_setting_d = new QLabel(layoutWidget);
         label_setting_d->setObjectName(QStringLiteral("label_setting_d"));
         label_setting_d->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(3, QFormLayout::LabelRole, label_setting_d);
 
-        lineEdit_setting_d = new QLineEdit(widget);
+        lineEdit_setting_d = new QLineEdit(layoutWidget);
         lineEdit_setting_d->setObjectName(QStringLiteral("lineEdit_setting_d"));
 
         formLayout->setWidget(3, QFormLayout::FieldRole, lineEdit_setting_d);
 
-        lineEdit_setting_c = new QLineEdit(widget);
+        lineEdit_setting_c = new QLineEdit(layoutWidget);
         lineEdit_setting_c->setObjectName(QStringLiteral("lineEdit_setting_c"));
 
         formLayout->setWidget(2, QFormLayout::FieldRole, lineEdit_setting_c);
 
+        comboBoxCurveType = new QComboBox(settingDialog);
+        comboBoxCurveType->setObjectName(QStringLiteral("comboBoxCurveType"));
+        comboBoxCurveType->setGeometry(QRect(30, 10, 101, 22));
+        comboBoxCurveType->setEditable(false);
 
         retranslateUi(settingDialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), settingDialog, SLOT(accept()));
@@ -118,6 +124,7 @@ public:
         label_setting_b->setText(QApplication::translate("settingDialog", "b", Q_NULLPTR));
         label_setting_c->setText(QApplication::translate("settingDialog", "c", Q_NULLPTR));
         label_setting_d->setText(QApplication::translate("settingDialog", "d", Q_NULLPTR));
+        comboBoxCurveType->setCurrentText(QString());
     } // retranslateUi
 
 };

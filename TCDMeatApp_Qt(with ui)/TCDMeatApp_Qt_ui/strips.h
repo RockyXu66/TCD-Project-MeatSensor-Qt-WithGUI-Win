@@ -51,6 +51,8 @@ public:
     float stripArea = 5000; // Cropped strip area
     float ratio = 0.8f;     // Ratio that used to determine if we need to compute the O2.
 
+
+
 //    int threshold = 50;
 //    int threshold_2 = 50;
 //    int threshold_3 = 50;
@@ -85,7 +87,7 @@ public:
 
     float* getParameters(int colorspace, int method, int sensor);
 
-    float computeOxygen(float estimated, float parameters[]);
+    float computeOxygen(float estimated, float parameters[], string curveType);
 
     string formate(float O2);
 private:

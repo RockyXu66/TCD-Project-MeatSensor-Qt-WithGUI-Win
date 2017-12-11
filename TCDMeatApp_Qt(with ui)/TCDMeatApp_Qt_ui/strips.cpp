@@ -194,49 +194,126 @@ float Strip::avgHue(Mat img, int curveColorSpace)
     return average; // mean hue
 }
 
-float Strip::computeOxygen(float estimated, float parameters[]) {
+float Strip::computeOxygen(float estimated, float parameters[], string curveType) {
 
-    float y_given = estimated;
-    float a = parameters[0];
-    float b = parameters[1];
-    float c = parameters[2];
-    float d = parameters[3];
-
-    const int N = 100;
     float x_estimated = 0; // computed oxygen concentration
 
-    float y_experimental[N];
-    for (int j = 1; j < (N + 1); j++) {
-        y_experimental[j - 1] = (float) (a * exp(b * j) + c * exp(d * j));
-    }
+    if(curveType == "Exponential"){
+        float y_given = estimated;
+        float a = parameters[0];
+        float b = parameters[1];
+        float c = parameters[2];
+        float d = parameters[3];
 
-    float slope_experimental[N-1];
-    for (int p = 0; p < (N-1); p++) {
-        slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
-    }
+        const int N = 100;
 
-    // find edge values for curve
-    float y_max_experimental = y_experimental[0];
-    float y_min_experimental = y_experimental[0];
-    for (int i = 1; i < N; i++) {
-        if(y_experimental[i] > y_max_experimental) {
-            y_max_experimental = y_experimental[i];
-        } else if (y_experimental[i] < y_min_experimental) {
-            y_min_experimental = y_experimental[i];
+
+        float y_experimental[N];
+        for (int j = 1; j < (N + 1); j++) {
+            y_experimental[j - 1] = (float) (a * exp(b * j) + c * exp(d * j));
         }
-    }
 
-    if (y_given > y_max_experimental) {
-        x_estimated = 0;
-    } else if (y_given < y_min_experimental) {
-        x_estimated = 100;
-    } else {
+        float slope_experimental[N-1];
+        for (int p = 0; p < (N-1); p++) {
+            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
+        }
+
+        // find edge values for curve
+        float y_max_experimental = y_experimental[0];
+        float y_min_experimental = y_experimental[0];
         for (int i = 1; i < N; i++) {
-            if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
-                x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
+            if(y_experimental[i] > y_max_experimental) {
+                y_max_experimental = y_experimental[i];
+            } else if (y_experimental[i] < y_min_experimental) {
+                y_min_experimental = y_experimental[i];
             }
         }
+//        cout<<"edges: "<<y_min_experimental<<" "<<y_max_experimental<<endl;
+//        cout<<"y_given: "<<y_given<<endl;
+
+        if (y_given > y_max_experimental) {
+            x_estimated = 0;
+        } else if (y_given < y_min_experimental) {
+            x_estimated = 100;
+        } else {
+            for (int i = 1; i < N; i++) {
+                if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
+                    x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
+                }
+            }
+        }
+    } else if (curveType == "Cubic") {
+//        Linear model Poly3:
+//        f(x) = p1*x^3 + p2*x^2 + p3*x + p4
+//        where x is normalized by mean and std
+        float y_given = estimated;
+//        y_given = 0.202f;
+        float a = parameters[0];
+        float b = parameters[1];
+        float c = parameters[2];
+        float d = parameters[3];
+
+        const int N = 100;
+
+        double std = 0;  // Standard deviation
+        double mean = 0;
+        for(int j=0; j<N; j++){
+            mean += j;
+        }
+        mean /= N;
+        for(int j=0; j<N; j++){
+            std += pow((j - mean), 2);
+        }
+        std = sqrt(std/N);
+    //    cout<<"mean: "<<mean<<endl;
+    //    cout<<"std: "<<std<<endl;
+
+        float y_experimental[N];
+        for (int j = 1; j < (N + 1); j++) {
+            double x = (j - mean) / std;
+            y_experimental[j - 1] = (float) (a*pow(x, 3) + b*pow(x, 2) + c*x + d);
+        }
+
+        float slope_experimental[N-1];
+        for (int p = 0; p < (N-1); p++) {
+            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
+        }
+
+        // find edge values for curve
+        float y_max_experimental = y_experimental[0];
+        float y_min_experimental = y_experimental[0];
+        for (int i = 1; i < N; i++) {
+            if(y_experimental[i] > y_max_experimental) {
+                y_max_experimental = y_experimental[i];
+            } else if (y_experimental[i] < y_min_experimental) {
+                y_min_experimental = y_experimental[i];
+            }
+        }
+//        cout<<"edges: "<<y_min_experimental<<" "<<y_max_experimental<<endl;
+//        cout<<"y_given: "<<y_given<<endl;
+
+        if (y_given > y_max_experimental) {
+            x_estimated = 0;
+        } else if (y_given < y_min_experimental) {
+            x_estimated = 100;
+        } else {
+            for (int i = 1; i < N; i++) {
+                if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
+//                    int x = (i - mean) / std;
+//                    cout<<"i: "<<i<<endl;
+//                    x_estimated = x + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
+//                    cout<<"i: "<<i<<endl;
+//                    cout<<"plus: "<<(y_experimental[i-1] - y_given) / slope_experimental[i-1]<<endl;
+                    x_estimated = i;// + ((y_experimental[i-1] - y_given) / slope_experimental[i-1])*std + mean;
+                }
+            }
+//             Revert back to original x
+//            x_estimated = x_estimated * std + mean;
+        }
+
+
     }
+
 
     return x_estimated;
 }
@@ -248,16 +325,21 @@ float* Strip::getParameters(int colorspace, int method, int sensor) {
     if (colorspace == 0) {
         if (method == 0) {
             if(sensor == 0){
-//                // Parameters for sensor MT2_L-3
+//                // Exponential Parameters for sensor MT2_L-3
 //                parameters[0] = {0.512f};
 //                parameters[1] = {-0.00709f};
 //                parameters[2] = {-0.06009f};
 //                parameters[3] = {-0.05214f};
-                // Parameters for sensor MT3_R-1
-                parameters[0] = {0.456375f};
-                parameters[1] = {-0.011537f};
-                parameters[2] = {0.000374f};
-                parameters[3] = {0.049049f};
+//                // Exponential Parameters for sensor MT3_R-1
+//                parameters[0] = {0.456375f};
+//                parameters[1] = {-0.011537f};
+//                parameters[2] = {0.000374f};
+//                parameters[3] = {0.049049f};
+                // Cubic Parameters for sensor MT3_R-1
+                parameters[0] = {0.004172f};
+                parameters[1] = {0.024304f};
+                parameters[2] = {-0.089222f};
+                parameters[3] = {0.259458f};
             }else{
                 // Old sensor parameters
                 parameters[0] = {0.05411f};

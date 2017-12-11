@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[45];
-    char stringdata0[966];
+    QByteArrayData data[47];
+    char stringdata0[1007];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -52,31 +52,33 @@ QT_MOC_LITERAL(16, 227, 20), // "sendThresholdValue_5"
 QT_MOC_LITERAL(17, 248, 20), // "sendThresholdValue_6"
 QT_MOC_LITERAL(18, 269, 12), // "sendNextFlag"
 QT_MOC_LITERAL(19, 282, 17), // "sendThreshRequest"
-QT_MOC_LITERAL(20, 300, 21), // "receiveProcessedFrame"
-QT_MOC_LITERAL(21, 322, 3), // "img"
-QT_MOC_LITERAL(22, 326, 14), // "receiveO2Value"
-QT_MOC_LITERAL(23, 341, 7), // "content"
-QT_MOC_LITERAL(24, 349, 13), // "receivePrompt"
-QT_MOC_LITERAL(25, 363, 18), // "isOxygenCalculated"
-QT_MOC_LITERAL(26, 382, 24), // "receiveStripAdjustedFlag"
-QT_MOC_LITERAL(27, 407, 19), // "receiveUpdateThresh"
-QT_MOC_LITERAL(28, 427, 12), // "QVector<int>"
-QT_MOC_LITERAL(29, 440, 25), // "on_pushButtonLoad_clicked"
-QT_MOC_LITERAL(30, 466, 25), // "on_pushButtonPlay_clicked"
-QT_MOC_LITERAL(31, 492, 40), // "on_horizontalSliderLeftArea_v..."
-QT_MOC_LITERAL(32, 533, 41), // "on_horizontalSliderRightArea_..."
-QT_MOC_LITERAL(33, 575, 28), // "on_pushButtonSetting_clicked"
-QT_MOC_LITERAL(34, 604, 31), // "on_pushButtonOpenCamera_clicked"
-QT_MOC_LITERAL(35, 636, 25), // "on_pushButtonCrop_clicked"
-QT_MOC_LITERAL(36, 662, 28), // "on_lineEditRatio_textChanged"
-QT_MOC_LITERAL(37, 691, 4), // "arg1"
-QT_MOC_LITERAL(38, 696, 38), // "on_horizontalSliderThresh_val..."
-QT_MOC_LITERAL(39, 735, 40), // "on_horizontalSliderThresh_2_v..."
-QT_MOC_LITERAL(40, 776, 40), // "on_horizontalSliderThresh_3_v..."
-QT_MOC_LITERAL(41, 817, 40), // "on_horizontalSliderThresh_4_v..."
-QT_MOC_LITERAL(42, 858, 40), // "on_horizontalSliderThresh_5_v..."
-QT_MOC_LITERAL(43, 899, 40), // "on_horizontalSliderThresh_6_v..."
-QT_MOC_LITERAL(44, 940, 25) // "on_pushButtonNext_clicked"
+QT_MOC_LITERAL(20, 300, 11), // "sendPrintO2"
+QT_MOC_LITERAL(21, 312, 21), // "receiveProcessedFrame"
+QT_MOC_LITERAL(22, 334, 3), // "img"
+QT_MOC_LITERAL(23, 338, 14), // "receiveO2Value"
+QT_MOC_LITERAL(24, 353, 7), // "content"
+QT_MOC_LITERAL(25, 361, 13), // "receivePrompt"
+QT_MOC_LITERAL(26, 375, 18), // "isOxygenCalculated"
+QT_MOC_LITERAL(27, 394, 24), // "receiveStripAdjustedFlag"
+QT_MOC_LITERAL(28, 419, 19), // "receiveUpdateThresh"
+QT_MOC_LITERAL(29, 439, 12), // "QVector<int>"
+QT_MOC_LITERAL(30, 452, 25), // "on_pushButtonLoad_clicked"
+QT_MOC_LITERAL(31, 478, 25), // "on_pushButtonPlay_clicked"
+QT_MOC_LITERAL(32, 504, 40), // "on_horizontalSliderLeftArea_v..."
+QT_MOC_LITERAL(33, 545, 41), // "on_horizontalSliderRightArea_..."
+QT_MOC_LITERAL(34, 587, 28), // "on_pushButtonSetting_clicked"
+QT_MOC_LITERAL(35, 616, 31), // "on_pushButtonOpenCamera_clicked"
+QT_MOC_LITERAL(36, 648, 25), // "on_pushButtonCrop_clicked"
+QT_MOC_LITERAL(37, 674, 28), // "on_lineEditRatio_textChanged"
+QT_MOC_LITERAL(38, 703, 4), // "arg1"
+QT_MOC_LITERAL(39, 708, 38), // "on_horizontalSliderThresh_val..."
+QT_MOC_LITERAL(40, 747, 40), // "on_horizontalSliderThresh_2_v..."
+QT_MOC_LITERAL(41, 788, 40), // "on_horizontalSliderThresh_3_v..."
+QT_MOC_LITERAL(42, 829, 40), // "on_horizontalSliderThresh_4_v..."
+QT_MOC_LITERAL(43, 870, 40), // "on_horizontalSliderThresh_5_v..."
+QT_MOC_LITERAL(44, 911, 40), // "on_horizontalSliderThresh_6_v..."
+QT_MOC_LITERAL(45, 952, 25), // "on_pushButtonNext_clicked"
+QT_MOC_LITERAL(46, 978, 28) // "on_pushButtonPrintO2_clicked"
 
     },
     "MainWindow\0sendSetup\0\0device\0"
@@ -87,10 +89,11 @@ QT_MOC_LITERAL(44, 940, 25) // "on_pushButtonNext_clicked"
     "sendThresholdValue_3\0sendThresholdValue_4\0"
     "sendThresholdValue_5\0sendThresholdValue_6\0"
     "sendNextFlag\0sendThreshRequest\0"
-    "receiveProcessedFrame\0img\0receiveO2Value\0"
-    "content\0receivePrompt\0isOxygenCalculated\0"
-    "receiveStripAdjustedFlag\0receiveUpdateThresh\0"
-    "QVector<int>\0on_pushButtonLoad_clicked\0"
+    "sendPrintO2\0receiveProcessedFrame\0img\0"
+    "receiveO2Value\0content\0receivePrompt\0"
+    "isOxygenCalculated\0receiveStripAdjustedFlag\0"
+    "receiveUpdateThresh\0QVector<int>\0"
+    "on_pushButtonLoad_clicked\0"
     "on_pushButtonPlay_clicked\0"
     "on_horizontalSliderLeftArea_valueChanged\0"
     "on_horizontalSliderRightArea_valueChanged\0"
@@ -104,7 +107,8 @@ QT_MOC_LITERAL(44, 940, 25) // "on_pushButtonNext_clicked"
     "on_horizontalSliderThresh_4_valueChanged\0"
     "on_horizontalSliderThresh_5_valueChanged\0"
     "on_horizontalSliderThresh_6_valueChanged\0"
-    "on_pushButtonNext_clicked"
+    "on_pushButtonNext_clicked\0"
+    "on_pushButtonPrintO2_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -114,51 +118,53 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      35,   14, // methods
+      37,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      15,       // signalCount
+      16,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  189,    2, 0x06 /* Public */,
-       4,    0,  192,    2, 0x06 /* Public */,
-       5,    1,  193,    2, 0x06 /* Public */,
-       7,    1,  196,    2, 0x06 /* Public */,
-       8,    4,  199,    2, 0x06 /* Public */,
-       9,    1,  208,    2, 0x06 /* Public */,
-      10,    1,  211,    2, 0x06 /* Public */,
-      11,    1,  214,    2, 0x06 /* Public */,
-      13,    1,  217,    2, 0x06 /* Public */,
-      14,    1,  220,    2, 0x06 /* Public */,
-      15,    1,  223,    2, 0x06 /* Public */,
-      16,    1,  226,    2, 0x06 /* Public */,
-      17,    1,  229,    2, 0x06 /* Public */,
-      18,    0,  232,    2, 0x06 /* Public */,
-      19,    0,  233,    2, 0x06 /* Public */,
+       1,    1,  199,    2, 0x06 /* Public */,
+       4,    0,  202,    2, 0x06 /* Public */,
+       5,    1,  203,    2, 0x06 /* Public */,
+       7,    1,  206,    2, 0x06 /* Public */,
+       8,    4,  209,    2, 0x06 /* Public */,
+       9,    1,  218,    2, 0x06 /* Public */,
+      10,    1,  221,    2, 0x06 /* Public */,
+      11,    1,  224,    2, 0x06 /* Public */,
+      13,    1,  227,    2, 0x06 /* Public */,
+      14,    1,  230,    2, 0x06 /* Public */,
+      15,    1,  233,    2, 0x06 /* Public */,
+      16,    1,  236,    2, 0x06 /* Public */,
+      17,    1,  239,    2, 0x06 /* Public */,
+      18,    0,  242,    2, 0x06 /* Public */,
+      19,    0,  243,    2, 0x06 /* Public */,
+      20,    0,  244,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      20,    1,  234,    2, 0x08 /* Private */,
-      22,    1,  237,    2, 0x08 /* Private */,
-      24,    1,  240,    2, 0x08 /* Private */,
-      26,    0,  243,    2, 0x08 /* Private */,
-      27,    1,  244,    2, 0x08 /* Private */,
-      29,    0,  247,    2, 0x08 /* Private */,
-      30,    0,  248,    2, 0x08 /* Private */,
-      31,    1,  249,    2, 0x08 /* Private */,
-      32,    1,  252,    2, 0x08 /* Private */,
-      33,    0,  255,    2, 0x08 /* Private */,
-      34,    0,  256,    2, 0x08 /* Private */,
-      35,    0,  257,    2, 0x08 /* Private */,
-      36,    1,  258,    2, 0x08 /* Private */,
-      38,    1,  261,    2, 0x08 /* Private */,
-      39,    1,  264,    2, 0x08 /* Private */,
-      40,    1,  267,    2, 0x08 /* Private */,
-      41,    1,  270,    2, 0x08 /* Private */,
-      42,    1,  273,    2, 0x08 /* Private */,
-      43,    1,  276,    2, 0x08 /* Private */,
-      44,    0,  279,    2, 0x08 /* Private */,
+      21,    1,  245,    2, 0x08 /* Private */,
+      23,    1,  248,    2, 0x08 /* Private */,
+      25,    1,  251,    2, 0x08 /* Private */,
+      27,    0,  254,    2, 0x08 /* Private */,
+      28,    1,  255,    2, 0x08 /* Private */,
+      30,    0,  258,    2, 0x08 /* Private */,
+      31,    0,  259,    2, 0x08 /* Private */,
+      32,    1,  260,    2, 0x08 /* Private */,
+      33,    1,  263,    2, 0x08 /* Private */,
+      34,    0,  266,    2, 0x08 /* Private */,
+      35,    0,  267,    2, 0x08 /* Private */,
+      36,    0,  268,    2, 0x08 /* Private */,
+      37,    1,  269,    2, 0x08 /* Private */,
+      39,    1,  272,    2, 0x08 /* Private */,
+      40,    1,  275,    2, 0x08 /* Private */,
+      41,    1,  278,    2, 0x08 /* Private */,
+      42,    1,  281,    2, 0x08 /* Private */,
+      43,    1,  284,    2, 0x08 /* Private */,
+      44,    1,  287,    2, 0x08 /* Private */,
+      45,    0,  290,    2, 0x08 /* Private */,
+      46,    0,  291,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
@@ -176,13 +182,14 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QImage,   21,
-    QMetaType::Void, QMetaType::QString,   23,
-    QMetaType::Void, QMetaType::Bool,   25,
+    QMetaType::Void, QMetaType::QImage,   22,
+    QMetaType::Void, QMetaType::QString,   24,
+    QMetaType::Void, QMetaType::Bool,   26,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 28,    2,
+    QMetaType::Void, 0x80000000 | 29,    2,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    6,
@@ -190,13 +197,14 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   37,
+    QMetaType::Void, QMetaType::QString,   38,
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void, QMetaType::Int,   12,
     QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -223,32 +231,34 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 12: _t->sendThresholdValue_6((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 13: _t->sendNextFlag(); break;
         case 14: _t->sendThreshRequest(); break;
-        case 15: _t->receiveProcessedFrame((*reinterpret_cast< QImage(*)>(_a[1]))); break;
-        case 16: _t->receiveO2Value((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 17: _t->receivePrompt((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 18: _t->receiveStripAdjustedFlag(); break;
-        case 19: _t->receiveUpdateThresh((*reinterpret_cast< QVector<int>(*)>(_a[1]))); break;
-        case 20: _t->on_pushButtonLoad_clicked(); break;
-        case 21: _t->on_pushButtonPlay_clicked(); break;
-        case 22: _t->on_horizontalSliderLeftArea_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 23: _t->on_horizontalSliderRightArea_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 24: _t->on_pushButtonSetting_clicked(); break;
-        case 25: _t->on_pushButtonOpenCamera_clicked(); break;
-        case 26: _t->on_pushButtonCrop_clicked(); break;
-        case 27: _t->on_lineEditRatio_textChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 28: _t->on_horizontalSliderThresh_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 29: _t->on_horizontalSliderThresh_2_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 30: _t->on_horizontalSliderThresh_3_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 31: _t->on_horizontalSliderThresh_4_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 32: _t->on_horizontalSliderThresh_5_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 33: _t->on_horizontalSliderThresh_6_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 34: _t->on_pushButtonNext_clicked(); break;
+        case 15: _t->sendPrintO2(); break;
+        case 16: _t->receiveProcessedFrame((*reinterpret_cast< QImage(*)>(_a[1]))); break;
+        case 17: _t->receiveO2Value((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 18: _t->receivePrompt((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 19: _t->receiveStripAdjustedFlag(); break;
+        case 20: _t->receiveUpdateThresh((*reinterpret_cast< QVector<int>(*)>(_a[1]))); break;
+        case 21: _t->on_pushButtonLoad_clicked(); break;
+        case 22: _t->on_pushButtonPlay_clicked(); break;
+        case 23: _t->on_horizontalSliderLeftArea_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 24: _t->on_horizontalSliderRightArea_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 25: _t->on_pushButtonSetting_clicked(); break;
+        case 26: _t->on_pushButtonOpenCamera_clicked(); break;
+        case 27: _t->on_pushButtonCrop_clicked(); break;
+        case 28: _t->on_lineEditRatio_textChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 29: _t->on_horizontalSliderThresh_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 30: _t->on_horizontalSliderThresh_2_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 31: _t->on_horizontalSliderThresh_3_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 32: _t->on_horizontalSliderThresh_4_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 33: _t->on_horizontalSliderThresh_5_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 34: _t->on_horizontalSliderThresh_6_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 35: _t->on_pushButtonNext_clicked(); break;
+        case 36: _t->on_pushButtonPrintO2_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 19:
+        case 20:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
@@ -363,6 +373,13 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
                 return;
             }
         }
+        {
+            typedef void (MainWindow::*_t)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::sendPrintO2)) {
+                *result = 15;
+                return;
+            }
+        }
     }
 }
 
@@ -391,13 +408,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 35)
+        if (_id < 37)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 35;
+        _id -= 37;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 35)
+        if (_id < 37)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 35;
+        _id -= 37;
     }
     return _id;
 }
@@ -502,6 +519,12 @@ void MainWindow::sendNextFlag()
 void MainWindow::sendThreshRequest()
 {
     QMetaObject::activate(this, &staticMetaObject, 14, nullptr);
+}
+
+// SIGNAL 15
+void MainWindow::sendPrintO2()
+{
+    QMetaObject::activate(this, &staticMetaObject, 15, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

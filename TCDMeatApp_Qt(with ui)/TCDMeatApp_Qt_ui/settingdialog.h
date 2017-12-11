@@ -19,7 +19,7 @@ public:
     ~settingDialog();
 
 signals:
-    void sendCurvePara(float,float,float,float);
+    void sendCurvePara(float,float,float,float, QString);
 
 private slots:
     void on_buttonBox_accepted();
