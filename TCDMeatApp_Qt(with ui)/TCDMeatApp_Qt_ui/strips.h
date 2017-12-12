@@ -51,20 +51,18 @@ public:
     float stripArea = 5000; // Cropped strip area
     float ratio = 0.8f;     // Ratio that used to determine if we need to compute the O2.
 
-
-
-//    int threshold = 50;
-//    int threshold_2 = 50;
-//    int threshold_3 = 50;
-//    int threshold_4 = 50;
-//    int threshold_5 = 50;
-//    int threshold_6 = 50;
-
     // There are six threshold value in this vector.
     // The sequence is lowHue, lowSaturation, lowValue, highHue, highSaturation, highValue
-    int thresh[6] = {125, 120, 100, 160, 255, 255};
+//    int thresh[6] = {125, 120, 100, 160, 255, 255};
+    vector<int> thresh;
 
     Strip(){
+        thresh.push_back(125);
+        thresh.push_back(120);
+        thresh.push_back(100);
+        thresh.push_back(160);
+        thresh.push_back(255);
+        thresh.push_back(255);
         leftLine = 0.8f;
         rightLine = 0.3f;
     }
@@ -87,7 +85,7 @@ public:
 
     float* getParameters(int colorspace, int method, int sensor);
 
-    float computeOxygen(float estimated, float parameters[], string curveType);
+    float computeOxygen(float estimated, vector<float> parameters, string curveType);
 
     string formate(float O2);
 private:

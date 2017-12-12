@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[47];
-    char stringdata0[1007];
+    QByteArrayData data[48];
+    char stringdata0[1042];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,59 +41,61 @@ QT_MOC_LITERAL(5, 46, 17), // "sendLeftAreaValue"
 QT_MOC_LITERAL(6, 64, 3), // "num"
 QT_MOC_LITERAL(7, 68, 18), // "sendRightAreaValue"
 QT_MOC_LITERAL(8, 87, 19), // "sendUpdateCurvePara"
-QT_MOC_LITERAL(9, 107, 16), // "sendCurrentImage"
-QT_MOC_LITERAL(10, 124, 14), // "sendStripRatio"
-QT_MOC_LITERAL(11, 139, 18), // "sendThresholdValue"
-QT_MOC_LITERAL(12, 158, 5), // "value"
-QT_MOC_LITERAL(13, 164, 20), // "sendThresholdValue_2"
-QT_MOC_LITERAL(14, 185, 20), // "sendThresholdValue_3"
-QT_MOC_LITERAL(15, 206, 20), // "sendThresholdValue_4"
-QT_MOC_LITERAL(16, 227, 20), // "sendThresholdValue_5"
-QT_MOC_LITERAL(17, 248, 20), // "sendThresholdValue_6"
-QT_MOC_LITERAL(18, 269, 12), // "sendNextFlag"
-QT_MOC_LITERAL(19, 282, 17), // "sendThreshRequest"
-QT_MOC_LITERAL(20, 300, 11), // "sendPrintO2"
-QT_MOC_LITERAL(21, 312, 21), // "receiveProcessedFrame"
-QT_MOC_LITERAL(22, 334, 3), // "img"
-QT_MOC_LITERAL(23, 338, 14), // "receiveO2Value"
-QT_MOC_LITERAL(24, 353, 7), // "content"
-QT_MOC_LITERAL(25, 361, 13), // "receivePrompt"
-QT_MOC_LITERAL(26, 375, 18), // "isOxygenCalculated"
-QT_MOC_LITERAL(27, 394, 24), // "receiveStripAdjustedFlag"
-QT_MOC_LITERAL(28, 419, 19), // "receiveUpdateThresh"
-QT_MOC_LITERAL(29, 439, 12), // "QVector<int>"
-QT_MOC_LITERAL(30, 452, 25), // "on_pushButtonLoad_clicked"
-QT_MOC_LITERAL(31, 478, 25), // "on_pushButtonPlay_clicked"
-QT_MOC_LITERAL(32, 504, 40), // "on_horizontalSliderLeftArea_v..."
-QT_MOC_LITERAL(33, 545, 41), // "on_horizontalSliderRightArea_..."
-QT_MOC_LITERAL(34, 587, 28), // "on_pushButtonSetting_clicked"
-QT_MOC_LITERAL(35, 616, 31), // "on_pushButtonOpenCamera_clicked"
-QT_MOC_LITERAL(36, 648, 25), // "on_pushButtonCrop_clicked"
-QT_MOC_LITERAL(37, 674, 28), // "on_lineEditRatio_textChanged"
-QT_MOC_LITERAL(38, 703, 4), // "arg1"
-QT_MOC_LITERAL(39, 708, 38), // "on_horizontalSliderThresh_val..."
-QT_MOC_LITERAL(40, 747, 40), // "on_horizontalSliderThresh_2_v..."
-QT_MOC_LITERAL(41, 788, 40), // "on_horizontalSliderThresh_3_v..."
-QT_MOC_LITERAL(42, 829, 40), // "on_horizontalSliderThresh_4_v..."
-QT_MOC_LITERAL(43, 870, 40), // "on_horizontalSliderThresh_5_v..."
-QT_MOC_LITERAL(44, 911, 40), // "on_horizontalSliderThresh_6_v..."
-QT_MOC_LITERAL(45, 952, 25), // "on_pushButtonNext_clicked"
-QT_MOC_LITERAL(46, 978, 28) // "on_pushButtonPrintO2_clicked"
+QT_MOC_LITERAL(9, 107, 14), // "QVector<float>"
+QT_MOC_LITERAL(10, 122, 16), // "sendCurrentImage"
+QT_MOC_LITERAL(11, 139, 14), // "sendStripRatio"
+QT_MOC_LITERAL(12, 154, 18), // "sendThresholdValue"
+QT_MOC_LITERAL(13, 173, 5), // "value"
+QT_MOC_LITERAL(14, 179, 20), // "sendThresholdValue_2"
+QT_MOC_LITERAL(15, 200, 20), // "sendThresholdValue_3"
+QT_MOC_LITERAL(16, 221, 20), // "sendThresholdValue_4"
+QT_MOC_LITERAL(17, 242, 20), // "sendThresholdValue_5"
+QT_MOC_LITERAL(18, 263, 20), // "sendThresholdValue_6"
+QT_MOC_LITERAL(19, 284, 12), // "sendNextFlag"
+QT_MOC_LITERAL(20, 297, 11), // "sendPrintO2"
+QT_MOC_LITERAL(21, 309, 21), // "receiveProcessedFrame"
+QT_MOC_LITERAL(22, 331, 3), // "img"
+QT_MOC_LITERAL(23, 335, 14), // "receiveO2Value"
+QT_MOC_LITERAL(24, 350, 7), // "content"
+QT_MOC_LITERAL(25, 358, 13), // "receivePrompt"
+QT_MOC_LITERAL(26, 372, 18), // "isOxygenCalculated"
+QT_MOC_LITERAL(27, 391, 24), // "receiveStripAdjustedFlag"
+QT_MOC_LITERAL(28, 416, 26), // "receiveUpdateCurveSettings"
+QT_MOC_LITERAL(29, 443, 30), // "receiveUpdateThresholdSettings"
+QT_MOC_LITERAL(30, 474, 12), // "QVector<int>"
+QT_MOC_LITERAL(31, 487, 25), // "on_pushButtonLoad_clicked"
+QT_MOC_LITERAL(32, 513, 25), // "on_pushButtonPlay_clicked"
+QT_MOC_LITERAL(33, 539, 40), // "on_horizontalSliderLeftArea_v..."
+QT_MOC_LITERAL(34, 580, 41), // "on_horizontalSliderRightArea_..."
+QT_MOC_LITERAL(35, 622, 28), // "on_pushButtonSetting_clicked"
+QT_MOC_LITERAL(36, 651, 31), // "on_pushButtonOpenCamera_clicked"
+QT_MOC_LITERAL(37, 683, 25), // "on_pushButtonCrop_clicked"
+QT_MOC_LITERAL(38, 709, 28), // "on_lineEditRatio_textChanged"
+QT_MOC_LITERAL(39, 738, 4), // "arg1"
+QT_MOC_LITERAL(40, 743, 38), // "on_horizontalSliderThresh_val..."
+QT_MOC_LITERAL(41, 782, 40), // "on_horizontalSliderThresh_2_v..."
+QT_MOC_LITERAL(42, 823, 40), // "on_horizontalSliderThresh_3_v..."
+QT_MOC_LITERAL(43, 864, 40), // "on_horizontalSliderThresh_4_v..."
+QT_MOC_LITERAL(44, 905, 40), // "on_horizontalSliderThresh_5_v..."
+QT_MOC_LITERAL(45, 946, 40), // "on_horizontalSliderThresh_6_v..."
+QT_MOC_LITERAL(46, 987, 25), // "on_pushButtonNext_clicked"
+QT_MOC_LITERAL(47, 1013, 28) // "on_pushButtonPrintO2_clicked"
 
     },
     "MainWindow\0sendSetup\0\0device\0"
     "sendToggleStream\0sendLeftAreaValue\0"
     "num\0sendRightAreaValue\0sendUpdateCurvePara\0"
-    "sendCurrentImage\0sendStripRatio\0"
-    "sendThresholdValue\0value\0sendThresholdValue_2\0"
+    "QVector<float>\0sendCurrentImage\0"
+    "sendStripRatio\0sendThresholdValue\0"
+    "value\0sendThresholdValue_2\0"
     "sendThresholdValue_3\0sendThresholdValue_4\0"
     "sendThresholdValue_5\0sendThresholdValue_6\0"
-    "sendNextFlag\0sendThreshRequest\0"
-    "sendPrintO2\0receiveProcessedFrame\0img\0"
-    "receiveO2Value\0content\0receivePrompt\0"
+    "sendNextFlag\0sendPrintO2\0receiveProcessedFrame\0"
+    "img\0receiveO2Value\0content\0receivePrompt\0"
     "isOxygenCalculated\0receiveStripAdjustedFlag\0"
-    "receiveUpdateThresh\0QVector<int>\0"
-    "on_pushButtonLoad_clicked\0"
+    "receiveUpdateCurveSettings\0"
+    "receiveUpdateThresholdSettings\0"
+    "QVector<int>\0on_pushButtonLoad_clicked\0"
     "on_pushButtonPlay_clicked\0"
     "on_horizontalSliderLeftArea_valueChanged\0"
     "on_horizontalSliderRightArea_valueChanged\0"
@@ -123,64 +125,63 @@ static const uint qt_meta_data_MainWindow[] = {
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      16,       // signalCount
+      15,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
        1,    1,  199,    2, 0x06 /* Public */,
        4,    0,  202,    2, 0x06 /* Public */,
        5,    1,  203,    2, 0x06 /* Public */,
        7,    1,  206,    2, 0x06 /* Public */,
-       8,    5,  209,    2, 0x06 /* Public */,
-       9,    1,  220,    2, 0x06 /* Public */,
-      10,    1,  223,    2, 0x06 /* Public */,
-      11,    1,  226,    2, 0x06 /* Public */,
-      13,    1,  229,    2, 0x06 /* Public */,
-      14,    1,  232,    2, 0x06 /* Public */,
-      15,    1,  235,    2, 0x06 /* Public */,
-      16,    1,  238,    2, 0x06 /* Public */,
-      17,    1,  241,    2, 0x06 /* Public */,
-      18,    0,  244,    2, 0x06 /* Public */,
-      19,    0,  245,    2, 0x06 /* Public */,
-      20,    0,  246,    2, 0x06 /* Public */,
+       8,    3,  209,    2, 0x06 /* Public */,
+      10,    1,  216,    2, 0x06 /* Public */,
+      11,    1,  219,    2, 0x06 /* Public */,
+      12,    1,  222,    2, 0x06 /* Public */,
+      14,    1,  225,    2, 0x06 /* Public */,
+      15,    1,  228,    2, 0x06 /* Public */,
+      16,    1,  231,    2, 0x06 /* Public */,
+      17,    1,  234,    2, 0x06 /* Public */,
+      18,    1,  237,    2, 0x06 /* Public */,
+      19,    0,  240,    2, 0x06 /* Public */,
+      20,    0,  241,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      21,    1,  247,    2, 0x08 /* Private */,
-      23,    1,  250,    2, 0x08 /* Private */,
-      25,    1,  253,    2, 0x08 /* Private */,
-      27,    0,  256,    2, 0x08 /* Private */,
-      28,    1,  257,    2, 0x08 /* Private */,
-      30,    0,  260,    2, 0x08 /* Private */,
-      31,    0,  261,    2, 0x08 /* Private */,
-      32,    1,  262,    2, 0x08 /* Private */,
-      33,    1,  265,    2, 0x08 /* Private */,
-      34,    0,  268,    2, 0x08 /* Private */,
-      35,    0,  269,    2, 0x08 /* Private */,
-      36,    0,  270,    2, 0x08 /* Private */,
-      37,    1,  271,    2, 0x08 /* Private */,
-      39,    1,  274,    2, 0x08 /* Private */,
-      40,    1,  277,    2, 0x08 /* Private */,
-      41,    1,  280,    2, 0x08 /* Private */,
-      42,    1,  283,    2, 0x08 /* Private */,
-      43,    1,  286,    2, 0x08 /* Private */,
-      44,    1,  289,    2, 0x08 /* Private */,
-      45,    0,  292,    2, 0x08 /* Private */,
-      46,    0,  293,    2, 0x08 /* Private */,
+      21,    1,  242,    2, 0x08 /* Private */,
+      23,    1,  245,    2, 0x08 /* Private */,
+      25,    1,  248,    2, 0x08 /* Private */,
+      27,    0,  251,    2, 0x08 /* Private */,
+      28,    3,  252,    2, 0x08 /* Private */,
+      29,    1,  259,    2, 0x08 /* Private */,
+      31,    0,  262,    2, 0x08 /* Private */,
+      32,    0,  263,    2, 0x08 /* Private */,
+      33,    1,  264,    2, 0x08 /* Private */,
+      34,    1,  267,    2, 0x08 /* Private */,
+      35,    0,  270,    2, 0x08 /* Private */,
+      36,    0,  271,    2, 0x08 /* Private */,
+      37,    0,  272,    2, 0x08 /* Private */,
+      38,    1,  273,    2, 0x08 /* Private */,
+      40,    1,  276,    2, 0x08 /* Private */,
+      41,    1,  279,    2, 0x08 /* Private */,
+      42,    1,  282,    2, 0x08 /* Private */,
+      43,    1,  285,    2, 0x08 /* Private */,
+      44,    1,  288,    2, 0x08 /* Private */,
+      45,    1,  291,    2, 0x08 /* Private */,
+      46,    0,  294,    2, 0x08 /* Private */,
+      47,    0,  295,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    6,
     QMetaType::Void, QMetaType::Int,    6,
-    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::QString,    2,    2,    2,    2,    2,
+    QMetaType::Void, 0x80000000 | 9, 0x80000000 | 9, QMetaType::QString,    2,    2,    2,
     QMetaType::Void, QMetaType::QImage,    2,
     QMetaType::Void, QMetaType::Float,    2,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -189,7 +190,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::QString,   24,
     QMetaType::Void, QMetaType::Bool,   26,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 29,    2,
+    QMetaType::Void, 0x80000000 | 9, 0x80000000 | 9, QMetaType::QString,    2,    2,    2,
+    QMetaType::Void, 0x80000000 | 30,    2,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    6,
@@ -197,13 +199,13 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,   38,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
-    QMetaType::Void, QMetaType::Int,   12,
+    QMetaType::Void, QMetaType::QString,   39,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
+    QMetaType::Void, QMetaType::Int,   13,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -220,7 +222,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 1: _t->sendToggleStream(); break;
         case 2: _t->sendLeftAreaValue((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 3: _t->sendRightAreaValue((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 4: _t->sendUpdateCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< QString(*)>(_a[5]))); break;
+        case 4: _t->sendUpdateCurvePara((*reinterpret_cast< QVector<float>(*)>(_a[1])),(*reinterpret_cast< QVector<float>(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
         case 5: _t->sendCurrentImage((*reinterpret_cast< QImage(*)>(_a[1]))); break;
         case 6: _t->sendStripRatio((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 7: _t->sendThresholdValue((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -230,13 +232,13 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 11: _t->sendThresholdValue_5((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 12: _t->sendThresholdValue_6((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 13: _t->sendNextFlag(); break;
-        case 14: _t->sendThreshRequest(); break;
-        case 15: _t->sendPrintO2(); break;
-        case 16: _t->receiveProcessedFrame((*reinterpret_cast< QImage(*)>(_a[1]))); break;
-        case 17: _t->receiveO2Value((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 18: _t->receivePrompt((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 19: _t->receiveStripAdjustedFlag(); break;
-        case 20: _t->receiveUpdateThresh((*reinterpret_cast< QVector<int>(*)>(_a[1]))); break;
+        case 14: _t->sendPrintO2(); break;
+        case 15: _t->receiveProcessedFrame((*reinterpret_cast< QImage(*)>(_a[1]))); break;
+        case 16: _t->receiveO2Value((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 17: _t->receivePrompt((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 18: _t->receiveStripAdjustedFlag(); break;
+        case 19: _t->receiveUpdateCurveSettings((*reinterpret_cast< QVector<float>(*)>(_a[1])),(*reinterpret_cast< QVector<float>(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
+        case 20: _t->receiveUpdateThresholdSettings((*reinterpret_cast< QVector<int>(*)>(_a[1]))); break;
         case 21: _t->on_pushButtonLoad_clicked(); break;
         case 22: _t->on_pushButtonPlay_clicked(); break;
         case 23: _t->on_horizontalSliderLeftArea_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -258,6 +260,22 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 4:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 1:
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<float> >(); break;
+            }
+            break;
+        case 19:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 1:
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<float> >(); break;
+            }
+            break;
         case 20:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
@@ -297,7 +315,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             }
         }
         {
-            typedef void (MainWindow::*_t)(float , float , float , float , QString );
+            typedef void (MainWindow::*_t)(QVector<float> , QVector<float> , QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::sendUpdateCurvePara)) {
                 *result = 4;
                 return;
@@ -368,15 +386,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         }
         {
             typedef void (MainWindow::*_t)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::sendThreshRequest)) {
-                *result = 14;
-                return;
-            }
-        }
-        {
-            typedef void (MainWindow::*_t)();
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::sendPrintO2)) {
-                *result = 15;
+                *result = 14;
                 return;
             }
         }
@@ -447,9 +458,9 @@ void MainWindow::sendRightAreaValue(int _t1)
 }
 
 // SIGNAL 4
-void MainWindow::sendUpdateCurvePara(float _t1, float _t2, float _t3, float _t4, QString _t5)
+void MainWindow::sendUpdateCurvePara(QVector<float> _t1, QVector<float> _t2, QString _t3)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
@@ -516,15 +527,9 @@ void MainWindow::sendNextFlag()
 }
 
 // SIGNAL 14
-void MainWindow::sendThreshRequest()
-{
-    QMetaObject::activate(this, &staticMetaObject, 14, nullptr);
-}
-
-// SIGNAL 15
 void MainWindow::sendPrintO2()
 {
-    QMetaObject::activate(this, &staticMetaObject, 15, nullptr);
+    QMetaObject::activate(this, &staticMetaObject, 14, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

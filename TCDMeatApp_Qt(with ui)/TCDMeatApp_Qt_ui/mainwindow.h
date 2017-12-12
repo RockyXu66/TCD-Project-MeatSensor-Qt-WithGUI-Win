@@ -58,6 +58,7 @@ private:
     QString configFile;
 
     void loadSettings();
+    void initThreshUI(QVector<int>);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -68,7 +69,7 @@ signals:
     void sendToggleStream();
     void sendLeftAreaValue(int num);
     void sendRightAreaValue(int num);
-    void sendUpdateCurvePara(float, float, float, float, QString);
+    void sendUpdateCurvePara(QVector<float>,QVector<float>,QString);
     void sendCurrentImage(QImage);
     void sendStripRatio(float);
     void sendThresholdValue(int value);
@@ -78,7 +79,6 @@ signals:
     void sendThresholdValue_5(int value);
     void sendThresholdValue_6(int value);
     void sendNextFlag();
-    void sendThreshRequest();
     void sendPrintO2();
 
 private slots:
@@ -94,8 +94,11 @@ private slots:
     // Display "Strip Adjusted" label if cropped
     void receiveStripAdjustedFlag();
 
-    // Update threshold when initilizing
-    void receiveUpdateThresh(QVector<int>);
+    // Update curve parameters and curve type in settings (config) file
+    void receiveUpdateCurveSettings(QVector<float>, QVector<float>, QString);
+
+    // Update threshold value for hsv channels in settings (config) file
+    void receiveUpdateThresholdSettings(QVector<int>);
 
     // If video is finished, reset play button
 //    void receiveVideoFinished();

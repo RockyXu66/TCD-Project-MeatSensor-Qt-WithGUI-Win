@@ -194,7 +194,7 @@ float Strip::avgHue(Mat img, int curveColorSpace)
     return average; // mean hue
 }
 
-float Strip::computeOxygen(float estimated, float parameters[], string curveType) {
+float Strip::computeOxygen(float estimated, vector<float> parameters, string curveType) {
 
     float x_estimated = 0; // computed oxygen concentration
 

@@ -18,8 +18,13 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
         cout<<"frame rate: "<<frameRate<<endl;
     }
 
-    p = strip.getParameters(colorspace, method, sensor); // recover curve a,b,c,d settings
-//    p =
+//    p = strip.getParameters(colorspace, method, sensor); // recover curve a,b,c,d settings
+    // Initialize current parameters
+    current_para.push_back(0);
+    current_para.push_back(0);
+    current_para.push_back(0);
+    current_para.push_back(0);
+
     panelMat =  Mat(300, 250, CV_8UC3, Scalar(113, 117, 122));
 
     // Get the MT#3 trial images' path
@@ -46,6 +51,11 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
 }
 
 OpenCvWorker::~OpenCvWorker(){
+
+    // Save threshold values to settings (config) file
+    thresh = saveToQVector(strip.thresh);
+    emit(sendUpdateThresholdSettings(thresh));
+
     webcam.release();
     mutex.lock();
     stop = true;
@@ -159,8 +169,8 @@ void OpenCvWorker::processFrame(){
     p2.x += xLeft;    
 
     if(!roiImg.empty()){
-        estimated = strip.avgHue(roiImg, colorspace);
-        O2 = strip.computeOxygen(estimated, p, curveType);
+        estimated = strip.avgHue(roiImg, colorspace);       // Get mean hue value
+        O2 = strip.computeOxygen(estimated, current_para, curveType);  // Calculate O2 content
 
         // Draw ROI rectangle on the frame
         rectangle( processedFrame, p1, p2, Scalar( 0, 255, 0 ), 2 );
@@ -177,6 +187,23 @@ void OpenCvWorker::processFrame(){
     line(processedFrame, Point(xRight,0), Point(xRight,frameHeight), Scalar(113, 117, 122), 2, LINE_8, 0);
 }
 
+void OpenCvWorker::initThreshold(QVector<int> thresh){
+    strip.thresh[0] = thresh[0];
+    strip.thresh[1] = thresh[1];
+    strip.thresh[2] = thresh[2];
+    strip.thresh[3] = thresh[3];
+    strip.thresh[4] = thresh[4];
+    strip.thresh[5] = thresh[5];
+}
+
+QVector<int> OpenCvWorker::saveToQVector(vector<int> input) {
+    QVector<int> output;
+    for(int i=0; i<input.size(); i++) {
+        output.append(input[i]);
+    }
+    return output;
+}
+
 void OpenCvWorker::receiveLeftArea(int num){
     strip.setLeftLine(float(num/100.0f));
 }
@@ -185,12 +212,23 @@ void OpenCvWorker::receiveRightArea(int num){
     strip.setRightLine(float(num/100.0f));
 }
 
-void OpenCvWorker::receiveCurvePara(float para_a, float para_b, float para_c, float para_d, QString curve_type){
-    p[0] = para_a;
-    p[1] = para_b;
-    p[2] = para_c;
-    p[3] = para_d;
+void OpenCvWorker::receiveCurvePara(QVector<float> para, QString curve_type){
     curveType = curve_type.toLocal8Bit().constData();
+    if (curveType == "Exponential") {
+        exp_para = para;
+        current_para[0] = para[0];
+        current_para[1] = para[1];
+        current_para[2] = para[2];
+        current_para[3] = para[3];
+    } else if (curveType == "Cubic") {
+        cubic_para = para;
+        current_para[0] = para[0];
+        current_para[1] = para[1];
+        current_para[2] = para[2];
+        current_para[3] = para[3];
+    }
+
+    emit(sendUpdateCurveSettings(exp_para, cubic_para, curve_type));
 }
 
 void OpenCvWorker::receiveCroppedStripArea(float area){
@@ -203,6 +241,7 @@ void OpenCvWorker::receiveStripRatio(float r){
 
 void OpenCvWorker::receiveThresholdValue(int value){
     strip.thresh[0] = value;
+
 }
 
 void OpenCvWorker::receiveThresholdValue_2(int value){
@@ -229,14 +268,6 @@ void OpenCvWorker::receiveNextFlag(){
         next++;
 //        cout<<paths.at(next)<<endl;
     }
-}
-
-void OpenCvWorker::receiveThreshRequest(){
-    QVector<int> thresh;
-    for(int i=0; i<sizeof(strip.thresh)/sizeof(strip.thresh[0]); i++){
-        thresh.push_back(strip.thresh[i]);
-    }
-    emit(sendUpdateThresh(thresh));
 }
 
 void OpenCvWorker::receivePrintO2(){

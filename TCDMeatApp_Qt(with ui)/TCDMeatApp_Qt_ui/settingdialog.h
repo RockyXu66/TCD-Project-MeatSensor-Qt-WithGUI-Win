@@ -19,14 +19,20 @@ public:
     ~settingDialog();
 
 signals:
-    void sendCurvePara(float,float,float,float, QString);
+    void sendCurvePara(QVector<float>, QString);
 
 private slots:
     void on_buttonBox_accepted();
-    void receiveUpdateCurvePara(float,float, float, float, QString);
+    void receiveUpdateCurvePara(QVector<float>,QVector<float>,QString);
+
+    void on_comboBoxCurveType_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::settingDialog *ui;
+    QVector<float> exp_para;
+    QVector<float> cubic_para;
+
+    void setCurveParameters(QVector<float> para);
 };
 
 #endif // SETTINGDIALOG_H

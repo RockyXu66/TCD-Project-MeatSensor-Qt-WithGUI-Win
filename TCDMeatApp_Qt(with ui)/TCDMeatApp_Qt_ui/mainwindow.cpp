@@ -14,7 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Load config file
 //    configFile = QApplication::applicationDirPath() + "\demosettings.ini";
     configFile = "D:\\TCD Project (meatsensor)\\Yinghan\\Qt_windows10\\TCDMeatApp_Qt(with ui)\\MeatSensorSettings.ini";
-    loadSettings();
+
+
+
 
     connect(worker, SIGNAL(sendFrame(QImage)), this, SLOT(receiveProcessedFrame(QImage)));
     connect(worker, SIGNAL(sendVideoFinished()), this, SLOT(on_pushButtonPlay_clicked()));
@@ -22,8 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(worker, SIGNAL(sendPrompt(bool)), this, SLOT(receivePrompt(bool)));
     connect(this, SIGNAL(sendLeftAreaValue(int)), worker, SLOT(receiveLeftArea(int)));
     connect(this, SIGNAL(sendRightAreaValue(int)), worker, SLOT(receiveRightArea(int)));
-    connect(setting_dialog, SIGNAL(sendCurvePara(float,float,float,float,QString)), worker, SLOT(receiveCurvePara(float,float,float,float,QString)));
-    connect(this, SIGNAL(sendUpdateCurvePara(float,float,float,float,QString)), setting_dialog, SLOT(receiveUpdateCurvePara(float,float, float, float, QString)));
+
+    connect(setting_dialog, SIGNAL(sendCurvePara(QVector<float>,QString)), worker, SLOT(receiveCurvePara(QVector<float>,QString)));
+    connect(this, SIGNAL(sendUpdateCurvePara(QVector<float>,QVector<float>,QString)), setting_dialog, SLOT(receiveUpdateCurvePara(QVector<float>,QVector<float>,QString)));
+    connect(worker, SIGNAL(sendUpdateCurveSettings(QVector<float>,QVector<float>,QString)), SLOT(receiveUpdateCurveSettings(QVector<float>,QVector<float>,QString)));
 
     connect(this, SIGNAL(sendCurrentImage(QImage)), cropping_dialog, SLOT(receiveCroppingImage(QImage)));
     connect(cropping_dialog, SIGNAL(sendCroppedStripArea(float)), worker, SLOT(receiveCroppedStripArea(float)));
@@ -35,16 +39,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendThresholdValue_4(int)), worker, SLOT(receiveThresholdValue_4(int)));
     connect(this, SIGNAL(sendThresholdValue_5(int)), worker, SLOT(receiveThresholdValue_5(int)));
     connect(this, SIGNAL(sendThresholdValue_6(int)), worker, SLOT(receiveThresholdValue_6(int)));
-    connect(this, SIGNAL(sendNextFlag()), worker, SLOT(receiveNextFlag()));
+    connect(worker, SIGNAL(sendUpdateThresholdSettings(QVector<int>)), this, SLOT(receiveUpdateThresholdSettings(QVector<int>)));
 
-    connect(this, SIGNAL(sendThreshRequest()), worker, SLOT(receiveThreshRequest()));
-    connect(worker, SIGNAL(sendUpdateThresh(QVector<int>)), this, SLOT(receiveUpdateThresh(QVector<int>)));
+    connect(this, SIGNAL(sendNextFlag()), worker, SLOT(receiveNextFlag()));
     connect(this, SIGNAL(sendPrintO2()), worker, SLOT(receivePrintO2()));
 
     // Set up ui at last after initialized
     ui->setupUi(this);
 
-    emit(sendThreshRequest());
+    loadSettings();
+
 
 //    if (!worker->initialImg.isNull())
 //    {
@@ -60,8 +64,6 @@ void MainWindow::loadSettings()
 //    QCoreApplication::setOrganizationDomain("TCD.com");
 //    QCoreApplication::setApplicationName("MeatSensor");
 
-    QSettings settings(configFile, QSettings::IniFormat);
-
 ////    settings.setValue("p1", "-0.004172");
 
 //    QString sText = settings.value("text").toString();
@@ -70,6 +72,8 @@ void MainWindow::loadSettings()
 //    cout<<"float: "<<p1<<endl;
 ////    cout<<"applicationDirPath: "<<QCoreApplication::applicationDirPath().toLocal8Bit().constData()<<endl;
 ////    settings.setValue("text", "12345");
+
+    QSettings settings(configFile, QSettings::IniFormat);
 
     string curveType = settings.value("curveType", "Exponential").toString().toLocal8Bit().constData();
     float exp_a = settings.value("exp_a", "0.456375").toFloat();
@@ -88,17 +92,59 @@ void MainWindow::loadSettings()
     int thresh_HV = settings.value("thresh_HighValue", "255").toInt();
 
     worker->curveType = curveType;
-    float temp[4] = {cubic_a, cubic_b, cubic_c, cubic_d};
-//    worker->p = (float*)temp;
-//    worker->exp_para = {exp_a, exp_b, exp_c, exp_d};
-//    worker->cubic_para = {cubic_a, cubic_b, cubic_c, cubic_d};
 
-//    cout<<"para: "<<endl;
-//    cout<<cubic_a<<endl;
-//    cout<<cubic_b<<endl;
-//    cout<<cubic_c<<endl;
-//    cout<<cubic_d<<endl;
+    if (curveType == "Exponential") {
+        worker->current_para[0] = exp_a;
+        worker->current_para[1] = exp_b;
+        worker->current_para[2] = exp_c;
+        worker->current_para[3] = exp_d;
+    } else if (curveType == "Cubic") {
+        worker->current_para[0] = cubic_a;
+        worker->current_para[1] = cubic_b;
+        worker->current_para[2] = cubic_c;
+        worker->current_para[3] = cubic_d;
+    }
+
+    worker->exp_para.append(exp_a);
+    worker->exp_para.append(exp_b);
+    worker->exp_para.append(exp_c);
+    worker->exp_para.append(exp_d);
+
+    worker->cubic_para.append(cubic_a);
+    worker->cubic_para.append(cubic_b);
+    worker->cubic_para.append(cubic_c);
+    worker->cubic_para.append(cubic_d);
+
+    QVector<int> thresh;
+    thresh.append(thresh_LH);
+    thresh.append(thresh_LS);
+    thresh.append(thresh_LV);
+    thresh.append(thresh_HH);
+    thresh.append(thresh_HS);
+    thresh.append(thresh_HV);
+    worker->initThreshold(thresh);
+    initThreshUI(thresh);
 }
+
+void MainWindow::initThreshUI(QVector<int> thresh) {
+    cout<<"initThresh UI"<<endl;
+    ui->label_HL->setText(QString::number(thresh[0]));
+    ui->horizontalSliderThresh->setValue(thresh[0]);
+    ui->label_SL->setText(QString::number(thresh[1]));
+    ui->horizontalSliderThresh_2->setValue(thresh[1]);
+    ui->label_VL->setText(QString::number(thresh[2]));
+    ui->horizontalSliderThresh_3->setValue(thresh[2]);
+    ui->label_HH->setText(QString::number(thresh[3]));
+    ui->horizontalSliderThresh_4->setValue(thresh[3]);
+    ui->label_SH->setText(QString::number(thresh[4]));
+    ui->horizontalSliderThresh_5->setValue(thresh[4]);
+    ui->label_VH->setText(QString::number(thresh[5]));
+    ui->horizontalSliderThresh_6->setValue(thresh[5]);
+}
+
+//void MainWindow::updateThresholdSettings(QVector<int> thresh) {
+
+//}
 
 void MainWindow::receiveProcessedFrame(QImage img)
 {
@@ -131,20 +177,31 @@ void MainWindow::receiveStripAdjustedFlag(){
     ui->labelStripAdjusted->setText("Strip Adjusted");
 }
 
-void MainWindow::receiveUpdateThresh(QVector<int> thresh){
-    cout<<"receiveUpdateThresh: "<<endl;
-    ui->label_HL->setText(QString::number(thresh[0]));
-    ui->horizontalSliderThresh->setValue(thresh[0]);
-    ui->label_SL->setText(QString::number(thresh[1]));
-    ui->horizontalSliderThresh_2->setValue(thresh[1]);
-    ui->label_VL->setText(QString::number(thresh[2]));
-    ui->horizontalSliderThresh_3->setValue(thresh[2]);
-    ui->label_HH->setText(QString::number(thresh[3]));
-    ui->horizontalSliderThresh_4->setValue(thresh[3]);
-    ui->label_SH->setText(QString::number(thresh[4]));
-    ui->horizontalSliderThresh_5->setValue(thresh[4]);
-    ui->label_VH->setText(QString::number(thresh[5]));
-    ui->horizontalSliderThresh_6->setValue(thresh[5]);
+void MainWindow::receiveUpdateCurveSettings(QVector<float> exp_para, QVector<float> cubic_para, QString curveType){
+
+    QSettings settings(configFile, QSettings::IniFormat);
+
+    settings.setValue("curveType", curveType);
+    settings.setValue("exp_a", QString::number(exp_para[0]));
+    settings.setValue("exp_b", QString::number(exp_para[1]));
+    settings.setValue("exp_c", QString::number(exp_para[2]));
+    settings.setValue("exp_d", QString::number(exp_para[3]));
+    settings.setValue("cubic_a", QString::number(cubic_para[0]));
+    settings.setValue("cubic_b", QString::number(cubic_para[1]));
+    settings.setValue("cubic_c", QString::number(cubic_para[2]));
+    settings.setValue("cubic_d", QString::number(cubic_para[3]));
+}
+
+void MainWindow::receiveUpdateThresholdSettings(QVector<int> thresh) {
+
+    QSettings settings(configFile, QSettings::IniFormat);
+
+    settings.setValue("thresh_LowHue", QString::number(thresh[0]));
+    settings.setValue("thresh_LowSaturation", QString::number(thresh[1]));
+    settings.setValue("thresh_LowValue", QString::number(thresh[2]));
+    settings.setValue("thresh_HighHue", QString::number(thresh[3]));
+    settings.setValue("thresh_HighSaturation", QString::number(thresh[4]));
+    settings.setValue("thresh_HighValue", QString::number(thresh[5]));
 }
 
 void MainWindow::on_pushButtonLoad_clicked(){
@@ -190,12 +247,11 @@ void MainWindow::on_horizontalSliderRightArea_valueChanged(int num){
     emit sendRightAreaValue(num);
 }
 
-//void MainWindow::receiveVideoFinished(){
-
-//}
 
 MainWindow::~MainWindow()
 {
+
+
     delete ui;
 
     delete worker;
@@ -209,7 +265,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButtonSetting_clicked()
 {
-    emit(sendUpdateCurvePara(worker->p[0], worker->p[1], worker->p[2], worker->p[3], QString::fromStdString(worker->curveType)));
+
+    emit(sendUpdateCurvePara(worker->exp_para, worker->cubic_para, QString::fromStdString(worker->curveType)));
     setting_dialog->setModal(true);
     setting_dialog->exec();
 }

@@ -68,6 +68,8 @@ private:
     QString directory;
     vector<string> paths;
 
+    QVector<int> thresh;
+
 public:
     explicit OpenCvWorker(QObject *parent = nullptr);
 
@@ -79,10 +81,10 @@ public:
     bool isWebcam = false;  // is webcam open flag
     VideoCapture webcam;
 
-    float* p;       // parameters variable
+    vector<float> current_para;       // parameters variable
     string curveType = "Exponential";
-    int exp_para[4];
-    int cubic_para[4];
+    QVector<float> exp_para;
+    QVector<float> cubic_para;
 
     //Load a video from memory
     bool loadVideo(String filename);
@@ -95,6 +97,10 @@ public:
 
     //check if the player has been stopped
     bool isStopped() const;
+
+    void initThreshold(QVector<int>);
+
+    QVector<int> saveToQVector(vector<int>);
 
 protected:
 
@@ -119,13 +125,16 @@ signals:
     // Send isOxygenCalculated to ui to be display
     void sendPrompt(bool isOxygenCalculated);
 
-    // Send threshold value to slider bar
-    void sendUpdateThresh(QVector<int>);
+    // Update curve parameters and curve type in settings (config) file
+    void sendUpdateCurveSettings(QVector<float>, QVector<float>, QString);
+
+    // Update threshold value for hsv channels in settings (config) file
+    void sendUpdateThresholdSettings(QVector<int>);
 
 private slots:
     void receiveLeftArea(int num);
     void receiveRightArea(int num);
-    void receiveCurvePara(float,float,float,float, QString);
+    void receiveCurvePara(QVector<float>, QString);
     void receiveCroppedStripArea(float);
     void receiveStripRatio(float);
     void receiveThresholdValue(int value);
@@ -135,7 +144,6 @@ private slots:
     void receiveThresholdValue_5(int value);
     void receiveThresholdValue_6(int value);
     void receiveNextFlag();
-    void receiveThreshRequest();
     void receivePrintO2();
 };
 
