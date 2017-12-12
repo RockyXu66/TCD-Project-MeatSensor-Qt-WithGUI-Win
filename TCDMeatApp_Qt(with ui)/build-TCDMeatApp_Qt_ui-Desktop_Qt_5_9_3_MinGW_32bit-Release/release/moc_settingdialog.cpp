@@ -61,14 +61,14 @@ static const uint qt_meta_data_settingDialog[] = {
 
  // slots: name, argc, parameters, tag, flags
        3,    0,   40,    2, 0x08 /* Private */,
-       4,    4,   41,    2, 0x08 /* Private */,
+       4,    5,   41,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::QString,    2,    2,    2,    2,    2,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float,    2,    2,    2,    2,
+    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::QString,    2,    2,    2,    2,    2,
 
        0        // eod
 };
@@ -81,7 +81,7 @@ void settingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         switch (_id) {
         case 0: _t->sendCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< QString(*)>(_a[5]))); break;
         case 1: _t->on_buttonBox_accepted(); break;
-        case 2: _t->receiveUpdateCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4]))); break;
+        case 2: _t->receiveUpdateCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< QString(*)>(_a[5]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

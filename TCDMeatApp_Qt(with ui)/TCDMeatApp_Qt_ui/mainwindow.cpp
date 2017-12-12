@@ -11,6 +11,11 @@ MainWindow::MainWindow(QWidget *parent) :
     croppingHint_dialog = new DialogCroppingHint();
     cropping_dialog = new CroppingDialog();
 
+    // Load config file
+//    configFile = QApplication::applicationDirPath() + "\demosettings.ini";
+    configFile = "D:\\TCD Project (meatsensor)\\Yinghan\\Qt_windows10\\TCDMeatApp_Qt(with ui)\\MeatSensorSettings.ini";
+    loadSettings();
+
     connect(worker, SIGNAL(sendFrame(QImage)), this, SLOT(receiveProcessedFrame(QImage)));
     connect(worker, SIGNAL(sendVideoFinished()), this, SLOT(on_pushButtonPlay_clicked()));
     connect(worker, SIGNAL(sendO2Value(QString)), this, SLOT(receiveO2Value(QString)));
@@ -18,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendLeftAreaValue(int)), worker, SLOT(receiveLeftArea(int)));
     connect(this, SIGNAL(sendRightAreaValue(int)), worker, SLOT(receiveRightArea(int)));
     connect(setting_dialog, SIGNAL(sendCurvePara(float,float,float,float,QString)), worker, SLOT(receiveCurvePara(float,float,float,float,QString)));
-    connect(this, SIGNAL(sendUpdateCurvePara(float,float,float,float)), setting_dialog, SLOT(receiveUpdateCurvePara(float,float, float, float)));
+    connect(this, SIGNAL(sendUpdateCurvePara(float,float,float,float,QString)), setting_dialog, SLOT(receiveUpdateCurvePara(float,float, float, float, QString)));
 
     connect(this, SIGNAL(sendCurrentImage(QImage)), cropping_dialog, SLOT(receiveCroppingImage(QImage)));
     connect(cropping_dialog, SIGNAL(sendCroppedStripArea(float)), worker, SLOT(receiveCroppedStripArea(float)));
@@ -36,7 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(worker, SIGNAL(sendUpdateThresh(QVector<int>)), this, SLOT(receiveUpdateThresh(QVector<int>)));
     connect(this, SIGNAL(sendPrintO2()), worker, SLOT(receivePrintO2()));
 
-
     // Set up ui at last after initialized
     ui->setupUi(this);
 
@@ -48,6 +52,52 @@ MainWindow::MainWindow(QWidget *parent) :
 //        ui->labelWebcam->setPixmap(QPixmap::fromImage(worker->initialImg).scaled(ui->labelWebcam->size() ,Qt::KeepAspectRatio, Qt::FastTransformation));
 //    }
 
+}
+
+void MainWindow::loadSettings()
+{
+//    QCoreApplication::setOrganizationName("TCD");
+//    QCoreApplication::setOrganizationDomain("TCD.com");
+//    QCoreApplication::setApplicationName("MeatSensor");
+
+    QSettings settings(configFile, QSettings::IniFormat);
+
+////    settings.setValue("p1", "-0.004172");
+
+//    QString sText = settings.value("text").toString();
+//    float p1 = settings.value("p1").toFloat();
+//    cout<<"Test text: "<<sText.toLocal8Bit().constData()<<endl;
+//    cout<<"float: "<<p1<<endl;
+////    cout<<"applicationDirPath: "<<QCoreApplication::applicationDirPath().toLocal8Bit().constData()<<endl;
+////    settings.setValue("text", "12345");
+
+    string curveType = settings.value("curveType", "Exponential").toString().toLocal8Bit().constData();
+    float exp_a = settings.value("exp_a", "0.456375").toFloat();
+    float exp_b = settings.value("exp_b", "-0.011537").toFloat();
+    float exp_c = settings.value("exp_c", "0.000374").toFloat();
+    float exp_d = settings.value("exp_d", "0.049049").toFloat();
+    float cubic_a = settings.value("cubic_a", "0.004172").toFloat();
+    float cubic_b = settings.value("cubic_b", "0.024304").toFloat();
+    float cubic_c = settings.value("cubic_c", "-0.089222").toFloat();
+    float cubic_d = settings.value("cubic_d", "0.259458").toFloat();
+    int thresh_LH = settings.value("thresh_LowHue", "23").toInt();
+    int thresh_HH = settings.value("thresh_HighHue", "179").toInt();
+    int thresh_LS = settings.value("thresh_LowSaturation", "0").toInt();
+    int thresh_HS = settings.value("thresh_HighSaturation", "255").toInt();
+    int thresh_LV = settings.value("thresh_LowValue", "71").toInt();
+    int thresh_HV = settings.value("thresh_HighValue", "255").toInt();
+
+    worker->curveType = curveType;
+    float temp[4] = {cubic_a, cubic_b, cubic_c, cubic_d};
+//    worker->p = (float*)temp;
+//    worker->exp_para = {exp_a, exp_b, exp_c, exp_d};
+//    worker->cubic_para = {cubic_a, cubic_b, cubic_c, cubic_d};
+
+//    cout<<"para: "<<endl;
+//    cout<<cubic_a<<endl;
+//    cout<<cubic_b<<endl;
+//    cout<<cubic_c<<endl;
+//    cout<<cubic_d<<endl;
 }
 
 void MainWindow::receiveProcessedFrame(QImage img)
@@ -159,7 +209,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButtonSetting_clicked()
 {
-    emit(sendUpdateCurvePara(worker->p[0], worker->p[1], worker->p[2], worker->p[3]));
+    emit(sendUpdateCurvePara(worker->p[0], worker->p[1], worker->p[2], worker->p[3], QString::fromStdString(worker->curveType)));
     setting_dialog->setModal(true);
     setting_dialog->exec();
 }

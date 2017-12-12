@@ -23,7 +23,7 @@ signals:
 
 private slots:
     void on_buttonBox_accepted();
-    void receiveUpdateCurvePara(float,float, float, float);
+    void receiveUpdateCurvePara(float,float, float, float, QString);
 
 private:
     Ui::settingDialog *ui;

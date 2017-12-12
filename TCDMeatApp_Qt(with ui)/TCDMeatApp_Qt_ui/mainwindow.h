@@ -23,6 +23,9 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+#include <QCoreApplication>
+#include <QSettings>
+
 using namespace cv;
 
 namespace Ui {
@@ -52,7 +55,9 @@ private:
     QImage currentImage;
     QPixmap croppedStrip;
 
+    QString configFile;
 
+    void loadSettings();
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -63,7 +68,7 @@ signals:
     void sendToggleStream();
     void sendLeftAreaValue(int num);
     void sendRightAreaValue(int num);
-    void sendUpdateCurvePara(float, float, float, float);
+    void sendUpdateCurvePara(float, float, float, float, QString);
     void sendCurrentImage(QImage);
     void sendStripRatio(float);
     void sendThresholdValue(int value);

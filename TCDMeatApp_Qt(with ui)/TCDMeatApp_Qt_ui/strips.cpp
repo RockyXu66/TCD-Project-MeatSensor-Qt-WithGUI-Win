@@ -265,8 +265,8 @@ float Strip::computeOxygen(float estimated, float parameters[], string curveType
             std += pow((j - mean), 2);
         }
         std = sqrt(std/N);
-    //    cout<<"mean: "<<mean<<endl;
-    //    cout<<"std: "<<std<<endl;
+//        cout<<"mean: "<<mean<<endl;
+//        cout<<"std: "<<std<<endl;
 
         float y_experimental[N];
         for (int j = 1; j < (N + 1); j++) {

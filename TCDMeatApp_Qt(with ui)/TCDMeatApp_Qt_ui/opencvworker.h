@@ -40,7 +40,7 @@ private:
 
     Strip strip;
 
-    string curveType = "Exponential";
+
 
     // ------------------------------meat sensor parameters start-------------------------------------
     int colorspace = 0; // 0 for HSV --- 1 for L*a*b
@@ -80,6 +80,9 @@ public:
     VideoCapture webcam;
 
     float* p;       // parameters variable
+    string curveType = "Exponential";
+    int exp_para[4];
+    int cubic_para[4];
 
     //Load a video from memory
     bool loadVideo(String filename);

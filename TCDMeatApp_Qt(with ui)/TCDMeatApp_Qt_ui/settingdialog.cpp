@@ -28,8 +28,14 @@ void settingDialog::on_buttonBox_accepted()
     emit(sendCurvePara(curve_para_a, curve_para_b, curve_para_c, curve_para_d, curve_type));
 }
 
-void settingDialog::receiveUpdateCurvePara(float para_a, float para_b, float para_c, float para_d){
+void settingDialog::receiveUpdateCurvePara(float para_a, float para_b, float para_c, float para_d, QString curveType){
     cout<<"receiveUpdateCurvePara"<<endl;
+    if (curveType == "Exponential") {
+        ui->comboBoxCurveType->setCurrentIndex(0);
+    } else if (curveType == "Cubic") {
+        ui->comboBoxCurveType->setCurrentIndex(1);
+    }
+
     ui->lineEdit_setting_a->setText(QString::number(para_a));
     ui->lineEdit_setting_b->setText(QString::number(para_b));
     ui->lineEdit_setting_c->setText(QString::number(para_c));

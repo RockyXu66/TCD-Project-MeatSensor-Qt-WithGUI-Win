@@ -5,7 +5,8 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
     stop = true;
 //    filename = "/Volumes/YINGHANUSB/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
 //    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
-    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch_vibrate.mov";
+//    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch_vibrate.mov";
+    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT3_R-1)_withScratch.mov";
 //    filename = "C:/Users/Soumyajyoti Maji/Videos/RECentral/Standard Environment2 Zoom6_Brightness4(20171205).mp4";
 //    filename = "D:/TCD Project (meatsensor)/TCD_MacMini/RECentral/1st/2017082111155957.mp4";
 
@@ -18,6 +19,7 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
     }
 
     p = strip.getParameters(colorspace, method, sensor); // recover curve a,b,c,d settings
+//    p =
     panelMat =  Mat(300, 250, CV_8UC3, Scalar(113, 117, 122));
 
     // Get the MT#3 trial images' path

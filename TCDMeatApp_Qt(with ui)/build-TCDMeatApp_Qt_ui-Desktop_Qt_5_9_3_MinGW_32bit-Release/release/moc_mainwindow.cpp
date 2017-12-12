@@ -130,48 +130,48 @@ static const uint qt_meta_data_MainWindow[] = {
        4,    0,  202,    2, 0x06 /* Public */,
        5,    1,  203,    2, 0x06 /* Public */,
        7,    1,  206,    2, 0x06 /* Public */,
-       8,    4,  209,    2, 0x06 /* Public */,
-       9,    1,  218,    2, 0x06 /* Public */,
-      10,    1,  221,    2, 0x06 /* Public */,
-      11,    1,  224,    2, 0x06 /* Public */,
-      13,    1,  227,    2, 0x06 /* Public */,
-      14,    1,  230,    2, 0x06 /* Public */,
-      15,    1,  233,    2, 0x06 /* Public */,
-      16,    1,  236,    2, 0x06 /* Public */,
-      17,    1,  239,    2, 0x06 /* Public */,
-      18,    0,  242,    2, 0x06 /* Public */,
-      19,    0,  243,    2, 0x06 /* Public */,
-      20,    0,  244,    2, 0x06 /* Public */,
+       8,    5,  209,    2, 0x06 /* Public */,
+       9,    1,  220,    2, 0x06 /* Public */,
+      10,    1,  223,    2, 0x06 /* Public */,
+      11,    1,  226,    2, 0x06 /* Public */,
+      13,    1,  229,    2, 0x06 /* Public */,
+      14,    1,  232,    2, 0x06 /* Public */,
+      15,    1,  235,    2, 0x06 /* Public */,
+      16,    1,  238,    2, 0x06 /* Public */,
+      17,    1,  241,    2, 0x06 /* Public */,
+      18,    0,  244,    2, 0x06 /* Public */,
+      19,    0,  245,    2, 0x06 /* Public */,
+      20,    0,  246,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      21,    1,  245,    2, 0x08 /* Private */,
-      23,    1,  248,    2, 0x08 /* Private */,
-      25,    1,  251,    2, 0x08 /* Private */,
-      27,    0,  254,    2, 0x08 /* Private */,
-      28,    1,  255,    2, 0x08 /* Private */,
-      30,    0,  258,    2, 0x08 /* Private */,
-      31,    0,  259,    2, 0x08 /* Private */,
-      32,    1,  260,    2, 0x08 /* Private */,
-      33,    1,  263,    2, 0x08 /* Private */,
-      34,    0,  266,    2, 0x08 /* Private */,
-      35,    0,  267,    2, 0x08 /* Private */,
-      36,    0,  268,    2, 0x08 /* Private */,
-      37,    1,  269,    2, 0x08 /* Private */,
-      39,    1,  272,    2, 0x08 /* Private */,
-      40,    1,  275,    2, 0x08 /* Private */,
-      41,    1,  278,    2, 0x08 /* Private */,
-      42,    1,  281,    2, 0x08 /* Private */,
-      43,    1,  284,    2, 0x08 /* Private */,
-      44,    1,  287,    2, 0x08 /* Private */,
-      45,    0,  290,    2, 0x08 /* Private */,
-      46,    0,  291,    2, 0x08 /* Private */,
+      21,    1,  247,    2, 0x08 /* Private */,
+      23,    1,  250,    2, 0x08 /* Private */,
+      25,    1,  253,    2, 0x08 /* Private */,
+      27,    0,  256,    2, 0x08 /* Private */,
+      28,    1,  257,    2, 0x08 /* Private */,
+      30,    0,  260,    2, 0x08 /* Private */,
+      31,    0,  261,    2, 0x08 /* Private */,
+      32,    1,  262,    2, 0x08 /* Private */,
+      33,    1,  265,    2, 0x08 /* Private */,
+      34,    0,  268,    2, 0x08 /* Private */,
+      35,    0,  269,    2, 0x08 /* Private */,
+      36,    0,  270,    2, 0x08 /* Private */,
+      37,    1,  271,    2, 0x08 /* Private */,
+      39,    1,  274,    2, 0x08 /* Private */,
+      40,    1,  277,    2, 0x08 /* Private */,
+      41,    1,  280,    2, 0x08 /* Private */,
+      42,    1,  283,    2, 0x08 /* Private */,
+      43,    1,  286,    2, 0x08 /* Private */,
+      44,    1,  289,    2, 0x08 /* Private */,
+      45,    0,  292,    2, 0x08 /* Private */,
+      46,    0,  293,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int,    3,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    6,
     QMetaType::Void, QMetaType::Int,    6,
-    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float,    2,    2,    2,    2,
+    QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::Float, QMetaType::QString,    2,    2,    2,    2,    2,
     QMetaType::Void, QMetaType::QImage,    2,
     QMetaType::Void, QMetaType::Float,    2,
     QMetaType::Void, QMetaType::Int,   12,
@@ -220,7 +220,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 1: _t->sendToggleStream(); break;
         case 2: _t->sendLeftAreaValue((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 3: _t->sendRightAreaValue((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 4: _t->sendUpdateCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4]))); break;
+        case 4: _t->sendUpdateCurvePara((*reinterpret_cast< float(*)>(_a[1])),(*reinterpret_cast< float(*)>(_a[2])),(*reinterpret_cast< float(*)>(_a[3])),(*reinterpret_cast< float(*)>(_a[4])),(*reinterpret_cast< QString(*)>(_a[5]))); break;
         case 5: _t->sendCurrentImage((*reinterpret_cast< QImage(*)>(_a[1]))); break;
         case 6: _t->sendStripRatio((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 7: _t->sendThresholdValue((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -297,7 +297,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             }
         }
         {
-            typedef void (MainWindow::*_t)(float , float , float , float );
+            typedef void (MainWindow::*_t)(float , float , float , float , QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&MainWindow::sendUpdateCurvePara)) {
                 *result = 4;
                 return;
@@ -447,9 +447,9 @@ void MainWindow::sendRightAreaValue(int _t1)
 }
 
 // SIGNAL 4
-void MainWindow::sendUpdateCurvePara(float _t1, float _t2, float _t3, float _t4)
+void MainWindow::sendUpdateCurvePara(float _t1, float _t2, float _t3, float _t4, QString _t5)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
