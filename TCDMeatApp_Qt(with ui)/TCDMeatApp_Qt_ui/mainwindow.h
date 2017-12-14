@@ -53,9 +53,12 @@ private:
     QPushButton* cropBtn;
     QPushButton* cropCancelBtn;
     QImage currentImage;
+    QImage binImage;
     QPixmap croppedStrip;
 
     QString configFile;
+
+
 
     void loadSettings();
     void initThreshUI(QVector<int>);
@@ -85,6 +88,9 @@ private slots:
     //Display video frame in player UI
     void receiveProcessedFrame(QImage img);
 
+    // Display binary image after thresholding
+    void receiveBinFrame(QImage img);
+
     // Display O2 value in UI
     void receiveO2Value(QString content);
 
@@ -92,13 +98,16 @@ private slots:
     void receivePrompt(bool isOxygenCalculated);
 
     // Display "Strip Adjusted" label if cropped
-    void receiveStripAdjustedFlag();
+    void receiveStripAdjustedFlag(float);
 
     // Update curve parameters and curve type in settings (config) file
     void receiveUpdateCurveSettings(QVector<float>, QVector<float>, QString);
 
     // Update threshold value for hsv channels in settings (config) file
     void receiveUpdateThresholdSettings(QVector<int>);
+
+    // Update ratio value for config file
+    void receiveUpdateRatioSettings(float);
 
     // If video is finished, reset play button
 //    void receiveVideoFinished();
@@ -123,8 +132,7 @@ private slots:
     void on_horizontalSliderThresh_4_valueChanged(int value);
     void on_horizontalSliderThresh_5_valueChanged(int value);
     void on_horizontalSliderThresh_6_valueChanged(int value);
-    void on_pushButtonNext_clicked();
-    void on_pushButtonPrintO2_clicked();
+    void on_pushButtonThresholdSetting_clicked();
 };
 
 #endif // MAINWINDOW_H

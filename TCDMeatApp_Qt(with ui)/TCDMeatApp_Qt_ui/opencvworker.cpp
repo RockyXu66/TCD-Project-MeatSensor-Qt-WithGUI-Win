@@ -6,7 +6,7 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
 //    filename = "/Volumes/YINGHANUSB/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
 //    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch.mov";
 //    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT2_L-3)_withScratch_vibrate.mov";
-    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT3_R-1)_withScratch.mov";
+    filename = "D:/TCD Project (meatsensor)/Yinghan/Video/convey_dataset3(MT3_R-1)_withScratch.mp4";
 //    filename = "C:/Users/Soumyajyoti Maji/Videos/RECentral/Standard Environment2 Zoom6_Brightness4(20171205).mp4";
 //    filename = "D:/TCD Project (meatsensor)/TCD_MacMini/RECentral/1st/2017082111155957.mp4";
 
@@ -55,6 +55,8 @@ OpenCvWorker::~OpenCvWorker(){
     // Save threshold values to settings (config) file
     thresh = saveToQVector(strip.thresh);
     emit(sendUpdateThresholdSettings(thresh));
+    // Save ratio value to config file
+    emit(sendUpdateRatioSettings(ratioForComputingO2));
 
     webcam.release();
     mutex.lock();
@@ -132,8 +134,24 @@ void OpenCvWorker::run()
             img = QImage((const unsigned char*)(processedFrame.data),
                                  processedFrame.cols,processedFrame.rows,QImage::Format_Indexed8);
         }
+
+        if (binFrame.channels()== 3){
+            cv::cvtColor(binFrame, RGBBinframe, CV_BGR2RGB);
+            binImg = QImage((const unsigned char*)(RGBBinframe.data),
+                              RGBBinframe.cols,RGBBinframe.rows,QImage::Format_RGB888);
+        }
+        else
+        {
+            binImg = QImage((const unsigned char*)(binFrame.data),
+                                 binFrame.cols,binFrame.rows,QImage::Format_Indexed8);
+        }
         QString O2_qstr = QString::fromUtf8(O2_str.data(), O2_str.size());
         emit sendFrame(img);
+
+        if (isThreshPanelVisible) {
+            emit sendBinFrame(binImg);// send binary image
+        }
+
         emit sendO2Value(O2_qstr);
         emit sendPrompt(roiImg.empty());
         this->msleep(delay);
@@ -164,9 +182,16 @@ void OpenCvWorker::processFrame(){
     // Crop to interested part by user
     Mat croppedFrame = processedFrame(Rect(xLeft, 0, xRight-xLeft, frameHeight));
 
-    roiImg = strip.getROI(croppedFrame, colorspace, DEBUG, p1, p2);
+    roiImg = strip.getROI(croppedFrame, colorspace, DEBUG, p1, p2,
+                          boundingBoxP1, boundingBoxP2, ratioForComputingO2, ratioForROI, stripSize, binFrame);
     p1.x += xLeft;
-    p2.x += xLeft;    
+    p2.x += xLeft;
+    boundingBoxP1.x += xLeft;
+    boundingBoxP2.x += xLeft;
+
+    // Draw lines for the region of interest
+    line(processedFrame, Point(xLeft,0), Point(xLeft,frameHeight), Scalar(113, 117, 122), 3, LINE_8, 0);
+    line(processedFrame, Point(xRight,0), Point(xRight,frameHeight), Scalar(113, 117, 122), 3, LINE_8, 0);
 
     if(!roiImg.empty()){
         estimated = strip.avgHue(roiImg, colorspace);       // Get mean hue value
@@ -182,19 +207,27 @@ void OpenCvWorker::processFrame(){
         circle(processedFrame, (p1+p2)/2, 4, Scalar(255,255,255),CV_FILLED, 8,0);
     }
 
-    // Draw lines for the region of interest
-    line(processedFrame, Point(xLeft,0), Point(xLeft,frameHeight), Scalar(113, 117, 122), 2, LINE_8, 0);
-    line(processedFrame, Point(xRight,0), Point(xRight,frameHeight), Scalar(113, 117, 122), 2, LINE_8, 0);
+    // Draw bounding box on the frame
+    int boundingBoxArea = (boundingBoxP2.x - boundingBoxP1.x) * (boundingBoxP2.y - boundingBoxP1.y);
+    int frameArea = frame.cols * frame.rows;
+    if(boundingBoxArea > frameArea * 0.001) {
+        rectangle( processedFrame, boundingBoxP1, boundingBoxP2, Scalar( 255, 255, 255 ), 2 );
+    }
 }
 
-void OpenCvWorker::initThreshold(QVector<int> thresh){
+void OpenCvWorker::init(QVector<int> thresh, float ratioForComputingO2, float ratioForROI, float stripSize){
     strip.thresh[0] = thresh[0];
     strip.thresh[1] = thresh[1];
     strip.thresh[2] = thresh[2];
     strip.thresh[3] = thresh[3];
     strip.thresh[4] = thresh[4];
     strip.thresh[5] = thresh[5];
+
+    this->ratioForComputingO2 = ratioForComputingO2;
+    this->ratioForROI = ratioForROI;
+    this->stripSize = stripSize;
 }
+
 
 QVector<int> OpenCvWorker::saveToQVector(vector<int> input) {
     QVector<int> output;
@@ -232,11 +265,11 @@ void OpenCvWorker::receiveCurvePara(QVector<float> para, QString curve_type){
 }
 
 void OpenCvWorker::receiveCroppedStripArea(float area){
-    strip.stripArea = area;
+    stripSize = area;
 }
 
 void OpenCvWorker::receiveStripRatio(float r){
-    strip.ratio = r;
+    ratioForComputingO2 = r;
 }
 
 void OpenCvWorker::receiveThresholdValue(int value){

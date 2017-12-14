@@ -9,20 +9,12 @@ Mat img, foregroundMask, backgroundImage, foregroundImg;
 
 bool isComputing = false;   // Flag for whether we are computing oxygen value
 
-Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2){
+Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2,
+                  Point2f &boundingBoxP1, Point2f &boundingBoxP2, float ratio, float ratioForROI, float stripArea, Mat & binFrame){
 
     Mat iMat = img.clone();
 
     Mat gsMat, bwMat;   // Grayscale image & binary image
-
-    // boundary threshold for dataset3 fake video
-//    Scalar lowBound(50,45,50); // (1,45,175)===== (0, 45, 70)
-//    Scalar lowBound(30,30,30);   // lowbound for trial data
-//    Scalar lowBound(120,45,60);  // lowbound for recorded video
-//    Scalar upperb(180,255,255); // (180,255,255)
-
-//    Scalar lowerb(threshold, threshold_2, threshold_3);
-//    Scalar upperb(threshold_4, threshold_5, threshold_6);
 
     // boundary for MT3_R-1
 //    Scalar lowerb(125, 120, 100);
@@ -31,18 +23,21 @@ Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2
     Scalar lowerb(thresh[0], thresh[1], thresh[2]);
     Scalar upperb(thresh[3], thresh[4], thresh[5]);
 
-    // boundary threshold for RECentral video 2017082111155957.mp4
-//    Scalar lowBound(50, 47,90);
-//    Scalar upperBound(180, 255, 255);
-
     cvtColor(iMat, gsMat, COLOR_RGB2HSV);
     inRange(gsMat, lowerb, upperb, bwMat);
+
+    int dilation_size = 3;
+    Mat element = getStructuringElement( MORPH_CROSS,
+                                           Size( 2*dilation_size + 1, 2*dilation_size+1 ),
+                                           Point( dilation_size, dilation_size ) );
+    /// Apply the dilation and erasion operation
+    erode (bwMat, bwMat, element);
+    dilate( bwMat, bwMat, element );
     dilate(bwMat, bwMat, Mat());
 
 //    if(DEBUG==1){
 //        imshow("bwMat" ,bwMat);
 //    }
-
 
     vector<vector<Point> > contours;
     Mat hierarchy;
@@ -58,6 +53,13 @@ Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2
         }
     }
 
+    // Get bounding box
+    vector<Point>  contours_poly;
+    approxPolyDP( Mat(largestContour), contours_poly, 3, true );
+    Rect bd = boundingRect(Mat(contours_poly));
+    boundingBoxP1 = bd.tl();
+    boundingBoxP2 = bd.br();
+
     Moments M = moments(largestContour);
 
     int cX = (int) (M.m10 / M.m00);
@@ -71,7 +73,7 @@ Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2
     }
 
     // Set scalar according to the cropped strip area
-    scalar = sqrt(stripArea)*0.08;
+    scalar = sqrt(stripArea)*ratioForROI;
     int roi_x = (int) (cX - scalar);
     int roi_y = (int) (cY - scalar);
     int roi_width = (int) (scalar*2);
@@ -107,9 +109,9 @@ Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2
     Mat iCrop = Mat(iMat, roi);
 
     Mat result = iCrop;
-    if ((!result.empty()) && (DEBUG == 1) && isComputing) {
-        imshow("ROI", result);
-    }
+//    if ((!result.empty()) && (DEBUG == 1) && isComputing) {
+//        imshow("ROI", result);
+//    }
     Scalar yellow(0,255,255);
 
     Mat DMat;
@@ -117,13 +119,14 @@ Mat Strip::getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2
 
     vector<vector<Point> > draw = {largestContour};
 
-    // drawContours(DMat,contours,-1,yellow,5);
     drawContours(DMat,draw,-1,yellow,5);
 
-    if ((!DMat.empty()) && (DEBUG == 1)) {
-        namedWindow("Drawn", WINDOW_GUI_NORMAL);
-        imshow("Drawn",DMat);
-    }
+//    if ((!DMat.empty()) && (DEBUG == 1)) {
+//        namedWindow("Drawn", WINDOW_GUI_NORMAL);
+//        imshow("Drawn",DMat);
+//    }
+    // Pass image with contour to binFrame
+    binFrame = DMat;
 
     if(isComputing){
         return result;
@@ -205,18 +208,19 @@ float Strip::computeOxygen(float estimated, vector<float> parameters, string cur
         float c = parameters[2];
         float d = parameters[3];
 
-        const int N = 100;
-
+        const int N = 1000;
 
         float y_experimental[N];
-        for (int j = 1; j < (N + 1); j++) {
-            y_experimental[j - 1] = (float) (a * exp(b * j) + c * exp(d * j));
+        for (int i = 1; i < (N + 1); i++) {
+            float _i = float(i)/10.0f;
+            y_experimental[i - 1] = (float) (a * exp(b * _i) + c * exp(d * _i));
+//            y_experimental[i - 1] = (float) (a * exp(b * i) + c * exp(d * i));
         }
 
-        float slope_experimental[N-1];
-        for (int p = 0; p < (N-1); p++) {
-            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
-        }
+//        float slope_experimental[N-1];
+//        for (int p = 0; p < (N-1); p++) {
+//            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
+//        }
 
         // find edge values for curve
         float y_max_experimental = y_experimental[0];
@@ -238,31 +242,34 @@ float Strip::computeOxygen(float estimated, vector<float> parameters, string cur
         } else {
             for (int i = 1; i < N; i++) {
                 if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
-                    x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
+//                    x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
+                    x_estimated = i;
                 }
             }
+            x_estimated /= 10;
         }
     } else if (curveType == "Cubic") {
 //        Linear model Poly3:
 //        f(x) = p1*x^3 + p2*x^2 + p3*x + p4
 //        where x is normalized by mean and std
         float y_given = estimated;
-//        y_given = 0.202f;
         float a = parameters[0];
         float b = parameters[1];
         float c = parameters[2];
         float d = parameters[3];
 
-        const int N = 100;
+        const int N = 1000;
 
-        double std = 0;  // Standard deviation
-        double mean = 0;
+        float std = 0;  // Standard deviation
+        float mean = 0;
         for(int j=0; j<N; j++){
-            mean += j;
+            float _j = float(j)/10.0f;
+            mean += _j;
         }
         mean /= N;
         for(int j=0; j<N; j++){
-            std += pow((j - mean), 2);
+            float _j = float(j)/10.0f;
+            std += pow((_j - mean), 2);
         }
         std = sqrt(std/N);
 //        cout<<"mean: "<<mean<<endl;
@@ -270,14 +277,15 @@ float Strip::computeOxygen(float estimated, vector<float> parameters, string cur
 
         float y_experimental[N];
         for (int j = 1; j < (N + 1); j++) {
-            double x = (j - mean) / std;
+            float _j = float(j) / 10.0f;
+            float x = (_j - mean) / std;
             y_experimental[j - 1] = (float) (a*pow(x, 3) + b*pow(x, 2) + c*x + d);
         }
 
-        float slope_experimental[N-1];
-        for (int p = 0; p < (N-1); p++) {
-            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
-        }
+//        float slope_experimental[N-1];
+//        for (int p = 0; p < (N-1); p++) {
+//            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
+//        }
 
         // find edge values for curve
         float y_max_experimental = y_experimental[0];
@@ -299,19 +307,17 @@ float Strip::computeOxygen(float estimated, vector<float> parameters, string cur
         } else {
             for (int i = 1; i < N; i++) {
                 if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
-//                    int x = (i - mean) / std;
 //                    cout<<"i: "<<i<<endl;
-//                    x_estimated = x + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
-//                    cout<<"i: "<<i<<endl;
-//                    cout<<"plus: "<<(y_experimental[i-1] - y_given) / slope_experimental[i-1]<<endl;
-                    x_estimated = i;// + ((y_experimental[i-1] - y_given) / slope_experimental[i-1])*std + mean;
+                    x_estimated = i;
                 }
             }
 //             Revert back to original x
 //            x_estimated = x_estimated * std + mean;
+            x_estimated /= 10;
         }
-
-
+        // 65 > 70 > 70 > 40 > 5 > 20 > 15 > 60 > 60
+        // Original O2:
+        // 70 > 75 > 80 > 35 > 0 > 15 > 10 > 65 > 60
     }
 
 

@@ -48,8 +48,8 @@ public:
 
     int areaSpace = 0; // When the ROI is larger than this areaSpace, we will calculate the oxygen value
 
-    float stripArea = 5000; // Cropped strip area
-    float ratio = 0.8f;     // Ratio that used to determine if we need to compute the O2.
+//    float stripArea = 5000; // Cropped strip area
+//    float ratio = 0.8f;     // Ratio that used to determine if we need to compute the O2.
 
     // There are six threshold value in this vector.
     // The sequence is lowHue, lowSaturation, lowValue, highHue, highSaturation, highValue
@@ -79,7 +79,7 @@ public:
         return rightLine;
     }
 
-    Mat getROI(Mat img, int Colorspace, int DEBUG, Point2f & p1, Point2f & p2);
+    Mat getROI(Mat, int, int, Point2f &, Point2f &, Point2f &, Point2f &, float, float, float, Mat &);
 
     float avgHue(Mat img, int curveColorSpace);
 

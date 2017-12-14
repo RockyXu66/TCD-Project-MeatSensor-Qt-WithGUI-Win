@@ -17,19 +17,25 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFormLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QWidget>
+#include <QtWidgets/QPushButton>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_settingDialog
 {
 public:
+    QGridLayout *gridLayout;
     QDialogButtonBox *buttonBox;
+    QPushButton *pushButtonImportCurvePara;
     QLabel *label;
-    QWidget *layoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label_2;
+    QLineEdit *lineEditCurveFilePath;
     QFormLayout *formLayout;
     QLabel *label_setting_a;
     QLineEdit *lineEdit_setting_a;
@@ -45,69 +51,127 @@ public:
     {
         if (settingDialog->objectName().isEmpty())
             settingDialog->setObjectName(QStringLiteral("settingDialog"));
-        settingDialog->resize(415, 306);
+        settingDialog->resize(428, 232);
+        gridLayout = new QGridLayout(settingDialog);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
         buttonBox = new QDialogButtonBox(settingDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(30, 240, 341, 32));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
+        gridLayout->addWidget(buttonBox, 4, 0, 1, 2);
+
+        pushButtonImportCurvePara = new QPushButton(settingDialog);
+        pushButtonImportCurvePara->setObjectName(QStringLiteral("pushButtonImportCurvePara"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(pushButtonImportCurvePara->sizePolicy().hasHeightForWidth());
+        pushButtonImportCurvePara->setSizePolicy(sizePolicy);
+        pushButtonImportCurvePara->setMinimumSize(QSize(10, 5));
+
+        gridLayout->addWidget(pushButtonImportCurvePara, 3, 1, 1, 1);
+
         label = new QLabel(settingDialog);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(30, 40, 111, 31));
-        layoutWidget = new QWidget(settingDialog);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(60, 80, 281, 131));
-        formLayout = new QFormLayout(layoutWidget);
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy1);
+        QFont font;
+        font.setPointSize(10);
+        label->setFont(font);
+
+        gridLayout->addWidget(label, 1, 0, 1, 1);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        label_2 = new QLabel(settingDialog);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setFont(font);
+
+        horizontalLayout->addWidget(label_2);
+
+        lineEditCurveFilePath = new QLineEdit(settingDialog);
+        lineEditCurveFilePath->setObjectName(QStringLiteral("lineEditCurveFilePath"));
+
+        horizontalLayout->addWidget(lineEditCurveFilePath);
+
+
+        gridLayout->addLayout(horizontalLayout, 3, 0, 1, 1);
+
+        formLayout = new QFormLayout();
         formLayout->setObjectName(QStringLiteral("formLayout"));
-        formLayout->setContentsMargins(0, 0, 0, 0);
-        label_setting_a = new QLabel(layoutWidget);
+        label_setting_a = new QLabel(settingDialog);
         label_setting_a->setObjectName(QStringLiteral("label_setting_a"));
+        label_setting_a->setFont(font);
         label_setting_a->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(0, QFormLayout::LabelRole, label_setting_a);
 
-        lineEdit_setting_a = new QLineEdit(layoutWidget);
+        lineEdit_setting_a = new QLineEdit(settingDialog);
         lineEdit_setting_a->setObjectName(QStringLiteral("lineEdit_setting_a"));
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(40);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(lineEdit_setting_a->sizePolicy().hasHeightForWidth());
+        lineEdit_setting_a->setSizePolicy(sizePolicy2);
 
         formLayout->setWidget(0, QFormLayout::FieldRole, lineEdit_setting_a);
 
-        label_setting_b = new QLabel(layoutWidget);
+        label_setting_b = new QLabel(settingDialog);
         label_setting_b->setObjectName(QStringLiteral("label_setting_b"));
+        label_setting_b->setFont(font);
         label_setting_b->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(1, QFormLayout::LabelRole, label_setting_b);
 
-        lineEdit_setting_b = new QLineEdit(layoutWidget);
+        lineEdit_setting_b = new QLineEdit(settingDialog);
         lineEdit_setting_b->setObjectName(QStringLiteral("lineEdit_setting_b"));
+        sizePolicy2.setHeightForWidth(lineEdit_setting_b->sizePolicy().hasHeightForWidth());
+        lineEdit_setting_b->setSizePolicy(sizePolicy2);
 
         formLayout->setWidget(1, QFormLayout::FieldRole, lineEdit_setting_b);
 
-        label_setting_c = new QLabel(layoutWidget);
+        label_setting_c = new QLabel(settingDialog);
         label_setting_c->setObjectName(QStringLiteral("label_setting_c"));
+        label_setting_c->setFont(font);
         label_setting_c->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(2, QFormLayout::LabelRole, label_setting_c);
 
-        label_setting_d = new QLabel(layoutWidget);
+        label_setting_d = new QLabel(settingDialog);
         label_setting_d->setObjectName(QStringLiteral("label_setting_d"));
+        label_setting_d->setFont(font);
         label_setting_d->setAlignment(Qt::AlignCenter);
 
         formLayout->setWidget(3, QFormLayout::LabelRole, label_setting_d);
 
-        lineEdit_setting_d = new QLineEdit(layoutWidget);
+        lineEdit_setting_d = new QLineEdit(settingDialog);
         lineEdit_setting_d->setObjectName(QStringLiteral("lineEdit_setting_d"));
+        sizePolicy2.setHeightForWidth(lineEdit_setting_d->sizePolicy().hasHeightForWidth());
+        lineEdit_setting_d->setSizePolicy(sizePolicy2);
+        lineEdit_setting_d->setMinimumSize(QSize(40, 0));
 
         formLayout->setWidget(3, QFormLayout::FieldRole, lineEdit_setting_d);
 
-        lineEdit_setting_c = new QLineEdit(layoutWidget);
+        lineEdit_setting_c = new QLineEdit(settingDialog);
         lineEdit_setting_c->setObjectName(QStringLiteral("lineEdit_setting_c"));
+        sizePolicy2.setHeightForWidth(lineEdit_setting_c->sizePolicy().hasHeightForWidth());
+        lineEdit_setting_c->setSizePolicy(sizePolicy2);
 
         formLayout->setWidget(2, QFormLayout::FieldRole, lineEdit_setting_c);
 
+
+        gridLayout->addLayout(formLayout, 2, 0, 1, 1);
+
         comboBoxCurveType = new QComboBox(settingDialog);
         comboBoxCurveType->setObjectName(QStringLiteral("comboBoxCurveType"));
-        comboBoxCurveType->setGeometry(QRect(30, 10, 101, 22));
         comboBoxCurveType->setEditable(false);
+
+        gridLayout->addWidget(comboBoxCurveType, 1, 1, 1, 1);
+
 
         retranslateUi(settingDialog);
         QObject::connect(buttonBox, SIGNAL(accepted()), settingDialog, SLOT(accept()));
@@ -119,7 +183,9 @@ public:
     void retranslateUi(QDialog *settingDialog)
     {
         settingDialog->setWindowTitle(QApplication::translate("settingDialog", "Setting", Q_NULLPTR));
+        pushButtonImportCurvePara->setText(QApplication::translate("settingDialog", "Import", Q_NULLPTR));
         label->setText(QApplication::translate("settingDialog", "Curve Parameters", Q_NULLPTR));
+        label_2->setText(QApplication::translate("settingDialog", "Curve file path:", Q_NULLPTR));
         label_setting_a->setText(QApplication::translate("settingDialog", "a", Q_NULLPTR));
         label_setting_b->setText(QApplication::translate("settingDialog", "b", Q_NULLPTR));
         label_setting_c->setText(QApplication::translate("settingDialog", "c", Q_NULLPTR));

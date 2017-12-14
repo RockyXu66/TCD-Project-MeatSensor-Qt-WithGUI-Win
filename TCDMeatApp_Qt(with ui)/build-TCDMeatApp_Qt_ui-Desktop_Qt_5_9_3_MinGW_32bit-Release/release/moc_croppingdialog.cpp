@@ -61,16 +61,16 @@ static const uint qt_meta_data_CroppingDialog[] = {
 
  // signals: name, argc, parameters, tag, flags
        1,    1,   39,    2, 0x06 /* Public */,
-       3,    0,   42,    2, 0x06 /* Public */,
+       3,    1,   42,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       4,    1,   43,    2, 0x08 /* Private */,
-       5,    0,   46,    2, 0x08 /* Private */,
-       6,    0,   47,    2, 0x08 /* Private */,
+       4,    1,   45,    2, 0x08 /* Private */,
+       5,    0,   48,    2, 0x08 /* Private */,
+       6,    0,   49,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Float,    2,
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::Float,    2,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QImage,    2,
@@ -87,7 +87,7 @@ void CroppingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->sendCroppedStripArea((*reinterpret_cast< float(*)>(_a[1]))); break;
-        case 1: _t->sendStripAdjustedFlag(); break;
+        case 1: _t->sendStripAdjustedFlag((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 2: _t->receiveCroppingImage((*reinterpret_cast< QImage(*)>(_a[1]))); break;
         case 3: _t->closeCropWidget(); break;
         case 4: _t->crop(); break;
@@ -103,7 +103,7 @@ void CroppingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
             }
         }
         {
-            typedef void (CroppingDialog::*_t)();
+            typedef void (CroppingDialog::*_t)(float );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CroppingDialog::sendStripAdjustedFlag)) {
                 *result = 1;
                 return;
@@ -156,9 +156,10 @@ void CroppingDialog::sendCroppedStripArea(float _t1)
 }
 
 // SIGNAL 1
-void CroppingDialog::sendStripAdjustedFlag()
+void CroppingDialog::sendStripAdjustedFlag(float _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

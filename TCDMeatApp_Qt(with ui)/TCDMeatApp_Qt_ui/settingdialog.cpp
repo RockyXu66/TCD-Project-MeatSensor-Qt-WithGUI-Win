@@ -74,3 +74,18 @@ void settingDialog::setCurveParameters(QVector<float> para){
     ui->lineEdit_setting_c->setText(QString::number(para[2]));
     ui->lineEdit_setting_d->setText(QString::number(para[3]));
 }
+
+void settingDialog::on_pushButtonImportCurvePara_clicked()
+{
+    QFile file("D:/TCD Project (meatsensor)/Yinghan/MT3_R-1/exp_parameters.txt");
+   if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+       return;
+
+   QTextStream in(&file);
+   while (!in.atEnd()) {
+       QString line = in.readLine();
+       qDebug()<<"line: "<<line;
+//       string a = line.toLocal8Bit().constData();
+//       line.
+   }
+}

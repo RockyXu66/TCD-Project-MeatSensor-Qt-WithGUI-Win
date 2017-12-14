@@ -16,9 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     configFile = "D:\\TCD Project (meatsensor)\\Yinghan\\Qt_windows10\\TCDMeatApp_Qt(with ui)\\MeatSensorSettings.ini";
 
 
-
-
     connect(worker, SIGNAL(sendFrame(QImage)), this, SLOT(receiveProcessedFrame(QImage)));
+    connect(worker, SIGNAL(sendBinFrame(QImage)), this, SLOT(receiveBinFrame(QImage)));
     connect(worker, SIGNAL(sendVideoFinished()), this, SLOT(on_pushButtonPlay_clicked()));
     connect(worker, SIGNAL(sendO2Value(QString)), this, SLOT(receiveO2Value(QString)));
     connect(worker, SIGNAL(sendPrompt(bool)), this, SLOT(receivePrompt(bool)));
@@ -31,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(this, SIGNAL(sendCurrentImage(QImage)), cropping_dialog, SLOT(receiveCroppingImage(QImage)));
     connect(cropping_dialog, SIGNAL(sendCroppedStripArea(float)), worker, SLOT(receiveCroppedStripArea(float)));
-    connect(cropping_dialog, SIGNAL(sendStripAdjustedFlag()), this, SLOT(receiveStripAdjustedFlag()));
+    connect(cropping_dialog, SIGNAL(sendStripAdjustedFlag(float)), this, SLOT(receiveStripAdjustedFlag(float)));
     connect(this, SIGNAL(sendStripRatio(float)), worker, SLOT(receiveStripRatio(float)));
     connect(this, SIGNAL(sendThresholdValue(int)), worker, SLOT(receiveThresholdValue(int)));
     connect(this, SIGNAL(sendThresholdValue_2(int)), worker, SLOT(receiveThresholdValue_2(int)));
@@ -40,21 +39,21 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendThresholdValue_5(int)), worker, SLOT(receiveThresholdValue_5(int)));
     connect(this, SIGNAL(sendThresholdValue_6(int)), worker, SLOT(receiveThresholdValue_6(int)));
     connect(worker, SIGNAL(sendUpdateThresholdSettings(QVector<int>)), this, SLOT(receiveUpdateThresholdSettings(QVector<int>)));
+    connect(worker, SIGNAL(sendUpdateRatioSettings(float)), this, SLOT(receiveUpdateRatioSettings(float)));
 
     connect(this, SIGNAL(sendNextFlag()), worker, SLOT(receiveNextFlag()));
     connect(this, SIGNAL(sendPrintO2()), worker, SLOT(receivePrintO2()));
 
     // Set up ui at last after initialized
     ui->setupUi(this);
+    // Hide threshold setting panel
+    on_pushButtonThresholdSetting_clicked();
 
+    // Load config file settings into application
     loadSettings();
 
 
-//    if (!worker->initialImg.isNull())
-//    {
-////        ui->labelWebcam->setAlignment(Qt::AlignCenter);
-//        ui->labelWebcam->setPixmap(QPixmap::fromImage(worker->initialImg).scaled(ui->labelWebcam->size() ,Qt::KeepAspectRatio, Qt::FastTransformation));
-//    }
+
 
 }
 
@@ -63,15 +62,6 @@ void MainWindow::loadSettings()
 //    QCoreApplication::setOrganizationName("TCD");
 //    QCoreApplication::setOrganizationDomain("TCD.com");
 //    QCoreApplication::setApplicationName("MeatSensor");
-
-////    settings.setValue("p1", "-0.004172");
-
-//    QString sText = settings.value("text").toString();
-//    float p1 = settings.value("p1").toFloat();
-//    cout<<"Test text: "<<sText.toLocal8Bit().constData()<<endl;
-//    cout<<"float: "<<p1<<endl;
-////    cout<<"applicationDirPath: "<<QCoreApplication::applicationDirPath().toLocal8Bit().constData()<<endl;
-////    settings.setValue("text", "12345");
 
     QSettings settings(configFile, QSettings::IniFormat);
 
@@ -90,6 +80,16 @@ void MainWindow::loadSettings()
     int thresh_HS = settings.value("thresh_HighSaturation", "255").toInt();
     int thresh_LV = settings.value("thresh_LowValue", "71").toInt();
     int thresh_HV = settings.value("thresh_HighValue", "255").toInt();
+
+    float ratio_IsComputingO2 = settings.value("ratioForComputingO2", "0.5").toFloat();
+    if (ratio_IsComputingO2 < 0) {
+        ratio_IsComputingO2 = 0;
+    } else if (ratio_IsComputingO2 > 1) {
+        ratio_IsComputingO2 = 1;
+    }
+    float ratio_ROI = settings.value("ratioForROI", "0.08").toFloat();
+
+    float stripSize = settings.value("stripSize", "50000").toFloat();
 
     worker->curveType = curveType;
 
@@ -122,8 +122,9 @@ void MainWindow::loadSettings()
     thresh.append(thresh_HH);
     thresh.append(thresh_HS);
     thresh.append(thresh_HV);
-    worker->initThreshold(thresh);
+    worker->init(thresh, ratio_IsComputingO2, ratio_ROI, stripSize);
     initThreshUI(thresh);
+    ui->lineEditRatio->setText(QString::number(ratio_IsComputingO2));
 }
 
 void MainWindow::initThreshUI(QVector<int> thresh) {
@@ -142,10 +143,6 @@ void MainWindow::initThreshUI(QVector<int> thresh) {
     ui->horizontalSliderThresh_6->setValue(thresh[5]);
 }
 
-//void MainWindow::updateThresholdSettings(QVector<int> thresh) {
-
-//}
-
 void MainWindow::receiveProcessedFrame(QImage img)
 {
     currentImage = img;
@@ -153,6 +150,16 @@ void MainWindow::receiveProcessedFrame(QImage img)
     {
         ui->labelWebcam->setAlignment(Qt::AlignCenter);
         ui->labelWebcam->setPixmap(QPixmap::fromImage(img).scaled(ui->labelWebcam->size()
+                                           ,Qt::KeepAspectRatio, Qt::FastTransformation));
+    }
+}
+
+void MainWindow::receiveBinFrame(QImage img)
+{
+    binImage = img;
+    if(!img.isNull()){
+        ui->labelBinaryImage->setAlignment(Qt::AlignCenter);
+        ui->labelBinaryImage->setPixmap(QPixmap::fromImage(img).scaled(ui->labelBinaryImage->size()
                                            ,Qt::KeepAspectRatio, Qt::FastTransformation));
     }
 }
@@ -172,9 +179,12 @@ void MainWindow::receivePrompt(bool isOxygenCalculated){
     }
 }
 
-void MainWindow::receiveStripAdjustedFlag(){
+void MainWindow::receiveStripAdjustedFlag(float stripSize){
     ui->labelStripAdjusted->setStyleSheet("QLabel { color : black; }");
     ui->labelStripAdjusted->setText("Strip Adjusted");
+    // Save strip size to config file
+    QSettings settings(configFile, QSettings::IniFormat);
+    settings.setValue("stripSize", QString::number(stripSize));
 }
 
 void MainWindow::receiveUpdateCurveSettings(QVector<float> exp_para, QVector<float> cubic_para, QString curveType){
@@ -204,6 +214,12 @@ void MainWindow::receiveUpdateThresholdSettings(QVector<int> thresh) {
     settings.setValue("thresh_HighValue", QString::number(thresh[5]));
 }
 
+void MainWindow::receiveUpdateRatioSettings(float ratioForComputingO2) {
+    QSettings settings(configFile, QSettings::IniFormat);
+
+    settings.setValue("ratioForComputingO2", QString::number(ratioForComputingO2));
+}
+
 void MainWindow::on_pushButtonLoad_clicked(){
     // Stop the video if the dialog is open
     worker->Stop();
@@ -230,11 +246,11 @@ void MainWindow::on_pushButtonPlay_clicked()
     if (worker->isStopped())
     {
         worker->Play();
-        ui->pushButtonPlay->setText(tr("Pause"));
+        ui->pushButtonPlay->setText("Pause");
     }else
     {
         worker->Stop();
-        ui->pushButtonPlay->setText(tr("Play"));
+        ui->pushButtonPlay->setText("Play");
     }
 }
 
@@ -242,11 +258,11 @@ void MainWindow::on_horizontalSliderLeftArea_valueChanged(int num){
 //    cout<<num<<endl;
     emit sendLeftAreaValue(num);
 }
+
 void MainWindow::on_horizontalSliderRightArea_valueChanged(int num){
 //    cout<<num<<endl;
     emit sendRightAreaValue(num);
 }
-
 
 MainWindow::~MainWindow()
 {
@@ -288,12 +304,16 @@ void MainWindow::on_pushButtonCrop_clicked()
 {
     // Stop the video if the dialog is open
     worker->Stop();
-    ui->pushButtonPlay->setText(tr("Play"));
+    ui->pushButtonPlay->setText("Play");
 
-    // If there is no image loaded, show a warning dialog
+    // If there is no image loaded, Popup
     if(currentImage.isNull()){
-        croppingHint_dialog->setModal(true);
-        croppingHint_dialog->exec();
+//        croppingHint_dialog->setModal(true);
+//        croppingHint_dialog->exec();
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Notification");
+        msgBox.setText("No frame found. Please play the video or open the webcam first.");
+        msgBox.exec();
         return;
     }
 
@@ -329,6 +349,7 @@ void MainWindow::on_horizontalSliderThresh_3_valueChanged(int value)
     ui->label_VL->setText(QString::number(value));
     emit(sendThresholdValue_3(value));
 }
+
 void MainWindow::on_horizontalSliderThresh_4_valueChanged(int value)
 {
     ui->label_HH->setText(QString::number(value));
@@ -347,12 +368,30 @@ void MainWindow::on_horizontalSliderThresh_6_valueChanged(int value)
     emit(sendThresholdValue_6(value));
 }
 
-void MainWindow::on_pushButtonNext_clicked()
+void MainWindow::on_pushButtonThresholdSetting_clicked()
 {
-    emit(sendNextFlag());
+    if (worker->isThreshPanelVisible) {
+        int num = ui->gridLayout->count();
+        for (int i = 0; i < num; i++) {
+            ui->gridLayout->itemAt(i)->widget()->hide();
+        }
+        for (int i = 0; i < ui->horizontalLayout_2->count(); i++) {
+            ui->horizontalLayout_2->itemAt(i)->widget()->show();
+        }
+        ui->labelBinaryImage->hide();
+        ui->pushButtonThresholdSetting->setText("Show threshold panel");
+        worker->isThreshPanelVisible = false;
+    } else {
+        int num = ui->gridLayout->count();
+        for (int i = 0; i < num; i++) {
+            ui->gridLayout->itemAt(i)->widget()->show();
+        }
+        for (int i = 0; i < ui->horizontalLayout_2->count(); i++) {
+            ui->horizontalLayout_2->itemAt(i)->widget()->hide();
+        }
+        ui->labelBinaryImage->show();
+        ui->pushButtonThresholdSetting->setText("Hide threshold panel");
+        worker->isThreshPanelVisible = true;
+    }
 }
 
-void MainWindow::on_pushButtonPrintO2_clicked()
-{
-    emit(sendPrintO2());
-}

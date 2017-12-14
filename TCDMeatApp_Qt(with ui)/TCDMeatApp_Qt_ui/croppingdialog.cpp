@@ -54,9 +54,9 @@ void CroppingDialog::crop(){
 //    cout<<"height: "<<croppedStrip.size().height()<<endl;
 //    cout<<"whole width: "<<currentImg.size().width()<<endl;
 //    cout<<"whole height: "<<currentImg.size().height()<<endl;
-    float croppedStripArea = croppedStrip.size().width() * croppedStrip.size().height();
-    emit(sendCroppedStripArea(croppedStripArea));
-    emit(sendStripAdjustedFlag());
+    float croppedStripSize = croppedStrip.size().width() * croppedStrip.size().height();
+    emit(sendCroppedStripArea(croppedStripSize));
+    emit(sendStripAdjustedFlag(croppedStripSize));
     closeCropWidget();
 }
 

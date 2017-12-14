@@ -28,11 +28,13 @@ private:
     QMutex mutex;
     QWaitCondition condition;
     Mat processedFrame;
+    Mat binFrame;   // binary image after thresholded
     Mat frame;
     int frameRate;
     VideoCapture cap;
-    Mat RGBframe;
+    Mat RGBframe, RGBBinframe;
     QImage img;
+    QImage binImg;
     string filename;
 
     // Variables used in Crop Strip function
@@ -59,6 +61,7 @@ private:
 
     Point2f p1;     // left top point for roi in original frame
     Point2f p2;     // right bottom point for roi in original frame
+    Point2f boundingBoxP1, boundingBoxP2;
 
     Mat panelMat;    // Create panel for text
     // ------------------------------meat sensor parameters end-------------------------------------
@@ -69,6 +72,9 @@ private:
     vector<string> paths;
 
     QVector<int> thresh;
+
+    float ratioForComputingO2, ratioForROI;
+    float stripSize;
 
 public:
     explicit OpenCvWorker(QObject *parent = nullptr);
@@ -86,6 +92,8 @@ public:
     QVector<float> exp_para;
     QVector<float> cubic_para;
 
+    bool isThreshPanelVisible = true;
+
     //Load a video from memory
     bool loadVideo(String filename);
 
@@ -98,7 +106,7 @@ public:
     //check if the player has been stopped
     bool isStopped() const;
 
-    void initThreshold(QVector<int>);
+    void init(QVector<int>, float, float, float);
 
     QVector<int> saveToQVector(vector<int>);
 
@@ -116,6 +124,9 @@ signals:
     //Signal to output frame to be displayed
     void sendFrame(const QImage &frameProcessed);
 
+    // send binary image after thresholding
+    void sendBinFrame(const QImage &binFrame);
+
     // If video is finished, restart the video
     void sendVideoFinished();
 
@@ -130,6 +141,9 @@ signals:
 
     // Update threshold value for hsv channels in settings (config) file
     void sendUpdateThresholdSettings(QVector<int>);
+
+    // Update ratio value in config file
+    void sendUpdateRatioSettings(float);
 
 private slots:
     void receiveLeftArea(int num);

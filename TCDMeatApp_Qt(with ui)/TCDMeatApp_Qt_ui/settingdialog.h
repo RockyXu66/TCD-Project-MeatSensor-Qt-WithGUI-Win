@@ -3,6 +3,9 @@
 
 #include <QDialog>
 #include <iostream>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
 
 using namespace std;
 
@@ -26,6 +29,8 @@ private slots:
     void receiveUpdateCurvePara(QVector<float>,QVector<float>,QString);
 
     void on_comboBoxCurveType_currentIndexChanged(const QString &arg1);
+
+    void on_pushButtonImportCurvePara_clicked();
 
 private:
     Ui::settingDialog *ui;

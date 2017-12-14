@@ -23,7 +23,7 @@ public:
     ~CroppingDialog();
 signals:
     void sendCroppedStripArea(float);
-    void sendStripAdjustedFlag();
+    void sendStripAdjustedFlag(float);
 
 private slots:
     void receiveCroppingImage(QImage);
