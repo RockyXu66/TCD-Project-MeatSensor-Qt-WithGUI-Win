@@ -85,7 +85,7 @@ public:
 
     float* getParameters(int colorspace, int method, int sensor);
 
-    float computeOxygen(float estimated, vector<float> parameters, string curveType);
+    float computeOxygen(float estimated, vector<double> parameters, string curveType);
 
     string formate(float O2);
 private:

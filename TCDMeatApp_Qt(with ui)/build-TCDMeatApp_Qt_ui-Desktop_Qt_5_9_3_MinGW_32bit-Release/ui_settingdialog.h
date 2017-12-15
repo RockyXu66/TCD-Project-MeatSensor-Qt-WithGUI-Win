@@ -30,60 +30,52 @@ class Ui_settingDialog
 {
 public:
     QGridLayout *gridLayout;
-    QDialogButtonBox *buttonBox;
-    QPushButton *pushButtonImportCurvePara;
-    QLabel *label;
+    QLabel *labelCurveEquation;
+    QComboBox *comboBoxCurveType;
     QHBoxLayout *horizontalLayout;
     QLabel *label_2;
     QLineEdit *lineEditCurveFilePath;
+    QPushButton *pushButtonImportCurvePara;
     QFormLayout *formLayout;
     QLabel *label_setting_a;
     QLineEdit *lineEdit_setting_a;
     QLabel *label_setting_b;
     QLineEdit *lineEdit_setting_b;
     QLabel *label_setting_c;
+    QLineEdit *lineEdit_setting_c;
     QLabel *label_setting_d;
     QLineEdit *lineEdit_setting_d;
-    QLineEdit *lineEdit_setting_c;
-    QComboBox *comboBoxCurveType;
+    QLabel *label_setting_e;
+    QLineEdit *lineEdit_setting_e;
+    QLabel *label_setting_f;
+    QLineEdit *lineEdit_setting_f;
+    QDialogButtonBox *buttonBox;
 
     void setupUi(QDialog *settingDialog)
     {
         if (settingDialog->objectName().isEmpty())
             settingDialog->setObjectName(QStringLiteral("settingDialog"));
-        settingDialog->resize(428, 232);
+        settingDialog->resize(745, 268);
         gridLayout = new QGridLayout(settingDialog);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        buttonBox = new QDialogButtonBox(settingDialog);
-        buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setOrientation(Qt::Horizontal);
-        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
-
-        gridLayout->addWidget(buttonBox, 4, 0, 1, 2);
-
-        pushButtonImportCurvePara = new QPushButton(settingDialog);
-        pushButtonImportCurvePara->setObjectName(QStringLiteral("pushButtonImportCurvePara"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        labelCurveEquation = new QLabel(settingDialog);
+        labelCurveEquation->setObjectName(QStringLiteral("labelCurveEquation"));
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(pushButtonImportCurvePara->sizePolicy().hasHeightForWidth());
-        pushButtonImportCurvePara->setSizePolicy(sizePolicy);
-        pushButtonImportCurvePara->setMinimumSize(QSize(10, 5));
-
-        gridLayout->addWidget(pushButtonImportCurvePara, 3, 1, 1, 1);
-
-        label = new QLabel(settingDialog);
-        label->setObjectName(QStringLiteral("label"));
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy1);
+        sizePolicy.setHeightForWidth(labelCurveEquation->sizePolicy().hasHeightForWidth());
+        labelCurveEquation->setSizePolicy(sizePolicy);
         QFont font;
         font.setPointSize(10);
-        label->setFont(font);
+        labelCurveEquation->setFont(font);
 
-        gridLayout->addWidget(label, 1, 0, 1, 1);
+        gridLayout->addWidget(labelCurveEquation, 0, 0, 1, 1);
+
+        comboBoxCurveType = new QComboBox(settingDialog);
+        comboBoxCurveType->setObjectName(QStringLiteral("comboBoxCurveType"));
+        comboBoxCurveType->setEditable(false);
+
+        gridLayout->addWidget(comboBoxCurveType, 0, 1, 1, 1);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
@@ -99,10 +91,22 @@ public:
         horizontalLayout->addWidget(lineEditCurveFilePath);
 
 
-        gridLayout->addLayout(horizontalLayout, 3, 0, 1, 1);
+        gridLayout->addLayout(horizontalLayout, 2, 0, 1, 1);
+
+        pushButtonImportCurvePara = new QPushButton(settingDialog);
+        pushButtonImportCurvePara->setObjectName(QStringLiteral("pushButtonImportCurvePara"));
+        QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(pushButtonImportCurvePara->sizePolicy().hasHeightForWidth());
+        pushButtonImportCurvePara->setSizePolicy(sizePolicy1);
+        pushButtonImportCurvePara->setMinimumSize(QSize(10, 5));
+
+        gridLayout->addWidget(pushButtonImportCurvePara, 2, 1, 1, 1);
 
         formLayout = new QFormLayout();
         formLayout->setObjectName(QStringLiteral("formLayout"));
+        formLayout->setContentsMargins(250, -1, 250, -1);
         label_setting_a = new QLabel(settingDialog);
         label_setting_a->setObjectName(QStringLiteral("label_setting_a"));
         label_setting_a->setFont(font);
@@ -141,6 +145,13 @@ public:
 
         formLayout->setWidget(2, QFormLayout::LabelRole, label_setting_c);
 
+        lineEdit_setting_c = new QLineEdit(settingDialog);
+        lineEdit_setting_c->setObjectName(QStringLiteral("lineEdit_setting_c"));
+        sizePolicy2.setHeightForWidth(lineEdit_setting_c->sizePolicy().hasHeightForWidth());
+        lineEdit_setting_c->setSizePolicy(sizePolicy2);
+
+        formLayout->setWidget(2, QFormLayout::FieldRole, lineEdit_setting_c);
+
         label_setting_d = new QLabel(settingDialog);
         label_setting_d->setObjectName(QStringLiteral("label_setting_d"));
         label_setting_d->setFont(font);
@@ -156,21 +167,45 @@ public:
 
         formLayout->setWidget(3, QFormLayout::FieldRole, lineEdit_setting_d);
 
-        lineEdit_setting_c = new QLineEdit(settingDialog);
-        lineEdit_setting_c->setObjectName(QStringLiteral("lineEdit_setting_c"));
-        sizePolicy2.setHeightForWidth(lineEdit_setting_c->sizePolicy().hasHeightForWidth());
-        lineEdit_setting_c->setSizePolicy(sizePolicy2);
+        label_setting_e = new QLabel(settingDialog);
+        label_setting_e->setObjectName(QStringLiteral("label_setting_e"));
+        label_setting_e->setFont(font);
+        label_setting_e->setAlignment(Qt::AlignCenter);
 
-        formLayout->setWidget(2, QFormLayout::FieldRole, lineEdit_setting_c);
+        formLayout->setWidget(4, QFormLayout::LabelRole, label_setting_e);
+
+        lineEdit_setting_e = new QLineEdit(settingDialog);
+        lineEdit_setting_e->setObjectName(QStringLiteral("lineEdit_setting_e"));
+        sizePolicy2.setHeightForWidth(lineEdit_setting_e->sizePolicy().hasHeightForWidth());
+        lineEdit_setting_e->setSizePolicy(sizePolicy2);
+        lineEdit_setting_e->setMinimumSize(QSize(40, 0));
+
+        formLayout->setWidget(4, QFormLayout::FieldRole, lineEdit_setting_e);
+
+        label_setting_f = new QLabel(settingDialog);
+        label_setting_f->setObjectName(QStringLiteral("label_setting_f"));
+        label_setting_f->setFont(font);
+        label_setting_f->setAlignment(Qt::AlignCenter);
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, label_setting_f);
+
+        lineEdit_setting_f = new QLineEdit(settingDialog);
+        lineEdit_setting_f->setObjectName(QStringLiteral("lineEdit_setting_f"));
+        sizePolicy2.setHeightForWidth(lineEdit_setting_f->sizePolicy().hasHeightForWidth());
+        lineEdit_setting_f->setSizePolicy(sizePolicy2);
+        lineEdit_setting_f->setMinimumSize(QSize(40, 0));
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, lineEdit_setting_f);
 
 
-        gridLayout->addLayout(formLayout, 2, 0, 1, 1);
+        gridLayout->addLayout(formLayout, 1, 0, 1, 1);
 
-        comboBoxCurveType = new QComboBox(settingDialog);
-        comboBoxCurveType->setObjectName(QStringLiteral("comboBoxCurveType"));
-        comboBoxCurveType->setEditable(false);
+        buttonBox = new QDialogButtonBox(settingDialog);
+        buttonBox->setObjectName(QStringLiteral("buttonBox"));
+        buttonBox->setOrientation(Qt::Horizontal);
+        buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
-        gridLayout->addWidget(comboBoxCurveType, 1, 1, 1, 1);
+        gridLayout->addWidget(buttonBox, 3, 0, 1, 1);
 
 
         retranslateUi(settingDialog);
@@ -183,14 +218,16 @@ public:
     void retranslateUi(QDialog *settingDialog)
     {
         settingDialog->setWindowTitle(QApplication::translate("settingDialog", "Setting", Q_NULLPTR));
-        pushButtonImportCurvePara->setText(QApplication::translate("settingDialog", "Import", Q_NULLPTR));
-        label->setText(QApplication::translate("settingDialog", "Curve Parameters", Q_NULLPTR));
+        labelCurveEquation->setText(QApplication::translate("settingDialog", "Curve Equations: ", Q_NULLPTR));
+        comboBoxCurveType->setCurrentText(QString());
         label_2->setText(QApplication::translate("settingDialog", "Curve file path", Q_NULLPTR));
+        pushButtonImportCurvePara->setText(QApplication::translate("settingDialog", "Import", Q_NULLPTR));
         label_setting_a->setText(QApplication::translate("settingDialog", "a", Q_NULLPTR));
         label_setting_b->setText(QApplication::translate("settingDialog", "b", Q_NULLPTR));
         label_setting_c->setText(QApplication::translate("settingDialog", "c", Q_NULLPTR));
         label_setting_d->setText(QApplication::translate("settingDialog", "d", Q_NULLPTR));
-        comboBoxCurveType->setCurrentText(QString());
+        label_setting_e->setText(QApplication::translate("settingDialog", "e", Q_NULLPTR));
+        label_setting_f->setText(QApplication::translate("settingDialog", "f", Q_NULLPTR));
     } // retranslateUi
 
 };

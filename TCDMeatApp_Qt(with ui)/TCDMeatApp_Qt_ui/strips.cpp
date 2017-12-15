@@ -197,128 +197,93 @@ float Strip::avgHue(Mat img, int curveColorSpace)
     return average; // mean hue
 }
 
-float Strip::computeOxygen(float estimated, vector<float> parameters, string curveType) {
+float Strip::computeOxygen(float estimated, vector<double> parameters, string curveType) {
 
     float x_estimated = 0; // computed oxygen concentration
 
-    if(curveType == "Exponential"){
-        float y_given = estimated;
-        float a = parameters[0];
-        float b = parameters[1];
-        float c = parameters[2];
-        float d = parameters[3];
+    const int N = 100;
+    float y_given = estimated;
+    double y_experimental[N];
+    double slope_experimental[N-1];
 
-        const int N = 1000;
-
-        float y_experimental[N];
+    if (curveType == "Exponential2") {
+        double a = parameters[0];
+        double b = parameters[1];
+        double c = parameters[2];
+        double d = parameters[3];
         for (int i = 1; i < (N + 1); i++) {
-            float _i = float(i)/10.0f;
-            y_experimental[i - 1] = (float) (a * exp(b * _i) + c * exp(d * _i));
-//            y_experimental[i - 1] = (float) (a * exp(b * i) + c * exp(d * i));
-        }
-
-//        float slope_experimental[N-1];
-//        for (int p = 0; p < (N-1); p++) {
-//            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
-//        }
-
-        // find edge values for curve
-        float y_max_experimental = y_experimental[0];
-        float y_min_experimental = y_experimental[0];
-        for (int i = 1; i < N; i++) {
-            if(y_experimental[i] > y_max_experimental) {
-                y_max_experimental = y_experimental[i];
-            } else if (y_experimental[i] < y_min_experimental) {
-                y_min_experimental = y_experimental[i];
-            }
-        }
-//        cout<<"edges: "<<y_min_experimental<<" "<<y_max_experimental<<endl;
-//        cout<<"y_given: "<<y_given<<endl;
-
-        if (y_given > y_max_experimental) {
-            x_estimated = 0;
-        } else if (y_given < y_min_experimental) {
-            x_estimated = 100;
-        } else {
-            for (int i = 1; i < N; i++) {
-                if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
-//                    x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
-                    x_estimated = i;
-                }
-            }
-            x_estimated /= 10;
+            y_experimental[i - 1] = (double) (a * exp(b * i) + c * exp(d * i));
         }
     } else if (curveType == "Cubic") {
-//        Linear model Poly3:
-//        f(x) = p1*x^3 + p2*x^2 + p3*x + p4
-//        where x is normalized by mean and std
-        float y_given = estimated;
-        float a = parameters[0];
-        float b = parameters[1];
-        float c = parameters[2];
-        float d = parameters[3];
-
-        const int N = 1000;
-
-        float std = 0;  // Standard deviation
-        float mean = 0;
-        for(int j=0; j<N; j++){
-            float _j = float(j)/10.0f;
-            mean += _j;
-        }
-        mean /= N;
-        for(int j=0; j<N; j++){
-            float _j = float(j)/10.0f;
-            std += pow((_j - mean), 2);
-        }
-        std = sqrt(std/N);
-//        cout<<"mean: "<<mean<<endl;
-//        cout<<"std: "<<std<<endl;
-
-        float y_experimental[N];
+        double p1 = parameters[0];
+        double p2 = parameters[1];
+        double p3 = parameters[2];
+        double p4 = parameters[3];
         for (int j = 1; j < (N + 1); j++) {
-            float _j = float(j) / 10.0f;
-            float x = (_j - mean) / std;
-            y_experimental[j - 1] = (float) (a*pow(x, 3) + b*pow(x, 2) + c*x + d);
+            y_experimental[j - 1] = (float) (p1*pow(j, 3) + p2*pow(j, 2) + p3*j + p4);
         }
-
-//        float slope_experimental[N-1];
-//        for (int p = 0; p < (N-1); p++) {
-//            slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
-//        }
-
-        // find edge values for curve
-        float y_max_experimental = y_experimental[0];
-        float y_min_experimental = y_experimental[0];
-        for (int i = 1; i < N; i++) {
-            if(y_experimental[i] > y_max_experimental) {
-                y_max_experimental = y_experimental[i];
-            } else if (y_experimental[i] < y_min_experimental) {
-                y_min_experimental = y_experimental[i];
-            }
+    } else if (curveType == "Polynomial4") {
+        double p1 = parameters[0];
+        double p2 = parameters[1];
+        double p3 = parameters[2];
+        double p4 = parameters[3];
+        double p5 = parameters[4];
+        for (int j = 1; j < (N + 1); j++) {
+            y_experimental[j - 1] = (float) (p1*pow(j, 4) + p2*pow(j, 3) + p3*pow(j, 2) + p4*j +p5);
         }
-//        cout<<"edges: "<<y_min_experimental<<" "<<y_max_experimental<<endl;
-//        cout<<"y_given: "<<y_given<<endl;
-
-        if (y_given > y_max_experimental) {
-            x_estimated = 0;
-        } else if (y_given < y_min_experimental) {
-            x_estimated = 100;
-        } else {
-            for (int i = 1; i < N; i++) {
-                if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
-//                    cout<<"i: "<<i<<endl;
-                    x_estimated = i;
-                }
-            }
-//             Revert back to original x
-//            x_estimated = x_estimated * std + mean;
-            x_estimated /= 10;
+    } else if (curveType == "Gaussian2") {
+        double a1 = parameters[0];
+        double b1 = parameters[1];
+        double c1 = parameters[2];
+        double a2 = parameters[3];
+        double b2 = parameters[4];
+        double c2 = parameters[5];
+        for (int j = 1; j < (N + 1); j++) {
+            y_experimental[j - 1] = (float) (a1*exp(-pow((j-b1)/c1, 2)) + a2*exp(-pow((j-b2)/c2, 2)));
         }
-        // 65 > 70 > 70 > 40 > 5 > 20 > 15 > 60 > 60
-        // Original O2:
-        // 70 > 75 > 80 > 35 > 0 > 15 > 10 > 65 > 60
+    } else if (curveType == "Fourier2") {
+        double a0 = parameters[0];
+        double a1 = parameters[1];
+        double b1 = parameters[2];
+        double a2 = parameters[3];
+        double b2 = parameters[4];
+        double w = parameters[5];
+        for (int j = 1; j < (N + 1); j++) {
+            y_experimental[j - 1] = a0 + a1*cos(j*w) + b1*sin(j*w) + a2*cos(2*j*w) + b2*sin(2*j*w);
+        }
     }
+
+    for (int p = 0; p < (N-1); p++) {
+        slope_experimental[p] = y_experimental[p + 1] - y_experimental[p];
+    }
+
+    // find edge values for curve
+    double y_max_experimental = y_experimental[0];
+    double y_min_experimental = y_experimental[0];
+    for (int i = 1; i < N; i++) {
+        if(y_experimental[i] > y_max_experimental) {
+            y_max_experimental = y_experimental[i];
+        } else if (y_experimental[i] < y_min_experimental) {
+            y_min_experimental = y_experimental[i];
+        }
+    }
+
+    if (y_given > y_max_experimental) {
+        x_estimated = 0;
+    } else if (y_given < y_min_experimental) {
+        x_estimated = 100;
+    } else {
+        for (int i = 1; i < N; i++) {
+            if (y_given < y_experimental[i-1] && y_given > y_experimental[i]) {
+                x_estimated = i + ((y_given - y_experimental[i]) / slope_experimental[i-1]);
+            }
+        }
+    }
+
+
+
+    // Original O2 consequence:
+    // 70 > 75 > 80 > 35 > 0 > 15 > 10 > 65 > 60
 
 
     return x_estimated;

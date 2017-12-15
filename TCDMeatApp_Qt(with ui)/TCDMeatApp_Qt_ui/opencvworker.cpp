@@ -20,10 +20,9 @@ OpenCvWorker::OpenCvWorker(QObject *parent) : QThread(parent)
 
 //    p = strip.getParameters(colorspace, method, sensor); // recover curve a,b,c,d settings
     // Initialize current parameters
-    current_para.push_back(0);
-    current_para.push_back(0);
-    current_para.push_back(0);
-    current_para.push_back(0);
+    for (int i = 0; i < 6; i++) {
+       current_para.push_back(0);
+    }
 
     panelMat =  Mat(300, 250, CV_8UC3, Scalar(113, 117, 122));
 
@@ -245,9 +244,9 @@ void OpenCvWorker::receiveRightArea(int num){
     strip.setRightLine(float(num/100.0f));
 }
 
-void OpenCvWorker::receiveCurvePara(QVector<float> para, QString curve_type){
+void OpenCvWorker::receiveCurvePara(QVector<double> para, QString curve_type){
     curveType = curve_type.toLocal8Bit().constData();
-    if (curveType == "Exponential") {
+    if (curveType == "Exponential2") {
         exp_para = para;
         current_para[0] = para[0];
         current_para[1] = para[1];
@@ -259,9 +258,32 @@ void OpenCvWorker::receiveCurvePara(QVector<float> para, QString curve_type){
         current_para[1] = para[1];
         current_para[2] = para[2];
         current_para[3] = para[3];
+    } else if (curveType == "Polynomial4") {
+        poly_para = para;
+        current_para[0] = para[0];
+        current_para[1] = para[1];
+        current_para[2] = para[2];
+        current_para[3] = para[3];
+        current_para[4] = para[4];
+    } else if (curveType == "Gaussian2") {
+        gauss2_para = para;
+        current_para[0] = para[0];
+        current_para[1] = para[1];
+        current_para[2] = para[2];
+        current_para[3] = para[3];
+        current_para[4] = para[4];
+        current_para[5] = para[5];
+    } else if (curveType == "Fourier2") {
+        fou2_para = para;
+        current_para[0] = para[0];
+        current_para[1] = para[1];
+        current_para[2] = para[2];
+        current_para[3] = para[3];
+        current_para[4] = para[4];
+        current_para[5] = para[5];
     }
 
-    emit(sendUpdateCurveSettings(exp_para, cubic_para, curve_type));
+    emit(sendUpdateCurveSettings(exp_para, cubic_para, poly_para, gauss2_para, fou2_para, curve_type));
 }
 
 void OpenCvWorker::receiveCroppedStripArea(float area){

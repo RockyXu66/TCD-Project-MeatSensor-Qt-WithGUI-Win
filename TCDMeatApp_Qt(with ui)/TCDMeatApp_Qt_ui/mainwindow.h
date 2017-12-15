@@ -72,7 +72,7 @@ signals:
     void sendToggleStream();
     void sendLeftAreaValue(int num);
     void sendRightAreaValue(int num);
-    void sendUpdateCurvePara(QVector<float>,QVector<float>,QString);
+    void sendUpdateCurvePara(QVector<double>,QVector<double>,QVector<double>,QVector<double>,QVector<double>,QString);
     void sendCurrentImage(QImage);
     void sendStripRatio(float);
     void sendThresholdValue(int value);
@@ -101,7 +101,7 @@ private slots:
     void receiveStripAdjustedFlag(float);
 
     // Update curve parameters and curve type in settings (config) file
-    void receiveUpdateCurveSettings(QVector<float>, QVector<float>, QString);
+    void receiveUpdateCurveSettings(QVector<double>,QVector<double>,QVector<double>,QVector<double>,QVector<double>,QString);
 
     // Update threshold value for hsv channels in settings (config) file
     void receiveUpdateThresholdSettings(QVector<int>);

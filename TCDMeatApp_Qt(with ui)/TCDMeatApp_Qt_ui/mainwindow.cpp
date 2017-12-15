@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     cropping_dialog = new CroppingDialog();
 
     // Load config file
-    configFile = QApplication::applicationDirPath() + "/MeatSensorSettings.ini";
+    configFile = QApplication::applicationDirPath() + "/config.ini";
 
 
     connect(worker, SIGNAL(sendFrame(QImage)), this, SLOT(receiveProcessedFrame(QImage)));
@@ -23,9 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendLeftAreaValue(int)), worker, SLOT(receiveLeftArea(int)));
     connect(this, SIGNAL(sendRightAreaValue(int)), worker, SLOT(receiveRightArea(int)));
 
-    connect(setting_dialog, SIGNAL(sendCurvePara(QVector<float>,QString)), worker, SLOT(receiveCurvePara(QVector<float>,QString)));
-    connect(this, SIGNAL(sendUpdateCurvePara(QVector<float>,QVector<float>,QString)), setting_dialog, SLOT(receiveUpdateCurvePara(QVector<float>,QVector<float>,QString)));
-    connect(worker, SIGNAL(sendUpdateCurveSettings(QVector<float>,QVector<float>,QString)), SLOT(receiveUpdateCurveSettings(QVector<float>,QVector<float>,QString)));
+    connect(setting_dialog, SIGNAL(sendCurvePara(QVector<double>,QString)), worker, SLOT(receiveCurvePara(QVector<double>,QString)));
+    connect(this, SIGNAL(sendUpdateCurvePara(QVector<double>,QVector<double>,QVector<double>,QVector<double>,QVector<double>,QString)), setting_dialog, SLOT(receiveUpdateCurvePara(QVector<double>,QVector<double>,QVector<double>,QVector<double>,QVector<double>,QString)));
+    connect(worker, SIGNAL(sendUpdateCurveSettings(QVector<double>,QVector<double>,QVector<double>,QVector<double>,QVector<double>,QString)), SLOT(receiveUpdateCurveSettings(QVector<double>,QVector<double>,QVector<double>,QVector<double>,QVector<double>,QString)));
 
     connect(this, SIGNAL(sendCurrentImage(QImage)), cropping_dialog, SLOT(receiveCroppingImage(QImage)));
     connect(cropping_dialog, SIGNAL(sendCroppedStripArea(float)), worker, SLOT(receiveCroppedStripArea(float)));
@@ -60,15 +60,33 @@ void MainWindow::loadSettings()
 
     QSettings settings(configFile, QSettings::IniFormat);
 
-    string curveType = settings.value("curveType", "Exponential").toString().toLocal8Bit().constData();
-    float exp_a = settings.value("exp_a", "0.456375").toFloat();
-    float exp_b = settings.value("exp_b", "-0.011537").toFloat();
-    float exp_c = settings.value("exp_c", "0.000374").toFloat();
-    float exp_d = settings.value("exp_d", "0.049049").toFloat();
-    float cubic_a = settings.value("cubic_a", "0.004172").toFloat();
-    float cubic_b = settings.value("cubic_b", "0.024304").toFloat();
-    float cubic_c = settings.value("cubic_c", "-0.089222").toFloat();
-    float cubic_d = settings.value("cubic_d", "0.259458").toFloat();
+    string curveType = settings.value("curveType", "Exponential2").toString().toLocal8Bit().constData();
+    double exp2_a = settings.value("exp2_a", "0.456375").toFloat();
+    double exp2_b = settings.value("exp2_b", "-0.011537").toFloat();
+    double exp2_c = settings.value("exp2_c", "0.000374").toFloat();
+    double exp2_d = settings.value("exp2_d", "0.049049").toFloat();
+    double cubic_a = settings.value("cubic_a", "0.004172").toFloat();
+    double cubic_b = settings.value("cubic_b", "0.024304").toFloat();
+    double cubic_c = settings.value("cubic_c", "-0.089222").toFloat();
+    double cubic_d = settings.value("cubic_d", "0.259458").toFloat();
+    double poly4_p1 = settings.value("poly4_p1", "0").toFloat();
+    double poly4_p2 = settings.value("poly4_p2", "0").toFloat();
+    double poly4_p3 = settings.value("poly4_p3", "0").toFloat();
+    double poly4_p4 = settings.value("poly4_p4", "0").toFloat();
+    double poly4_p5 = settings.value("poly4_p5", "0").toFloat();
+    double gauss2_a1 = settings.value("gauss2_a1", "0").toFloat();
+    double gauss2_b1 = settings.value("gauss2_b1", "0").toFloat();
+    double gauss2_c1 = settings.value("gauss2_c1", "0").toFloat();
+    double gauss2_a2 = settings.value("gauss2_a2", "0").toFloat();
+    double gauss2_b2 = settings.value("gauss2_b2", "0").toFloat();
+    double gauss2_c2 = settings.value("gauss2_c2", "0").toFloat();
+    double fou2_a0 = settings.value("fou2_a0", "0").toFloat();
+    double fou2_a1 = settings.value("fou2_a1", "0").toFloat();
+    double fou2_b1 = settings.value("fou2_b1", "0").toFloat();
+    double fou2_a2 = settings.value("fou2_a2", "0").toFloat();
+    double fou2_b2 = settings.value("fou2_b2", "0").toFloat();
+    double fou2_w = settings.value("fou2_w", "0").toFloat();
+
     int thresh_LH = settings.value("thresh_LowHue", "23").toInt();
     int thresh_HH = settings.value("thresh_HighHue", "179").toInt();
     int thresh_LS = settings.value("thresh_LowSaturation", "0").toInt();
@@ -88,27 +106,67 @@ void MainWindow::loadSettings()
 
     worker->curveType = curveType;
 
-    if (curveType == "Exponential") {
-        worker->current_para[0] = exp_a;
-        worker->current_para[1] = exp_b;
-        worker->current_para[2] = exp_c;
-        worker->current_para[3] = exp_d;
+    if (curveType == "Exponential2") {
+        worker->current_para[0] = exp2_a;
+        worker->current_para[1] = exp2_b;
+        worker->current_para[2] = exp2_c;
+        worker->current_para[3] = exp2_d;
     } else if (curveType == "Cubic") {
         worker->current_para[0] = cubic_a;
         worker->current_para[1] = cubic_b;
         worker->current_para[2] = cubic_c;
         worker->current_para[3] = cubic_d;
+    } else if (curveType == "Polynomial4") {
+        worker->current_para[0] = poly4_p1;
+        worker->current_para[1] = poly4_p2;
+        worker->current_para[2] = poly4_p3;
+        worker->current_para[3] = poly4_p4;
+        worker->current_para[4] = poly4_p5;
+    }  else if (curveType == "Gaussian2") {
+        worker->current_para[0] = gauss2_a1;
+        worker->current_para[1] = gauss2_b1;
+        worker->current_para[2] = gauss2_c1;
+        worker->current_para[3] = gauss2_a2;
+        worker->current_para[4] = gauss2_b2;
+        worker->current_para[5] = gauss2_c2;
+    }  else if (curveType == "Fourier2") {
+        worker->current_para[0] = fou2_a0;
+        worker->current_para[1] = fou2_a1;
+        worker->current_para[2] = fou2_b1;
+        worker->current_para[3] = fou2_a2;
+        worker->current_para[4] = fou2_b2;
+        worker->current_para[5] = fou2_w;
     }
 
-    worker->exp_para.append(exp_a);
-    worker->exp_para.append(exp_b);
-    worker->exp_para.append(exp_c);
-    worker->exp_para.append(exp_d);
+    worker->exp_para.append(exp2_a);
+    worker->exp_para.append(exp2_b);
+    worker->exp_para.append(exp2_c);
+    worker->exp_para.append(exp2_d);
 
     worker->cubic_para.append(cubic_a);
     worker->cubic_para.append(cubic_b);
     worker->cubic_para.append(cubic_c);
     worker->cubic_para.append(cubic_d);
+
+    worker->poly_para.append(poly4_p1);
+    worker->poly_para.append(poly4_p2);
+    worker->poly_para.append(poly4_p3);
+    worker->poly_para.append(poly4_p4);
+    worker->poly_para.append(poly4_p5);
+
+    worker->gauss2_para.append(gauss2_a1);
+    worker->gauss2_para.append(gauss2_b1);
+    worker->gauss2_para.append(gauss2_c1);
+    worker->gauss2_para.append(gauss2_a2);
+    worker->gauss2_para.append(gauss2_b2);
+    worker->gauss2_para.append(gauss2_c2);
+
+    worker->fou2_para.append(fou2_a0);
+    worker->fou2_para.append(fou2_a1);
+    worker->fou2_para.append(fou2_b1);
+    worker->fou2_para.append(fou2_a2);
+    worker->fou2_para.append(fou2_b2);
+    worker->fou2_para.append(fou2_w);
 
     QVector<int> thresh;
     thresh.append(thresh_LH);
@@ -182,19 +240,42 @@ void MainWindow::receiveStripAdjustedFlag(float stripSize){
     settings.setValue("stripSize", QString::number(stripSize));
 }
 
-void MainWindow::receiveUpdateCurveSettings(QVector<float> exp_para, QVector<float> cubic_para, QString curveType){
+void MainWindow::receiveUpdateCurveSettings(QVector<double> exp_para, QVector<double> cubic_para,
+                                            QVector<double> poly4_para, QVector<double> gauss2_para,
+                                            QVector<double> fou2_para, QString curveType){
 
     QSettings settings(configFile, QSettings::IniFormat);
 
     settings.setValue("curveType", curveType);
-    settings.setValue("exp_a", QString::number(exp_para[0]));
-    settings.setValue("exp_b", QString::number(exp_para[1]));
-    settings.setValue("exp_c", QString::number(exp_para[2]));
-    settings.setValue("exp_d", QString::number(exp_para[3]));
+    settings.setValue("exp2_a", QString::number(exp_para[0]));
+    settings.setValue("exp2_b", QString::number(exp_para[1]));
+    settings.setValue("exp2_c", QString::number(exp_para[2]));
+    settings.setValue("exp2_d", QString::number(exp_para[3]));
+
     settings.setValue("cubic_a", QString::number(cubic_para[0]));
     settings.setValue("cubic_b", QString::number(cubic_para[1]));
     settings.setValue("cubic_c", QString::number(cubic_para[2]));
     settings.setValue("cubic_d", QString::number(cubic_para[3]));
+
+    settings.setValue("poly4_p1", QString::number(poly4_para[0]));
+    settings.setValue("poly4_p2", QString::number(poly4_para[1]));
+    settings.setValue("poly4_p3", QString::number(poly4_para[2]));
+    settings.setValue("poly4_p4", QString::number(poly4_para[3]));
+    settings.setValue("poly4_p5", QString::number(poly4_para[4]));
+
+    settings.setValue("gauss2_a1", QString::number(gauss2_para[0]));
+    settings.setValue("gauss2_b1", QString::number(gauss2_para[1]));
+    settings.setValue("gauss2_c1", QString::number(gauss2_para[2]));
+    settings.setValue("gauss2_a2", QString::number(gauss2_para[3]));
+    settings.setValue("gauss2_b2", QString::number(gauss2_para[4]));
+    settings.setValue("gauss2_c2", QString::number(gauss2_para[5]));
+
+    settings.setValue("fou2_a0", QString::number(fou2_para[0]));
+    settings.setValue("fou2_a1", QString::number(fou2_para[1]));
+    settings.setValue("fou2_b1", QString::number(fou2_para[2]));
+    settings.setValue("fou2_a2", QString::number(fou2_para[3]));
+    settings.setValue("fou2_b2", QString::number(fou2_para[4]));
+    settings.setValue("fou2_w", QString::number(fou2_para[5]));
 }
 
 void MainWindow::receiveUpdateThresholdSettings(QVector<int> thresh) {
@@ -277,7 +358,9 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButtonSetting_clicked()
 {
 
-    emit(sendUpdateCurvePara(worker->exp_para, worker->cubic_para, QString::fromStdString(worker->curveType)));
+    emit(sendUpdateCurvePara(worker->exp_para, worker->cubic_para,
+                             worker->poly_para, worker->gauss2_para,
+                             worker->fou2_para, QString::fromStdString(worker->curveType)));
     setting_dialog->setModal(true);
     setting_dialog->exec();
 }

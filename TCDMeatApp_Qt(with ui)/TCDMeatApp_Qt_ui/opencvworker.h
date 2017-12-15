@@ -87,10 +87,13 @@ public:
     bool isWebcam = false;  // is webcam open flag
     VideoCapture webcam;
 
-    vector<float> current_para;       // parameters variable
+    vector<double> current_para;       // parameters variable
     string curveType = "Exponential";
-    QVector<float> exp_para;
-    QVector<float> cubic_para;
+    QVector<double> exp_para;
+    QVector<double> cubic_para;
+    QVector<double> poly_para;
+    QVector<double> gauss2_para;
+    QVector<double> fou2_para;
 
     bool isThreshPanelVisible = true;
 
@@ -137,7 +140,7 @@ signals:
     void sendPrompt(bool isOxygenCalculated);
 
     // Update curve parameters and curve type in settings (config) file
-    void sendUpdateCurveSettings(QVector<float>, QVector<float>, QString);
+    void sendUpdateCurveSettings(QVector<double>, QVector<double>, QVector<double>,QVector<double>,QVector<double>, QString);
 
     // Update threshold value for hsv channels in settings (config) file
     void sendUpdateThresholdSettings(QVector<int>);
@@ -148,7 +151,7 @@ signals:
 private slots:
     void receiveLeftArea(int num);
     void receiveRightArea(int num);
-    void receiveCurvePara(QVector<float>, QString);
+    void receiveCurvePara(QVector<double>, QString);
     void receiveCroppedStripArea(float);
     void receiveStripRatio(float);
     void receiveThresholdValue(int value);

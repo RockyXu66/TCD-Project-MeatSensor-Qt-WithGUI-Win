@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_settingDialog_t {
     QByteArrayData data[9];
-    char stringdata0[172];
+    char stringdata0[173];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,16 +35,16 @@ static const qt_meta_stringdata_settingDialog_t qt_meta_stringdata_settingDialog
 QT_MOC_LITERAL(0, 0, 13), // "settingDialog"
 QT_MOC_LITERAL(1, 14, 13), // "sendCurvePara"
 QT_MOC_LITERAL(2, 28, 0), // ""
-QT_MOC_LITERAL(3, 29, 14), // "QVector<float>"
-QT_MOC_LITERAL(4, 44, 21), // "on_buttonBox_accepted"
-QT_MOC_LITERAL(5, 66, 22), // "receiveUpdateCurvePara"
-QT_MOC_LITERAL(6, 89, 40), // "on_comboBoxCurveType_currentI..."
-QT_MOC_LITERAL(7, 130, 4), // "arg1"
-QT_MOC_LITERAL(8, 135, 36) // "on_pushButtonImportCurvePara_..."
+QT_MOC_LITERAL(3, 29, 15), // "QVector<double>"
+QT_MOC_LITERAL(4, 45, 21), // "on_buttonBox_accepted"
+QT_MOC_LITERAL(5, 67, 22), // "receiveUpdateCurvePara"
+QT_MOC_LITERAL(6, 90, 40), // "on_comboBoxCurveType_currentI..."
+QT_MOC_LITERAL(7, 131, 4), // "arg1"
+QT_MOC_LITERAL(8, 136, 36) // "on_pushButtonImportCurvePara_..."
 
     },
     "settingDialog\0sendCurvePara\0\0"
-    "QVector<float>\0on_buttonBox_accepted\0"
+    "QVector<double>\0on_buttonBox_accepted\0"
     "receiveUpdateCurvePara\0"
     "on_comboBoxCurveType_currentIndexChanged\0"
     "arg1\0on_pushButtonImportCurvePara_clicked"
@@ -69,16 +69,16 @@ static const uint qt_meta_data_settingDialog[] = {
 
  // slots: name, argc, parameters, tag, flags
        4,    0,   44,    2, 0x08 /* Private */,
-       5,    3,   45,    2, 0x08 /* Private */,
-       6,    1,   52,    2, 0x08 /* Private */,
-       8,    0,   55,    2, 0x08 /* Private */,
+       5,    6,   45,    2, 0x08 /* Private */,
+       6,    1,   58,    2, 0x08 /* Private */,
+       8,    0,   61,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3, QMetaType::QString,    2,    2,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 3, 0x80000000 | 3, QMetaType::QString,    2,    2,    2,
+    QMetaType::Void, 0x80000000 | 3, 0x80000000 | 3, 0x80000000 | 3, 0x80000000 | 3, 0x80000000 | 3, QMetaType::QString,    2,    2,    2,    2,    2,    2,
     QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void,
 
@@ -91,9 +91,9 @@ void settingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         settingDialog *_t = static_cast<settingDialog *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->sendCurvePara((*reinterpret_cast< QVector<float>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 0: _t->sendCurvePara((*reinterpret_cast< QVector<double>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
         case 1: _t->on_buttonBox_accepted(); break;
-        case 2: _t->receiveUpdateCurvePara((*reinterpret_cast< QVector<float>(*)>(_a[1])),(*reinterpret_cast< QVector<float>(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
+        case 2: _t->receiveUpdateCurvePara((*reinterpret_cast< QVector<double>(*)>(_a[1])),(*reinterpret_cast< QVector<double>(*)>(_a[2])),(*reinterpret_cast< QVector<double>(*)>(_a[3])),(*reinterpret_cast< QVector<double>(*)>(_a[4])),(*reinterpret_cast< QVector<double>(*)>(_a[5])),(*reinterpret_cast< QString(*)>(_a[6]))); break;
         case 3: _t->on_comboBoxCurveType_currentIndexChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 4: _t->on_pushButtonImportCurvePara_clicked(); break;
         default: ;
@@ -105,22 +105,25 @@ void settingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<float> >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<double> >(); break;
             }
             break;
         case 2:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 4:
+            case 3:
+            case 2:
             case 1:
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<float> >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<double> >(); break;
             }
             break;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         {
-            typedef void (settingDialog::*_t)(QVector<float> , QString );
+            typedef void (settingDialog::*_t)(QVector<double> , QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&settingDialog::sendCurvePara)) {
                 *result = 0;
                 return;
@@ -166,7 +169,7 @@ int settingDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void settingDialog::sendCurvePara(QVector<float> _t1, QString _t2)
+void settingDialog::sendCurvePara(QVector<double> _t1, QString _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

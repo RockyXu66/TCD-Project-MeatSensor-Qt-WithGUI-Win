@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_OpenCvWorker_t {
     QByteArrayData data[31];
-    char stringdata0[508];
+    char stringdata0[509];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,32 +44,32 @@ QT_MOC_LITERAL(8, 91, 7), // "content"
 QT_MOC_LITERAL(9, 99, 10), // "sendPrompt"
 QT_MOC_LITERAL(10, 110, 18), // "isOxygenCalculated"
 QT_MOC_LITERAL(11, 129, 23), // "sendUpdateCurveSettings"
-QT_MOC_LITERAL(12, 153, 14), // "QVector<float>"
-QT_MOC_LITERAL(13, 168, 27), // "sendUpdateThresholdSettings"
-QT_MOC_LITERAL(14, 196, 12), // "QVector<int>"
-QT_MOC_LITERAL(15, 209, 23), // "sendUpdateRatioSettings"
-QT_MOC_LITERAL(16, 233, 15), // "receiveLeftArea"
-QT_MOC_LITERAL(17, 249, 3), // "num"
-QT_MOC_LITERAL(18, 253, 16), // "receiveRightArea"
-QT_MOC_LITERAL(19, 270, 16), // "receiveCurvePara"
-QT_MOC_LITERAL(20, 287, 23), // "receiveCroppedStripArea"
-QT_MOC_LITERAL(21, 311, 17), // "receiveStripRatio"
-QT_MOC_LITERAL(22, 329, 21), // "receiveThresholdValue"
-QT_MOC_LITERAL(23, 351, 5), // "value"
-QT_MOC_LITERAL(24, 357, 23), // "receiveThresholdValue_2"
-QT_MOC_LITERAL(25, 381, 23), // "receiveThresholdValue_3"
-QT_MOC_LITERAL(26, 405, 23), // "receiveThresholdValue_4"
-QT_MOC_LITERAL(27, 429, 23), // "receiveThresholdValue_5"
-QT_MOC_LITERAL(28, 453, 23), // "receiveThresholdValue_6"
-QT_MOC_LITERAL(29, 477, 15), // "receiveNextFlag"
-QT_MOC_LITERAL(30, 493, 14) // "receivePrintO2"
+QT_MOC_LITERAL(12, 153, 15), // "QVector<double>"
+QT_MOC_LITERAL(13, 169, 27), // "sendUpdateThresholdSettings"
+QT_MOC_LITERAL(14, 197, 12), // "QVector<int>"
+QT_MOC_LITERAL(15, 210, 23), // "sendUpdateRatioSettings"
+QT_MOC_LITERAL(16, 234, 15), // "receiveLeftArea"
+QT_MOC_LITERAL(17, 250, 3), // "num"
+QT_MOC_LITERAL(18, 254, 16), // "receiveRightArea"
+QT_MOC_LITERAL(19, 271, 16), // "receiveCurvePara"
+QT_MOC_LITERAL(20, 288, 23), // "receiveCroppedStripArea"
+QT_MOC_LITERAL(21, 312, 17), // "receiveStripRatio"
+QT_MOC_LITERAL(22, 330, 21), // "receiveThresholdValue"
+QT_MOC_LITERAL(23, 352, 5), // "value"
+QT_MOC_LITERAL(24, 358, 23), // "receiveThresholdValue_2"
+QT_MOC_LITERAL(25, 382, 23), // "receiveThresholdValue_3"
+QT_MOC_LITERAL(26, 406, 23), // "receiveThresholdValue_4"
+QT_MOC_LITERAL(27, 430, 23), // "receiveThresholdValue_5"
+QT_MOC_LITERAL(28, 454, 23), // "receiveThresholdValue_6"
+QT_MOC_LITERAL(29, 478, 15), // "receiveNextFlag"
+QT_MOC_LITERAL(30, 494, 14) // "receivePrintO2"
 
     },
     "OpenCvWorker\0sendFrame\0\0frameProcessed\0"
     "sendBinFrame\0binFrame\0sendVideoFinished\0"
     "sendO2Value\0content\0sendPrompt\0"
     "isOxygenCalculated\0sendUpdateCurveSettings\0"
-    "QVector<float>\0sendUpdateThresholdSettings\0"
+    "QVector<double>\0sendUpdateThresholdSettings\0"
     "QVector<int>\0sendUpdateRatioSettings\0"
     "receiveLeftArea\0num\0receiveRightArea\0"
     "receiveCurvePara\0receiveCroppedStripArea\0"
@@ -100,24 +100,24 @@ static const uint qt_meta_data_OpenCvWorker[] = {
        6,    0,  125,    2, 0x06 /* Public */,
        7,    1,  126,    2, 0x06 /* Public */,
        9,    1,  129,    2, 0x06 /* Public */,
-      11,    3,  132,    2, 0x06 /* Public */,
-      13,    1,  139,    2, 0x06 /* Public */,
-      15,    1,  142,    2, 0x06 /* Public */,
+      11,    6,  132,    2, 0x06 /* Public */,
+      13,    1,  145,    2, 0x06 /* Public */,
+      15,    1,  148,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      16,    1,  145,    2, 0x08 /* Private */,
-      18,    1,  148,    2, 0x08 /* Private */,
-      19,    2,  151,    2, 0x08 /* Private */,
-      20,    1,  156,    2, 0x08 /* Private */,
-      21,    1,  159,    2, 0x08 /* Private */,
-      22,    1,  162,    2, 0x08 /* Private */,
-      24,    1,  165,    2, 0x08 /* Private */,
-      25,    1,  168,    2, 0x08 /* Private */,
-      26,    1,  171,    2, 0x08 /* Private */,
-      27,    1,  174,    2, 0x08 /* Private */,
-      28,    1,  177,    2, 0x08 /* Private */,
-      29,    0,  180,    2, 0x08 /* Private */,
-      30,    0,  181,    2, 0x08 /* Private */,
+      16,    1,  151,    2, 0x08 /* Private */,
+      18,    1,  154,    2, 0x08 /* Private */,
+      19,    2,  157,    2, 0x08 /* Private */,
+      20,    1,  162,    2, 0x08 /* Private */,
+      21,    1,  165,    2, 0x08 /* Private */,
+      22,    1,  168,    2, 0x08 /* Private */,
+      24,    1,  171,    2, 0x08 /* Private */,
+      25,    1,  174,    2, 0x08 /* Private */,
+      26,    1,  177,    2, 0x08 /* Private */,
+      27,    1,  180,    2, 0x08 /* Private */,
+      28,    1,  183,    2, 0x08 /* Private */,
+      29,    0,  186,    2, 0x08 /* Private */,
+      30,    0,  187,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QImage,    3,
@@ -125,7 +125,7 @@ static const uint qt_meta_data_OpenCvWorker[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    8,
     QMetaType::Void, QMetaType::Bool,   10,
-    QMetaType::Void, 0x80000000 | 12, 0x80000000 | 12, QMetaType::QString,    2,    2,    2,
+    QMetaType::Void, 0x80000000 | 12, 0x80000000 | 12, 0x80000000 | 12, 0x80000000 | 12, 0x80000000 | 12, QMetaType::QString,    2,    2,    2,    2,    2,    2,
     QMetaType::Void, 0x80000000 | 14,    2,
     QMetaType::Void, QMetaType::Float,    2,
 
@@ -158,12 +158,12 @@ void OpenCvWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 2: _t->sendVideoFinished(); break;
         case 3: _t->sendO2Value((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 4: _t->sendPrompt((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 5: _t->sendUpdateCurveSettings((*reinterpret_cast< QVector<float>(*)>(_a[1])),(*reinterpret_cast< QVector<float>(*)>(_a[2])),(*reinterpret_cast< QString(*)>(_a[3]))); break;
+        case 5: _t->sendUpdateCurveSettings((*reinterpret_cast< QVector<double>(*)>(_a[1])),(*reinterpret_cast< QVector<double>(*)>(_a[2])),(*reinterpret_cast< QVector<double>(*)>(_a[3])),(*reinterpret_cast< QVector<double>(*)>(_a[4])),(*reinterpret_cast< QVector<double>(*)>(_a[5])),(*reinterpret_cast< QString(*)>(_a[6]))); break;
         case 6: _t->sendUpdateThresholdSettings((*reinterpret_cast< QVector<int>(*)>(_a[1]))); break;
         case 7: _t->sendUpdateRatioSettings((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 8: _t->receiveLeftArea((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 9: _t->receiveRightArea((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 10: _t->receiveCurvePara((*reinterpret_cast< QVector<float>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 10: _t->receiveCurvePara((*reinterpret_cast< QVector<double>(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
         case 11: _t->receiveCroppedStripArea((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 12: _t->receiveStripRatio((*reinterpret_cast< float(*)>(_a[1]))); break;
         case 13: _t->receiveThresholdValue((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -182,9 +182,12 @@ void OpenCvWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 5:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 4:
+            case 3:
+            case 2:
             case 1:
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<float> >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<double> >(); break;
             }
             break;
         case 6:
@@ -198,7 +201,7 @@ void OpenCvWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<float> >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QVector<double> >(); break;
             }
             break;
         }
@@ -240,7 +243,7 @@ void OpenCvWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
             }
         }
         {
-            typedef void (OpenCvWorker::*_t)(QVector<float> , QVector<float> , QString );
+            typedef void (OpenCvWorker::*_t)(QVector<double> , QVector<double> , QVector<double> , QVector<double> , QVector<double> , QString );
             if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&OpenCvWorker::sendUpdateCurveSettings)) {
                 *result = 5;
                 return;
@@ -334,9 +337,9 @@ void OpenCvWorker::sendPrompt(bool _t1)
 }
 
 // SIGNAL 5
-void OpenCvWorker::sendUpdateCurveSettings(QVector<float> _t1, QVector<float> _t2, QString _t3)
+void OpenCvWorker::sendUpdateCurveSettings(QVector<double> _t1, QVector<double> _t2, QVector<double> _t3, QVector<double> _t4, QVector<double> _t5, QString _t6)
 {
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)), const_cast<void*>(reinterpret_cast<const void*>(&_t6)) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
