@@ -12,8 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     cropping_dialog = new CroppingDialog();
 
     // Load config file
-//    configFile = QApplication::applicationDirPath() + "\demosettings.ini";
-    configFile = "D:\\TCD Project (meatsensor)\\Yinghan\\Qt_windows10\\TCDMeatApp_Qt(with ui)\\MeatSensorSettings.ini";
+    configFile = QApplication::applicationDirPath() + "/MeatSensorSettings.ini";
 
 
     connect(worker, SIGNAL(sendFrame(QImage)), this, SLOT(receiveProcessedFrame(QImage)));
@@ -44,17 +43,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendNextFlag()), worker, SLOT(receiveNextFlag()));
     connect(this, SIGNAL(sendPrintO2()), worker, SLOT(receivePrintO2()));
 
-    // Set up ui at last after initialized
+    // Set up ui after initialized
     ui->setupUi(this);
     // Hide threshold setting panel
     on_pushButtonThresholdSetting_clicked();
 
     // Load config file settings into application
     loadSettings();
-
-
-
-
 }
 
 void MainWindow::loadSettings()

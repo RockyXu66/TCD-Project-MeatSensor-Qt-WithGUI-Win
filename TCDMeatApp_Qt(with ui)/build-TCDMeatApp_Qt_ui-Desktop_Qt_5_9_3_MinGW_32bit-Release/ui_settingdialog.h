@@ -185,7 +185,7 @@ public:
         settingDialog->setWindowTitle(QApplication::translate("settingDialog", "Setting", Q_NULLPTR));
         pushButtonImportCurvePara->setText(QApplication::translate("settingDialog", "Import", Q_NULLPTR));
         label->setText(QApplication::translate("settingDialog", "Curve Parameters", Q_NULLPTR));
-        label_2->setText(QApplication::translate("settingDialog", "Curve file path:", Q_NULLPTR));
+        label_2->setText(QApplication::translate("settingDialog", "Curve file path", Q_NULLPTR));
         label_setting_a->setText(QApplication::translate("settingDialog", "a", Q_NULLPTR));
         label_setting_b->setText(QApplication::translate("settingDialog", "b", Q_NULLPTR));
         label_setting_c->setText(QApplication::translate("settingDialog", "c", Q_NULLPTR));

@@ -7,6 +7,9 @@ settingDialog::settingDialog(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    // index => value
+    //     0 => Exponential
+    //     1 => Cubic
     ui->comboBoxCurveType->addItem("Exponential");
     ui->comboBoxCurveType->addItem("Cubic");
 
@@ -77,15 +80,55 @@ void settingDialog::setCurveParameters(QVector<float> para){
 
 void settingDialog::on_pushButtonImportCurvePara_clicked()
 {
-    QFile file("D:/TCD Project (meatsensor)/Yinghan/MT3_R-1/exp_parameters.txt");
+    QString path = ui->lineEditCurveFilePath->text();
+    path.replace(QString("\\"), QString("/"));
+    QString curveType;
+
+    if (path == "") {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Notification");
+        msgBox.setText("Please insert file path.");
+        msgBox.exec();
+        return;
+    }
+
+    if (path.contains("exp_parameters.txt")) {
+        curveType = "exponential curve";
+        ui->comboBoxCurveType->setCurrentIndex(0);
+//        qDebug()<<"exp";
+    } else if (path.contains("cubic_parameters.txt")) {
+        curveType = "cubic curve";
+        ui->comboBoxCurveType->setCurrentIndex(1);
+//        qDebug()<<"cubic";
+    } else {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Notification");
+        msgBox.setText("Could not load this file.");
+        msgBox.exec();
+        return;
+    }
+
+    QFile file(path);
    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
        return;
 
+   // Get parameters from file
+   QVector<QString> paras;
    QTextStream in(&file);
    while (!in.atEnd()) {
        QString line = in.readLine();
-       qDebug()<<"line: "<<line;
-//       string a = line.toLocal8Bit().constData();
-//       line.
+       QString subLine = line.mid(4, line.length());
+       paras.append(subLine);
    }
+
+   // Put these parameters into the GUI text line
+   ui->lineEdit_setting_a->setText(paras[0]);
+   ui->lineEdit_setting_b->setText(paras[1]);
+   ui->lineEdit_setting_c->setText(paras[2]);
+   ui->lineEdit_setting_d->setText(paras[3]);
+
+   QMessageBox msgBox;
+   msgBox.setWindowTitle("Notification");
+   msgBox.setText("Import " + curveType + " successfully.");
+   msgBox.exec();
 }

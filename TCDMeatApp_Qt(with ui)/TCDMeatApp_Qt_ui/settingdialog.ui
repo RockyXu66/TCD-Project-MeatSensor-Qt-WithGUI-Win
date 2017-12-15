@@ -71,7 +71,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Curve file path:</string>
+        <string>Curve file path</string>
        </property>
       </widget>
      </item>
